@@ -7,6 +7,7 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { OneSignal } from '@ionic-native/onesignal/ngx';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
+import { IonicStorageModule } from '@ionic/storage';
 //import { ScrollingModule } from '@angular/cdk/scrolling/ngx';
 //import { DragDropModule } from '@angular/cdk/drag-drop/ngx';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
@@ -44,6 +45,14 @@ import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-nati
 //pages
 import { FilterPage } from '../app/filter/filter.page';
 import { OrderSummaryPage } from './checkout/order-summary/order-summary.page';
+import { LocationPage } from '../app/location/location.page';
+
+import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+//Geolocation
+//import { Diagnostic } from '@ionic-native/diagnostic/ngx';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
+import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 
 
 export function createTranslateLoader(http: HttpClient) {
@@ -55,18 +64,21 @@ export function createTranslateLoader(http: HttpClient) {
   declarations: [
   AppComponent,
   FilterPage,
-  OrderSummaryPage
+  OrderSummaryPage,
+  LocationPage,
   //HomePage
   ],
   entryComponents: [
   FilterPage,
-  OrderSummaryPage
+  OrderSummaryPage,
+  LocationPage
   //HomePage
   ],
   imports: [BrowserModule, 
   FormsModule, 
   HttpClientModule,
    KeysPipeModule,
+   IonicStorageModule.forRoot(),
     IonicModule.forRoot(),
      AppRoutingModule,
       TranslateModule.forRoot({
@@ -100,6 +112,8 @@ export function createTranslateLoader(http: HttpClient) {
     SocialSharing,
     //BarcodeScanner,
     HTTP,
+    AndroidPermissions,
+    Geolocation, LocationAccuracy, NativeGeocoder,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

@@ -17,7 +17,7 @@
 </div>
 
 
-<ion-card class="ion-activatable ion-focusable hydrated" *ngFor="let post of posts" (click)="getDetail(post)">
+<ion-card button="true" mode="md" *ngFor="let post of posts" (click)="getDetail(post)">
   <div *ngIf="post._embedded && post._embedded['wp:featuredmedia'] && post._embedded['wp:featuredmedia'].length">
     <ion-img alt="" src="{{post._embedded['wp:featuredmedia'][0].source_url}}"></ion-img>
   </div>

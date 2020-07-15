@@ -34,7 +34,7 @@ export class WalletPage implements OnInit {
   async addTopup() {
       if (this.validateForm()) {
           const loading = await this.loadingController.create({
-              message: 'Please wait...',
+              message: 'Por favor espera...',
               translucent: true,
               cssClass: 'custom-class custom-loading'
           });
@@ -63,7 +63,7 @@ export class WalletPage implements OnInit {
   }
   validateForm() {
       if (this.amount == undefined || this.amount == "") {
-          this.presentAlert('Please enter Amount');
+          this.presentAlert('Por favor ingrese el monto');
           return false
       } else {
           return true

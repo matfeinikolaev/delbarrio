@@ -1,0 +1,41 @@
+<ion-header mode="ios">
+  <!-- <ion-toolbar mode="md">
+  	<ion-buttons slot="start" (click)="close()">
+      <ion-back-button defaultHref="{{'/'+path}}"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{"Localizaciones" | translate}}</ion-title>
+  </ion-toolbar> -->
+</ion-header>
+
+<ion-content class="location-page">
+<!--div #map id="map" style="height: 40%;"></div-->
+
+  <div *ngIf="!allowedGeoLoc" style="color: #687e95; text-align:center; position:relative; width:200px; margin: auto; margin-top:100px">
+    <ion-label style="color:#687e95; font-size:larger;">
+      {{"EXPLORE LAS TIENDAS LOCALES" | translate}}
+    </ion-label>
+    <div style="margin: 40px 0 80px 0;">
+      <img src="assets/image/gps.png" alt="">
+    </div>
+    <p>
+      {{"Por favor, danos permiso para usar tu ubicación para ofrecerte todas las opciones de entrega posibles" | translate }}
+    </p>
+  </div>
+  <!-- <ion-searchbar [(ngModel)]="autocomplete.input" (ionInput)="UpdateSearchResults()" (ionClear)="ClearAutocomplete()"> -->
+  <!-- <ion-searchbar [(ngModel)]="userAddress" mode="ios" animated placeholder="{{'Ingrese su dirección de entrega' | translate}}" (ionInput)="UpdateSearchResults()" (ionClear)="ClearAutocomplete()">
+  </ion-searchbar>
+
+  <div class="current-location" *ngIf="autocompleteItems.length == 0">
+    <ion-button expand="block" shape="round" mode="ios" color="danger" fill="clear" class="location_button" (click)="currentLoadUserMap()">
+      <ion-icon name="locate-outline"></ion-icon>
+      {{'Usar ubicación actual' | translate}}
+    </ion-button>
+  </div>
+
+  <ion-list [hidden]="autocompleteItems.length == 0">
+    <ion-item lines="full" style="--padding-top: 4px; --padding-bottom: 4px;" *ngFor="let item of autocompleteItems" button="true" (click)="SelectSearchResult(item.description)">
+      <ion-label><h2>{{ item.description }}</h2></ion-label>
+    </ion-item>
+  </ion-list> -->
+
+</ion-content>

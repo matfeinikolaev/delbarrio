@@ -14,30 +14,46 @@ export class OrdersPage implements OnInit {
     filter: any = {};
     orders: any;
     hasMoreItems: boolean = true;
+    stores: any = [];
     constructor(public api: ApiService, public settings: Settings, public router: Router, public loadingController: LoadingController, public navCtrl: NavController, public route: ActivatedRoute) {
         this.filter.page = 1;
         this.filter.customer = this.settings.customer.id;
     }
     ngOnInit() {
-        if(this.settings.customer)
-        this.getOrders();
+        if(this.settings.customer){
+            // this.getOrders();
+            this.getStores();
+        }
     }
-    async getOrders() {
-        await this.api.postItem('orders', this.filter).then(res => {
-            this.orders = res;
+    async getStores() {
+        await this.api.postItem('get_checkout_stores').then(res => {
+            this.stores = res;
+            console.log(this);
+            for( let store of this.stores ) {
+                this.getOrders(store);
+            }
+        }, err => {
+            console.log(err);
+        });
+    }
+    async getOrders(store) {
+        await this.api.postItem('orders', this.filter, store.storepath).then(res => {
+            this.orders == undefined? this.orders = res : this.orders = this.orders.concat(res);
         }, err => {
             console.log(err);
         });
     }
     async loadData(event) {
         this.filter.page = this.filter.page + 1;
-        await this.api.postItem('orders', this.filter).then(res => {
-            this.orders.push.apply(this.orders, res);
-            event.target.complete();
-            if (!res) this.hasMoreItems = false;
-        }, err => {
-            event.target.complete();
-        });
+        for( let store of this.stores ) {
+            await this.api.postItem('orders', this.filter, store.storepath).then(res => {
+                this.orders.push.apply(this.orders, res);
+                event.target.complete();
+                if (!res) this.hasMoreItems = false;
+            }, err => {
+                event.target.complete();
+            });
+        }
         console.log('Done');
     }
     getDetail(order) {

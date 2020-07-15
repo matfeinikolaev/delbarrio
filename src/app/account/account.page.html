@@ -1,7 +1,7 @@
 <ion-header mode="ios" mode='ios'>
-    <ion-toolbar>      
-      <ion-title>{{"Account" | translate}}</ion-title>
-    </ion-toolbar>
+    <!-- <ion-toolbar>      
+      <ion-title>{{"Cuenta" | translate}}</ion-title>
+    </ion-toolbar> -->
     <!--ion-grid class="my-account-header">
         <ion-row>
             <ion-col>
@@ -28,117 +28,151 @@
     </ion-grid-->
 </ion-header>
 <ion-content>
-
-      <ion-header mode="ios" collapse="condense">              
+  <div style="text-align: center;">
+    <img class="logo" src="assets/image/logo.png" style="height: 175px;">
+  </div>
+      <!-- <ion-header mode="ios" collapse="condense">              
         <ion-toolbar>      
-          <ion-title size="large">{{"Account" | translate}}</ion-title>
+          <ion-title size="large">{{"Cuenta" | translate}}</ion-title>
         </ion-toolbar>
-      </ion-header>
+      </ion-header> -->
 
-    <ion-list>
+      <div *ngIf="!settings.user && !settings.customer.id">
+        <ion-list-header style="margin-bottom: 30px;">
+          <ion-label class="delbarrio-header" style="font-weight: 100; font-size: 20pt;">{{"Continuar con" | translate}}</ion-label>
+        </ion-list-header>
+        <ion-grid class="socila-login">
+          <ion-row>
+            <ion-col size="12" style="text-align:center;">
+              <ion-button mode="md" shape="undefined" fill="solid" style="--border-radius:50px 50px 50px 50px; width:200px; --background:#b80000; --box-shadow:0;" (click)="googleLogin()" [disabled]="googleLogingInn">
+              <ion-icon slot="start" name="logo-google"></ion-icon>{{"Google"| translate}}</ion-button>
+              <br/>
+            </ion-col>
+            <ion-col size="12" style="text-align:center; margin-top: 15px;">
+              <ion-button shape="undefined" mode="md" fill="solid" style="--border-radius:50px 50px 50px 50px; width:200px; --background:#2b3f5a; --box-shadow:0;" (click)="facebookLogin()" [disabled]="facebookLogingInn">
+              <ion-icon slot="start" name="logo-facebook"></ion-icon>{{"Facebook"| translate}}</ion-button>
+            </ion-col>
+            <ion-col size="12" style="text-align:center; margin-top: 15px;">
+              <ion-button shape="undefined" mode="md" fill="clear" style="color:#4dcfc3; font-weight: bold; width:200px;" (click)="register()">
+              {{"Registrate"| translate}}
+              </ion-button>
+            </ion-col>
+            <ion-col size="12" style="text-align:center;">
+              <p style="color:#2a3d5d">{{"¿Tienes una cuenta?"}} <span style="color:#78ddcd" (click)="login()">{{"Iniciar sesión"}}</span> </p>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+
+    <ion-list *ngIf="settings.user || settings.customer.id">
         
         <ion-item (click)="goTo('tabs/account/wallet')" *ngIf="settings.customer?.id && settings.settings?.enable_wallet"  detail="true" lines="inset" class="ion-activatable">
             <ion-icon style="background-color: var(--ion-color-danger, #eb445a); color: white" class="icon-start ion-margin-end" name="wallet" mode="md" slot="start"></ion-icon>
-              <ion-label>{{"Wallet" | translate}}</ion-label>
+              <ion-label>{{"Billetera" | translate}}</ion-label>
         </ion-item>
 
-        <ion-item (click)="goTo('tabs/account/wishlist')" *ngIf="settings.customer?.id" detail="true" lines="inset" class="ion-activatable">
+        <!-- <ion-item (click)="goTo('tabs/account/wishlist')" *ngIf="settings.customer?.id" detail="true" lines="inset" class="ion-activatable">
             <ion-icon style="background-color: var(--ion-color-success, #2dd36f); color: white" class="icon-start ion-margin-end" name="heart" slot="start"></ion-icon>
-            <ion-label>{{"Wishlist" | translate}}</ion-label>
-        </ion-item>
+            <ion-label>{{"Lista de Deseos" | translate}}</ion-label>
+        </ion-item> -->
 
-        <ion-item (click)="login()" detail="true" lines="inset" *ngIf="!settings.customer?.id" class="ion-activatable">
+        <!-- <ion-item (click)="login()" detail="true" lines="inset" *ngIf="!settings.customer?.id" class="ion-activatable">
             <ion-icon style="background-color: var(--ion-color-danger, #eb445a); color: white" class="icon-start ion-margin-end" name="log-in" mode="md" slot="start"></ion-icon>
-              <ion-label>{{"Login" | translate}}</ion-label>
-        </ion-item>
-        <ion-item (click)="goTo('tabs/account/register')" detail="true" lines="inset" *ngIf="!settings.customer?.id" class="ion-activatable">
+              <ion-label>{{"Ingresar" | translate}}</ion-label>
+        </ion-item> -->
+        <!-- <ion-item (click)="register()" detail="true" lines="inset" *ngIf="!settings.customer?.id" class="ion-activatable">
             <ion-icon style="background-color: var(--ion-color-success, #2dd36f); color: white" class="icon-start ion-margin-end" name="person" slot="start"></ion-icon>
-            <ion-label>{{"Register" | translate}}</ion-label>
-        </ion-item>
+            <ion-label>{{"Registrar" | translate}}</ion-label>
+        </ion-item> -->
         <ion-item (click)="goTo('tabs/account/points')" detail="true" lines="inset" *ngIf="settings.reward" class="ion-activatable">
             <ion-icon style="background-color: var(--ion-color-danger, #eb445a); color: white" class="icon-start ion-margin-end" name="card" slot="start"></ion-icon>
-            <ion-label>{{"Points" | translate}}</ion-label>
+            <ion-label>{{"Puntos" | translate}}</ion-label>
         </ion-item>
         <ion-item (click)="goTo('tabs/account/address')" detail="true" lines="inset" *ngIf="settings.customer?.id" class="ion-activatable">
             <ion-icon style="background-color: var(--ion-color-secondary, #3dc2ff); color: white" class="icon-start ion-margin-end" name="location" slot="start"></ion-icon>
-            <ion-label>{{"Address" | translate}}</ion-label>
+            <ion-label>{{"Direccíon" | translate}}</ion-label>
         </ion-item>
+        <!-- <ion-item (click)="goTo('tabs/account/messaging/'+settings.user.ID)" detail="true" lines="inset" *ngIf="settings.administrator || settings.vendor" class="ion-activatable">
+          <ion-icon style="background-color: var(--ion-color-success, #2dd36f); color: white" class="icon-start ion-margin-end" name="chatbubbles" slot="start"></ion-icon>
+          <ion-label>{{"Mensajes" | translate}}</ion-label>
+      </ion-item> -->
         <ion-item (click)="goTo('tabs/account/orders')" detail="true" lines="inset" *ngIf="settings.customer?.id" class="ion-activatable">
             <ion-icon style="background-color: var(--ion-color-danger, #eb445a); color: white" class="icon-start ion-margin-end" name="document" slot="start"></ion-icon>
-            <ion-label>{{"Orders" | translate}}</ion-label>
+            <ion-label>{{"Pedidos" | translate}}</ion-label>
         </ion-item>
        <ion-item lines="inset" class="ion-activatable" *ngIf="settings.settings.whatsapp_number" href="https://wa.me/{{settings.settings?.whatsapp_number}}" detail="true">
             <ion-icon style="background-color: var(--ion-color-success, #2dd36f); color: white" class="icon-start ion-margin-end" name="logo-whatsapp" slot="start"></ion-icon>
-            <ion-label>{{"Whatsapp us" | translate}}</ion-label>
+            <ion-label>{{"Envíenos un Whatsapp" | translate}}</ion-label>
         </ion-item>
         <ion-item (click)="email(settings?.settings?.support_email)" detail="true"  *ngIf="settings?.settings?.support_email" lines="inset" class="ion-activatable">
             <ion-icon style="background-color: var(--ion-color-secondary, #3dc2ff); color: white" class="icon-start ion-margin-end" name="mail" slot="start"></ion-icon>
-            <ion-label>{{"Email us" | translate}}</ion-label>
+            <ion-label>{{"Envíenos un Email" | translate}}</ion-label>
         </ion-item>
 
         <ion-item lines="inset" (click)="goTo('tabs/account/map')" detail="true"  class="ion-activatable" *ngIf="settings.settings?.switchLocations">
             <ion-icon style="background-color: var(--ion-color-danger, #eb445a); color: white" class="icon-start ion-margin-end" name="compass" slot="start"></ion-icon>
-            <ion-label>{{"Locations" | translate}}</ion-label>
+            <ion-label>{{"Direccíones" | translate}}</ion-label>
         </ion-item>
         <ion-item lines="inset" *ngIf="settings.settings.share_app_android_link || settings.settings.share_app_ios_link" class="ion-activatable" detail="true" (click)="shareApp()">
             <ion-icon style="background-color: var(--ion-color-secondary, #3dc2ff); color: white" class="icon-start ion-margin-end" name="share" slot="start"></ion-icon>
-            <ion-label>{{"Invite Friends" | translate}}</ion-label>
+            <ion-label>{{"Invitar Amigos" | translate}}</ion-label>
         </ion-item>
         <ion-item lines="inset" *ngIf="settings.settings.rate_app_ios_id || settings.settings.rate_app_android_id" class="ion-activatable" detail="true" (click)="rateApp()">
             <ion-icon style="background-color: var(--ion-color-danger, #428xff); color: white" class="icon-start ion-margin-end" name="star" slot="start"></ion-icon>
-            <ion-label>{{"Rate us" | translate}}</ion-label>
+            <ion-label>{{"Nos califica" | translate}}</ion-label>
         </ion-item>
-        <ion-item lines="inset" (click)="goTo('tabs/account/blogs')" detail="true"  lines="inset" class="ion-activatable">
+        <!-- <ion-item lines="inset" (click)="goTo('tabs/account/blogs')" detail="true"  lines="inset" class="ion-activatable">
           <ion-icon style="background-color: var(--ion-color-primary, #428xff); color: white" class="icon-start ion-margin-end" name="document" slot="start"></ion-icon>
         <ion-label>{{"Blog" | translate}}</ion-label>
-        </ion-item>
-        <ion-item *ngIf="settings.languages?.length" detail="true"  lines="inset" (click)="goTo('tabs/account/setting')" lines="inset" class="ion-activatable">
-            <ion-icon style="background-color: var(--ion-color-danger, #eb445a); color: white" class="icon-start ion-margin-end" name="globe" slot="start"></ion-icon>
-            <ion-label>{{"Language" | translate}}</ion-label>
+        </ion-item> -->
+        <ion-item *ngIf="settings.user" detail="true"  lines="inset" (click)="goTo('tabs/account/setting')" lines="inset" class="ion-activatable">
+            <ion-icon style="background-color: var(--ion-color-danger, #eb445a); color: white" class="icon-start ion-margin-end" name="settings" slot="start"></ion-icon>
+            <ion-label>{{"Ajustes" | translate}}</ion-label>
         </ion-item>
 
         <ion-item *ngIf="settings.currencies?.length" detail="true"  lines="inset" (click)="goTo('tabs/account/currencies')" lines="inset" class="ion-activatable">
             <ion-icon style="background-color: var(--ion-color-secondary, #3dc2ff); color: white" class="icon-start ion-margin-end" name="logo-usd" slot="start"></ion-icon>
-            <ion-label>{{"Currency" | translate}}</ion-label>
+            <ion-label>{{"Moneda" | translate}}</ion-label>
         </ion-item>
 
         <ion-item *ngFor="let page of settings.pages" lines="inset" [hidden]="!page.url" (click)="goTo('/tabs/account/post/'+page.url)" detail="true"  lines="inset" class="ion-activatable">
             <ion-icon style="background-color: var(--ion-color-secondary, #428xff); color: white" class="icon-start ion-margin-end" name="document" slot="start"></ion-icon>
             <ion-label>{{page.title}}</ion-label>
+            <!--ion-label>{{settings.locale[page.title]}}</ion-label-->
         </ion-item>
 
         <ion-item detail="true"  lines="inset" class="ion-activatable" (click)="log_out()" *ngIf="settings.customer?.id">
             <ion-icon style="background-color: var(--ion-color-danger, #eb445a); color: white" class="icon-start ion-margin-end" name="log-out" mode="md" slot="start"></ion-icon>
-            <ion-label>{{"Logout" | translate}}</ion-label>
+            <ion-label>{{"Salir" | translate}}</ion-label>
         </ion-item>
 
-        <ion-item class="ion-activatable">
+        <!-- <ion-item class="ion-activatable">
           <ion-icon style="background-color: var(--ion-color-primary, #428xff); color: white" class="icon-start ion-margin-end" slot="start" name="moon" mode="md" slot="start"></ion-icon>
           <ion-label>
-            {{"Dark Theme" | translate}}
+            {{"Tema oscuro" | translate}}
           </ion-label>
-          <ion-toggle id="themeToggle" slot="end"></ion-toggle>
-        </ion-item>
+          <ion-toggle color="{{settings.theme.button}}" id="themeToggle" slot="end"></ion-toggle>
+        </ion-item> -->
 
       </ion-list>
     <br/>
       
     <div *ngIf="settings.vendor || settings.administrator">
       <ion-list-header>
-        <ion-label>{{"Store" | translate}}</ion-label>
+        <ion-label>{{"Tienda" | translate}}</ion-label>
       </ion-list-header>
       <ion-list>
       <ion-item detail="true" lines="inset" (click)="goTo('tabs/account/vendor-orders')" class="ion-activatable">
         <ion-icon style="background-color: var(--ion-color-success, #2dd36f); color: white" class="icon-start ion-margin-end" name="document" slot="start"></ion-icon>
-        <ion-label>{{"Orders" | translate}}</ion-label>
+        <ion-label>{{"Pedidos" | translate}}</ion-label>
       </ion-item>
       <ion-item detail="true" lines="inset" (click)="goTo('tabs/account/vendor-products')" class="ion-activatable">
         <ion-icon style="background-color: var(--ion-color-danger, #eb445a); color: white" class="icon-start ion-margin-end" name="document" slot="start"></ion-icon>
-        <ion-label>{{"Products" | translate}}</ion-label>
+        <ion-label>{{"Productos" | translate}}</ion-label>
       </ion-item>
       <ion-item detail="true" lines="inset" (click)="goTo('tabs/account/add-products')" class="ion-activatable">
         <ion-icon style="background-color: var(--ion-color-danger, #eb445a); color: white" class="icon-start ion-margin-end" name="add-circle" slot="start"></ion-icon>
-        <ion-label>{{"Add Products" | translate}}</ion-label>
+        <ion-label>{{"Añadir Productos" | translate}}</ion-label>
       </ion-item>
     </ion-list>
     </div>

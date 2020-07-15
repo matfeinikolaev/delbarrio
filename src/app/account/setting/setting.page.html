@@ -1,21 +1,72 @@
 <ion-header mode="ios" mode='ios'>
    <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button text="{{'Back' | translate}}" defaultHref="/tabs/account"></ion-back-button>
+      <ion-back-button text="{{'Atrás' | translate}}" defaultHref="/tabs/account"></ion-back-button>
     </ion-buttons>
-      <ion-title>{{"Language" | translate}}</ion-title>
+      <ion-title>{{"Ajustes de cuenta" | translate}}</ion-title>
    </ion-toolbar>
 </ion-header>
 <ion-content class="settings">
-   <div *ngIf="settings.languages.length">
+   <div class="form">
+      <ion-list>
+         <form [formGroup]="form">
+         <ion-item>
+            <img src="{{settings.user.avatar_url}}" alt="">
+         </ion-item>
+         <ion-item>
+            <div>
+               <ion-input formControlName="display_name" [disabled]="!editmode"></ion-input>
+            </div>
+         </ion-item>
+         <ion-item>
+            <div>
+               <ion-label color="medium">E-mail</ion-label>
+               <ion-input formControlName="user_email" [disabled]="!editmode"></ion-input>
+            </div>
+         </ion-item>
+         <ion-item>
+            <div>
+               <ion-label color="medium">Login</ion-label>
+               <ion-input formControlName="user_login" [disabled]="!editmode"></ion-input>
+            </div>
+         </ion-item>
+         <ion-item>
+            <div>
+               <ion-label color="medium">Nicename</ion-label>
+               <ion-input formControlName="user_nicename" [disabled]="!editmode"></ion-input>
+            </div>
+         </ion-item>
+         <ion-item>
+            <div>
+               <ion-label color="medium">Contraseña</ion-label>
+               <ion-input formControlName="user_pass" type="password" [disabled]="!editmode"></ion-input>
+            </div>
+         </ion-item>
+         <ion-item>
+            <div>
+               <ion-label color="medium">Su url</ion-label>
+               <ion-input formControlName="user_url" [disabled]="!editmode"></ion-input>
+            </div>
+         </ion-item>
+         <ion-input type="hidden" formControlName="ID"></ion-input>
+         </form>
+      </ion-list>
+      <ion-button slot="end" fill="solid" expand="full" (click)="editMode()" [hidden]="editmode">{{"Editar" | translate}}</ion-button>
+      <ion-button slot="end" fill="solid" expand="full" (click)="onSubmit()" [hidden]="!editmode">{{"Guardar" | translate}}</ion-button>
+   </div>
+</ion-content>
+
+
+
+
+   <!-- <div *ngIf="settings.languages.length">
       <ion-list >
-         <ion-radio-group [(ngModel)]="config.lang" name="language" ngDefaultControl>
+         <ion-radio-group [(ngModel)]="config.lang" formControlName="language" ngDefaultControl>
          <ion-item *ngFor="let item of settings.languages">
             <ion-label class="payment-method-title"><img src="{{item.country_flag_url}}" width="20"><span style="padding: 10px">{{item.native_name}}</span></ion-label>
             <ion-radio value="{{item.language_code}}"> </ion-radio>
          </ion-item>
          </ion-radio-group>
-         <ion-button padding color="{{settings.theme.button}}" expand="block" fill="solid" (click)="applyLanguage()" >{{"Apply" | translate}}</ion-button>
+         <ion-button padding  expand="block" fill="solid" (click)="applyLanguage()" >{{"Apply" | translate}}</ion-button>
       </ion-list>
-   </div>
-</ion-content>
+   </div> -->

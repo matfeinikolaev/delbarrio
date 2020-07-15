@@ -1,10 +1,10 @@
 <ion-header mode="ios" mode='ios'>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button text="{{'Back' | translate}}" defaultHref="/tabs/account"></ion-back-button>
+      <ion-back-button text="{{'Atrás' | translate}}" defaultHref="/tabs/account"></ion-back-button>
     </ion-buttons>
     
-    <ion-title>{{"Wallet" | translate}}</ion-title>
+    <ion-title>{{"Billetera" | translate}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -15,9 +15,9 @@
 <ion-list *ngIf="wallet.balance">
 
 <ion-item lines="none">
-  <ion-label class="bold">{{"Balance" | translate}} {{wallet.balance}}</ion-label>
+  <ion-label class="bold">{{"Saldo" | translate}} {{wallet.balance}}</ion-label>
   <ion-button color="{{settings.theme.button}}" slot="end" (click)="showField()">
-    {{"Add balance" | translate}}
+    {{"Añadir saldo" | translate}}
   </ion-button>
 </ion-item>
 
@@ -26,7 +26,7 @@
     <ion-input required type="number" [(ngModel)]="amount" name="amount" placeholder="Enter Amount"></ion-input>
 </ion-item>
 
-<ion-button style="margin-right: 16px; margin-left: 16px;" expand="block" color="{{settings.theme.button}}" (click)="addTopup()">{{"Add" | translate}}</ion-button>
+<ion-button style="margin-right: 16px; margin-left: 16px;" expand="block" color="{{settings.theme.button}}" (click)="addTopup()">{{"Añadir" | translate}}</ion-button>
 </div>
 
 <ion-item *ngFor="let item of wallet.transactions">

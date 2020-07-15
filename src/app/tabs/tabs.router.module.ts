@@ -3,11 +3,13 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { TabsPage } from './tabs.page';
 import { HomePage } from './../home/home.page';
+import { StoresPage } from './../stores/stores.page';
 import { CartPage } from './../cart/cart.page';
 import { CategoriesPage } from './../categories/categories.page';
 import { SearchPage } from './../search/search.page';
 import { ProductsPage } from './../products/products.page';
 import { ProductPage } from './../product/product.page';
+import { StorePage } from './../store/store.page';
 import { ReviewPage } from './../review/review.page';
 import { PostPage } from './../post/post.page';
 //import { ContactPage } from './../contact/contact.page';
@@ -23,6 +25,7 @@ import { EditAddressPage } from './../account/edit-address/edit-address.page';
 import { ForgottenPage } from './../account/forgotten/forgotten.page';
 import { LoginPage } from './../account/login/login.page';
 import { MapPage } from './../account/map/map.page';
+import { MessagingPage } from './../messaging/messaging.page';
 import { OrderPage } from './../account/order/order.page';
 import { OrdersPage } from './../account/orders/orders.page';
 import { PointsPage } from './../account/points/points.page';
@@ -46,6 +49,7 @@ import { CategoryPage } from './../vendor/product-add/category/category.page';
 import { DetailsPage } from './../vendor/product-add/details/details.page';
 import { PhotosPage } from './../vendor/product-add/photos/photos.page';
 import { SubcategoryPage } from './../vendor/product-add/subcategory/subcategory.page';
+import { EditSettingsPage } from './../account/edit-settings/edit-settings.page';
 
 const routes: Routes = [
   {
@@ -58,6 +62,14 @@ const routes: Routes = [
           {
             path: '',
             component: HomePage,
+          },
+          {
+            path: 'stores-by-cat',
+            component: StoresPage,
+          },
+          {
+            path: 'stores',
+            component: VendorListPage
           },
           {
             path: 'products/:id',
@@ -92,6 +104,33 @@ const routes: Routes = [
                 path: 'review/:id',
                 component: ReviewPage
               }
+            ]
+          },
+          {
+            path: 'store/:id',
+            children: [
+              {
+                path: '',
+                component: StorePage
+              },
+              {
+                path: 'messaging',
+                children: [
+                  {
+                    path: ':userID',
+                    component: MessagingPage,
+                  }
+                ]
+              },
+            ]
+          },
+          {
+            path: 'store/:id',
+            children: [
+              {
+                path: '',
+                component: StorePage
+              },
             ]
           },
           {
@@ -228,11 +267,23 @@ const routes: Routes = [
           },
           {
             path: 'address',
-            component: CheckoutAddressPage
+            // component: CheckoutAddressPage,
+            children: [
+              {
+                path: ':storePath/',
+                component: CheckoutAddressPage
+              }
+            ]
           },
           {
             path: 'checkout',
-            component: CheckoutPage
+            // component: CheckoutPage,
+            children: [
+              {
+                path: ':storePath',
+                component: CheckoutPage
+              }
+            ]
           },
           {
             path: 'product/:id',
@@ -245,6 +296,15 @@ const routes: Routes = [
                 path: 'review/:id',
                 component: ReviewPage
               }
+            ]
+          },
+          {
+            path: ':storeId',
+            children: [
+              {
+                path: '',
+                component: CartPage
+              },
             ]
           }
         ]
@@ -279,7 +339,16 @@ const routes: Routes = [
           },
           {
             path: 'setting',
-            component: SettingPage
+            children: [
+              {
+                path: '',
+                component: SettingPage
+              },
+              {
+                path: 'edit-settings',
+                component: EditSettingsPage
+              }
+            ]
           },
           {
             path: 'currencies',

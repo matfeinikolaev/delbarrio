@@ -3,6 +3,7 @@ import { LoadingController, NavController, Platform, ToastController } from '@io
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../../api.service';
 import { CheckoutData } from '../../data/checkout';
+import { Data } from '../../data';
 import { Settings } from './../../data/settings';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { OneSignal } from '@ionic-native/onesignal/ngx';
@@ -31,8 +32,11 @@ export class CheckoutPage implements OnInit {
     orderId: any;
     cardResponse: any = {};
     stripeForm: any = {};
-    constructor(private oneSignal: OneSignal, public toastController: ToastController, public platform: Platform, public api: ApiService, public checkoutData: CheckoutData, public settings: Settings, public router: Router, public iab: InAppBrowser, public loadingController: LoadingController, public navCtrl: NavController, public route: ActivatedRoute/*, private braintree: Braintree*/) {}
+    storePath: any;
+    constructor(public data: Data, private oneSignal: OneSignal, public toastController: ToastController, public platform: Platform, public api: ApiService, public checkoutData: CheckoutData, public settings: Settings, public router: Router, public iab: InAppBrowser, public loadingController: LoadingController, public navCtrl: NavController, public route: ActivatedRoute/*, private braintree: Braintree*/) {}
     ngOnInit() {
+        this.storePath = this.route.snapshot.paramMap.get('storePath');
+        console.log(this);
         this.updateOrder();
     }
     async updateOrder() {
@@ -40,7 +44,7 @@ export class CheckoutPage implements OnInit {
         this.checkoutData.form['woocommerce-process-checkout-nonce'] = this.checkoutData.form._wpnonce;
         this.checkoutData.form['wc-ajax'] = 'update_order_review';
         this.setOldWooCommerceVersionData();
-        await this.api.updateOrderReview('update_order_review', this.checkoutData.form).then(res => {
+        await this.api.updateOrderReview('update_order_review', this.checkoutData.form, this.storePath).subscribe(res => {
             this.orderReview = res;
             if(this.orderReview.payment && this.orderReview.payment.stripe) {
                 this.stripe = Stripe(this.orderReview.payment.stripe.publishable_key);
@@ -58,7 +62,7 @@ export class CheckoutPage implements OnInit {
         this.checkoutData.form['woocommerce-process-checkout-nonce'] = this.checkoutData.form._wpnonce;
         this.checkoutData.form['wc-ajax'] = 'update_order_review';
         this.setOldWooCommerceVersionData();
-        await this.api.updateOrderReview('update_order_review', this.checkoutData.form).then(res => {
+        await this.api.updateOrderReview('update_order_review', this.checkoutData.form, this.storePath).subscribe(res => {
             this.handleData(res);
         }, err => {
             console.log(err);
@@ -109,8 +113,14 @@ export class CheckoutPage implements OnInit {
             this.brainTreePayment();
         }*/
         else {
-            await this.api.ajaxCall('/index.php/checkout?wc-ajax=checkout', this.checkoutData.form).then(res => {
+            await this.api.ajaxCall('/index.php/checkout?wc-ajax=checkout', this.checkoutData.form, this.storePath).then(res => {
                 this.results = res;
+                console.log(res);
+                this.api.postItem('save_checkout_store', {store_path: this.storePath}).then(res => {
+                    // console.log(res);
+                }, err => {
+                    console.log(err);
+                })
                 this.handleOrder();
             }, err => {
                 this.disableButton = false;
@@ -142,7 +152,7 @@ export class CheckoutPage implements OnInit {
         var pos2 = str.lastIndexOf("/?key=wc_order");
         var pos3 = pos2 - (pos1 + 10);
         var order_id = str.substr(pos1 + 10, pos3);
-        this.navCtrl.navigateRoot('/order-summary/' + order_id);
+        this.navCtrl.navigateRoot('/order-summary/' + this.storePath + '/' + order_id);
     }
     handlePayment() {
         var options = "location=no,hidden=yes,toolbar=no,hidespinner=yes";
@@ -177,7 +187,7 @@ export class CheckoutPage implements OnInit {
             } 
             else if (data.url.indexOf('/order-received/') != -1 && data.url.indexOf('key=wc_order_') != -1) {
                 if(this.orderId)
-                this.navCtrl.navigateRoot('/order-summary/' + this.orderId);
+                this.navCtrl.navigateRoot('/order-summary/' + this.storePath + '/' + this.orderId);
                 browser.hide();
             } else if (data.url.indexOf('cancel_order=true') != -1 || data.url.indexOf('cancelled=1') != -1 || data.url.indexOf('cancelled') != -1) {
                 browser.close();
@@ -199,7 +209,7 @@ export class CheckoutPage implements OnInit {
             var options = "location=no,hidden=yes,toolbar=yes";
             let browser = this.iab.create(this.results.redirect, '_blank', options);
             browser.on('loadstart').subscribe(data => {
-                if (data.url.indexOf('/order-pay/') != -1) {
+                if (data.url.indexOf('/order/process') != -1) {
                     browserActive = true;
                     browser.show();
                 }
@@ -209,17 +219,28 @@ export class CheckoutPage implements OnInit {
                 } 
                 else if (data.url.indexOf('type=success') != -1) {
                     if(this.orderId)
-                    this.navCtrl.navigateRoot('/order-summary/' + this.orderId);
+                    this.navCtrl.navigateRoot('/order-summary/' + this.storePath + '/' + this.orderId);
                     browser.hide();
                 }
-                else if (data.url.indexOf('type=error') != -1 || data.url.indexOf('Failed') != -1 || data.url.indexOf('cancel_order=true') != -1 || data.url.indexOf('cancelled') != -1) {
+                else if (data.url.indexOf('/order-received/') != -1) {
+                    if(this.orderId)
+                    this.navCtrl.navigateRoot('/order-summary/' + this.storePath + '/' + this.orderId);
+                    browser.hide();
+                }
+                else if (data.url.indexOf('cancelTransaction') != -1 || data.url.indexOf('type=error') != -1 || data.url.indexOf('Failed') != -1 || data.url.indexOf('cancel_order=true') != -1 || data.url.indexOf('cancelled') != -1) {
                     browser.close();
                     this.disableButton = false;
                 }
+                else if (data.url.indexOf('Your+payment+has+been+failed') != -1) {
+                    browser.close();
+                    this.navCtrl.navigateRoot('/order-summary/' + this.storePath + '/' + this.orderId);
+                    this.disableButton = false;
+                } 
                 else if (data.url.indexOf('Thank+you+for+your+order') != -1) {
                     browser.close();
+                    this.navCtrl.navigateRoot('/order-summary/' + this.storePath + '/' + this.orderId);
                     this.disableButton = false;
-                }     
+                }    
             });
             browser.on('exit').subscribe(data => {
                 this.disableButton = false;
@@ -244,7 +265,7 @@ export class CheckoutPage implements OnInit {
                 if (data.url.indexOf('/order-received/') == -1) {
                     browser.close();
                     this.disableButton = false;
-                    this.navCtrl.navigateRoot('/order-summary/' + this.orderId);
+                    this.navCtrl.navigateRoot('/order-summary/' +  this.storePath + '/' + this.orderId);
                 }     
             });
             browser.on('exit').subscribe(data => {
@@ -338,7 +359,7 @@ export class CheckoutPage implements OnInit {
     stripePlaceOrder(src){
         if(src && src.id){
             this.checkoutData.form['stripe_source'] = src.id;
-            this.api.ajaxCall('/checkout?wc-ajax=checkout', this.checkoutData.form).then(res => {
+            this.api.ajaxCall('/checkout?wc-ajax=checkout', this.checkoutData.form, this.storePath).then(res => {
                 this.results = res;
                 this.handleOrder();
             }, err => {
@@ -492,7 +513,7 @@ export class CheckoutPage implements OnInit {
         //if(!form.card)
         //this.checkoutData.form['wc-stripe-payment-token'] = form.payment_token);
 
-        this.api.ajaxCall('/checkout?wc-ajax=checkout', this.checkoutData.form).then(res => {
+        this.api.ajaxCall('/checkout?wc-ajax=checkout', this.checkoutData.form, this.storePath).then(res => {
             this.stripeStatus = res;
             if (this.stripeStatus.result == 'success') {
                 if (this.stripeStatus.redirect.indexOf('confirm-pi-') != -1) {
@@ -524,8 +545,8 @@ export class CheckoutPage implements OnInit {
                             var pos2 = str.lastIndexOf("%252F%253Fkey");
                             var pos3 = pos2 - (pos1 + 13);
                             var order_id = str.substr(pos1 + 13, pos3);
-                            this.api.ajaxCall('/?wc-ajax=wc_stripe_verify_intent&order=' + order_id + '&nonce=' + this.checkoutData.form.stripe_confirm_pi + '&redirect_to=').then(res => {
-                                this.navCtrl.navigateRoot('/order-summary/' + order_id);
+                            this.api.ajaxCall('/?wc-ajax=wc_stripe_verify_intent&order=' + order_id + '&nonce=' + this.checkoutData.form.stripe_confirm_pi + '&redirect_to=', {}, this.storePath).then(res => {
+                                this.navCtrl.navigateRoot('/order-summary/' +  this.storePath + '/' + order_id);
                             }, err => { 
                                 
                             });
@@ -540,7 +561,7 @@ export class CheckoutPage implements OnInit {
                     var order_id = str.substr(pos1 + 16, pos3);
                     this.buttonSubmit = false;
                     this.loading.dismiss();
-                    this.navCtrl.navigateRoot('/order-summary/' + order_id);
+                    this.navCtrl.navigateRoot('/order-summary/' +  this.storePath + '/' + order_id);
                 }
             } else if (this.stripeStatus.result == 'failure') {
                 this.presentToast(this.stripeStatus.messages);
@@ -561,6 +582,9 @@ export class CheckoutPage implements OnInit {
           position: 'top'
         });
         toast.present();
+    }
+    backToAddress() {
+        this.navCtrl.navigateForward('/tabs/cart/address/' + this.storePath + '/');
     }
     brainTreePayment(){
 

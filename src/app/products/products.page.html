@@ -30,8 +30,8 @@
     <ion-card mode="md" class="ion-activatable ion-focusable hydrated {{settings.settings.product_shadow}} {{data.cart[item.id] >= 1 ? 'borderline-card' : ''}}" [style.border-radius.px]="settings.dimensions.productBorderRadius">
       <ion-img alt="" [style.height.px]="settings.dimensions.homeGridViewHeight" *ngIf="item.images?.length" [src]="item.images[0].src" (click)="getProduct(item)"></ion-img>
       <ion-img alt="" [style.height.px]="settings.dimensions.homeGridViewHeight" *ngIf="!item.images?.length" src="assets/image/logo.png" (click)="getProduct(item)"></ion-img>
-      <ion-icon name="heart-outline" mode="md" class="wishlist-button-grid" *ngIf="!settings.wishlist[item.id]" (click)="settings.addToWishlist(item.id)"></ion-icon>
-      <ion-icon name="heart" color="{{settings.theme.button}}" mode="md" class="wishlist-button-grid" *ngIf="settings.wishlist[item.id]" (click)="settings.removeFromWishlist(item.id)"></ion-icon>
+      <!-- <ion-icon name="heart-outline" mode="md" class="wishlist-button-grid" *ngIf="!settings.wishlist[item.id]" (click)="settings.addToWishlist(item.id)"></ion-icon>
+      <ion-icon name="heart" color="{{settings.theme.button}}" mode="md" class="wishlist-button-grid" *ngIf="settings.wishlist[item.id]" (click)="settings.removeFromWishlist(item.id)"></ion-icon> -->
         <ion-button color="danger" class="stock" *ngIf="item.stock_status == 'outofstock'">{{"No Stock" | translate}}</ion-button>
         <div *ngIf="item.stock_status == 'instock'">
         <ion-button color="success" class="offer" *ngIf="((item.regular_price - item.price) /item.regular_price*100) >= 1">{{(item.regular_price - item.price) /item.regular_price*100 | number : '1.0-0'}}%</ion-button>

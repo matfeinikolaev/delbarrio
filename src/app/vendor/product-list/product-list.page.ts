@@ -103,20 +103,19 @@ export class ProductListPage {
 
     async delete(product){
         const alert = await this.alertController.create({
-          header: 'Delete',
-          message: 'Are you sure you want to delete this product?',
-
+          header: 'Borrar',
+          message: 'Está seguro, que quiere borrar este producto?',
           buttons: [{
-          text: 'Cancel',
+          text: 'Cancelar',
           role: 'cancel',
           cssClass: 'secondary',
           handler: (blah) => {
             console.log('Confirm Cancel: blah');
           }
         }, {
-          text: 'Delete',
+          text: 'Borrar',
           handler: () => {
-            this.api.deleteItem('products', product.id).then(res => {
+            this.api.deleteItem('products/'+product.id).then(res => {
                 this.getProducts();
             }, err => {
                 console.log(err);

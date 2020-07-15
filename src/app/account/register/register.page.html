@@ -1,45 +1,54 @@
 <ion-header mode="ios" mode='ios'>
   <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button text="{{'Back' | translate}}" defaultHref="/tabs/account"></ion-back-button>
+    <ion-buttons slot="start" (click)="close(false)">
+      <ion-back-button text="{{'' | translate}}" style="--color:black; margin-left: 20px;" size="small" defaultHref="/tabs/account"></ion-back-button>
     </ion-buttons>
-    <ion-title>{{"Register" | translate}}</ion-title>
+    <ion-title>{{"Registrar" | translate}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content fullscreen="true">
 
     <!-- Top header image. uncomment if not using background image in scss file -->
-  <!--div class="login-logo">
-    <img src="assets/image/login_logo2.jpg">
-  </div-->
+  <!-- <div style="height: 80%; margin-top: 10px; padding-bottom: 0; margin-bottom: 0;">
+    <img src="assets/image/logo.png">
+  </div> -->
 
 <!-- Login Form 1 -->
 <div class="login1">
  
 <div class="form">
 
+  <div style="text-align: center;">
+    <img src="assets/image/logo.png"style="padding-bottom: 0; margin-bottom: 0;height: 175px;">
+  </div>
 
 <ion-list>
   <form [formGroup]="form">
-  <ion-item>
-  <ion-input required type="text" formControlName="first_name" placeholder="First Name"></ion-input>
+    
+  <ion-label for="first_name" mode="ios" color="medium" style="font-size: small;">NOMBRE</ion-label>
+  <ion-item style="margin: -5px 0 15px 0">
+  <ion-input required type="text" formControlName="first_name"></ion-input>
   </ion-item>
-  <ion-item>
-  <ion-input required type="text" formControlName="last_name" placeholder="Last Name"></ion-input>
+  <ion-label for="last_name" mode="ios" color="medium" style="font-size: small;">APELLIDOS</ion-label>
+  <ion-item style="margin: -5px 0 15px 0">
+  <ion-input required type="text" formControlName="last_name"></ion-input>
   </ion-item>
-  <ion-item>
-  <ion-input type="text" formControlName="phone" placeholder="Phone"></ion-input>
+  <ion-label for="phone" mode="ios" color="medium" style="font-size: small;">TELEFONO</ion-label>
+  <ion-item style="margin: -5px 0 15px 0">
+  <ion-input type="text" formControlName="phone"></ion-input>
   </ion-item>
-  <ion-item>
-  <ion-input required type="email" formControlName="email" placeholder="Email"></ion-input>
+  <ion-label for="email" mode="ios" color="medium" style="font-size: small;">EMAIL</ion-label>
+  <ion-item style="margin: -5px 0 15px 0">
+  <ion-input required type="email" formControlName="email"></ion-input>
   </ion-item>
-  <ion-item>
-  <ion-input required type="password" formControlName="password" placeholder="Password"></ion-input>
+  <ion-label for="password" mode="ios" color="medium" style="font-size: small;">CONTRASEÑA</ion-label>
+  <ion-item style="margin: -5px 0 15px 0">
+  <ion-input required type="password" formControlName="password"></ion-input>
   </ion-item>
 </form>
 </ion-list>
- <ion-button color="{{settings.theme.button}}" expand="block" fill="solid" [disabled]="!form.valid || disableSubmit" (click)="onSubmit()">{{"Register" | translate}}</ion-button>
+ <ion-button color="{{settings.theme.button}}" expand="block" fill="solid" [disabled]="!form.valid || disableSubmit" (click)="onSubmit()">{{"Registrar" | translate}}</ion-button>
 
  <!--ion-button expand="block" shape="undefined" mode="ios" fill="clear" color="facebook" (click)="loginWithPhone()" [disabled]="phoneLogingInn"><ion-spinner name="dots" color="{{settings.theme.button}}" *ngIf="phoneLogingInn"></ion-spinner><span *ngIf="!phoneLogingInn">{{"Register with OTP"| translate}}</span></ion-button-->
 

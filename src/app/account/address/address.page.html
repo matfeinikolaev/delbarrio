@@ -1,9 +1,9 @@
 <ion-header mode="ios" mode='ios'>
   <ion-toolbar>
   	<ion-buttons slot="start">
-      <ion-back-button text="{{'Back' | translate}}" defaultHref="/tabs/account"></ion-back-button>
+      <ion-back-button text="{{'Atrás' | translate}}" defaultHref="/tabs/account"></ion-back-button>
     </ion-buttons>
-    <ion-title>{{"Address" | translate}}</ion-title>
+    <ion-title>{{"Dirección" | translate}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -11,7 +11,7 @@
 
 <div *ngIf="settings.customer">
 	<ion-list-header>
-    <ion-label>{{"Billing Address" | translate}}</ion-label>
+    <ion-label>{{"Dirección de facturación" | translate}}</ion-label>
   </ion-list-header>
 
   <ion-item lines="full" detail (click)="editAddress()">
@@ -25,7 +25,7 @@
   </ion-item>
 
   <ion-list-header>
-    <ion-label>{{"Shipping Address" | translate}}</ion-label>
+    <ion-label>{{"Dirección de Envio" | translate}}</ion-label>
   </ion-list-header>
 
   <ion-item lines="full" detail (click)="editAddress()">

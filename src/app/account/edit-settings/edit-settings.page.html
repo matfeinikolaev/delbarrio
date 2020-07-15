@@ -1,0 +1,54 @@
+<ion-header mode="ios" mode='ios'>
+   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="{{'Atrás' | translate}}" defaultHref="/tabs/account"></ion-back-button>
+    </ion-buttons>
+      <ion-title>{{"Ajustes de cuenta" | translate}}</ion-title>
+   </ion-toolbar>
+</ion-header>
+<ion-content class="settings">
+   <!-- <div *ngIf="settings.languages.length">
+      <ion-list >
+         <ion-radio-group [(ngModel)]="config.lang" name="language" ngDefaultControl>
+         <ion-item *ngFor="let item of settings.languages">
+            <ion-label class="payment-method-title"><img src="{{item.country_flag_url}}" width="20"><span style="padding: 10px">{{item.native_name}}</span></ion-label>
+            <ion-radio value="{{item.language_code}}"> </ion-radio>
+         </ion-item>
+         </ion-radio-group>
+         <ion-button padding color="{{settings.theme.button}}" expand="block" fill="solid" (click)="applyLanguage()" >{{"Apply" | translate}}</ion-button>
+      </ion-list>
+   </div> -->
+   <div>
+      <ion-list>
+         <ion-item>
+            <img src="{{settings.user.avatar_url}}" alt="">
+         </ion-item>
+         <ion-item>
+            <ion-label color="medium">Nombre</ion-label>
+            <ion-input value="{{settings.user.display_name}}" lines="full">
+            </ion-input>
+         </ion-item>
+         <ion-item>
+            <ion-label color="medium">E-mail</ion-label>
+            <ion-input value="{{settings.user.user_email}}"></ion-input>
+         </ion-item>
+         <ion-item>
+            <ion-label color="medium">Login</ion-label>
+            <ion-input value="{{settings.user.user_login}}"></ion-input>
+         </ion-item>
+         <ion-item>
+            <ion-label color="medium">Nicename</ion-label>
+            <ion-input value="{{settings.user.user_nicename}}"></ion-input>
+         </ion-item>
+         <ion-item>
+            <ion-label color="medium">Nueva Contraseña</ion-label>
+            <ion-input type="password"></ion-input>
+         </ion-item>
+         <ion-item>
+            <ion-label color="medium">Su url</ion-label>
+            <ion-input value="{{settings.user.user_url}}"></ion-input>
+         </ion-item>
+         <ion-button padding color="{{settings.theme.button}}" expand="block" fill="solid" (click)="save()" >{{"Guardar" | translate}}</ion-button>
+      </ion-list>
+   </div>
+</ion-content>

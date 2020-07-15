@@ -7,6 +7,7 @@ import { Data } from '../data';
 import { Settings } from '../data/settings';
 import { HttpParams } from "@angular/common/http";
 import { Product } from '../data/product';
+import { Store } from '../data/store';
 import { TranslateService } from '@ngx-translate/core';
 import { LoginPage } from './../account/login/login.page';
 
@@ -23,15 +24,68 @@ export class CartPage {
     loginForm: any = {};
     errors: any;
     lan: any = {};
-    constructor(public modalController: ModalController, public translate: TranslateService, private alertCtrl: AlertController, public toastController: ToastController, public config: Config, public api: ApiService, public data: Data, public router: Router, public settings: Settings, public loadingController: LoadingController, public navCtrl: NavController, public route: ActivatedRoute, public productData: Product) {}
+    store: any;
+    id: any;
+    constructor(public modalController: ModalController, public translate: TranslateService, private alertCtrl: AlertController, public toastController: ToastController, public config: Config, public api: ApiService, public data: Data, public router: Router, public settings: Settings, public loadingController: LoadingController, public navCtrl: NavController, public route: ActivatedRoute, public productData: Product, public storeData: Store) {}
     ngOnInit() {
-        this.translate.get(['Requested quantity not available'  ]).subscribe(translations => {
-          this.lan.lowQuantity = translations['Requested quantity not available'];
+        console.log(this);
+        this.translate.get(['Cantidad solicitada no disponible'  ]).subscribe(translations => {
+          this.lan.lowQuantity = translations['Cantidad solicitada no disponible'];
         });
+        this.store = this.storeData.store;
+        this.id = this.route.snapshot.paramMap.get('storeId');
     }
     ionViewDidEnter() {
-        this.getCart();
+        this.getStore();
     }
+    getStore() {
+        this.api.postItem('store', {'store_id':this.id}).then(res => {
+            this.store = res;
+        }, err=>{
+            console.error(err);
+        }).then(() => {
+            this.api.postItem('cart', {}, this.store.post_name).then(res => {
+                this.cart = res;
+                this.data.updateCart(this.cart.cart_contents);
+            }, err => {
+                console.log(err);
+            });
+        });
+    }
+    // getCart() {
+    //     this.api.postItem('get_sites_list').then(res => {
+    //         this.multiSite = res;
+    //         if( Array.isArray(this.multiSite) ){
+    //             for (let blog of this.multiSite) {
+    //                 this.api.postItem('cart', {}, blog.path).then(res => {
+    //                     var result: any = res;
+    //                     if ( Object.keys(result.cart_contents).length !== 0 ) {
+    //                         if( Object.keys(this.cart).length==0 ) {
+    //                             this.cart = result;
+    //                         }
+    //                         else {
+    //                             for (let prop in result) {
+    //                                 if ( typeof(result[prop]) != 'string' && result[prop] != null ) {
+    //                                     for ( let i of Object.keys(result[prop]) ) {
+    //                                         if(result[prop][i]!=null && this.cart[prop]!=null)
+    //                                             this.cart[prop][i] = result[prop][i];
+    //                                     }
+    //                                 }
+    //                             }
+    //                         }
+    //                     }
+    //                     if (this.multiSite.indexOf(blog) == this.multiSite.length-1) {
+    //                         this.data.updateCart(this.cart.cart_contents);
+    //                     }
+    //                 }, err => {
+    //                     console.log(err);
+    //                 });
+    //             }
+    //         }
+    //     }, err => {
+    //         console.log(err);
+    //     });
+    // }
     async getCart() {
         await this.api.postItem('cart').then(res => {
             this.cart = res;
@@ -40,9 +94,12 @@ export class CartPage {
             console.log(err);
         });
     }
+    backToStore() {
+        this.navCtrl.navigateForward('/tabs/home/store/' + this.id);
+    }
     checkout() {
         if(this.settings.customer.id || this.settings.settings.disable_guest_checkout == 0) {
-            this.navCtrl.navigateForward('/tabs/cart/address');
+            this.navCtrl.navigateForward('/tabs/cart/address/' + this.store.post_name + '/');
         }
         else this.login();
     }
@@ -51,7 +108,7 @@ export class CartPage {
         this.navCtrl.navigateForward(this.router.url + '/product/' + id);
     }
     async deleteItem(itemKey, qty) {
-        await this.api.postItem('remove_cart_item&item_key=' + itemKey).then(res => {
+        await this.api.postItem('remove_cart_item&item_key=' + itemKey, {}, this.store.post_name).then(res => {
             this.cart = res;
             this.data.updateCart(this.cart.cart_contents);
         }, err => {
@@ -62,7 +119,7 @@ export class CartPage {
         if(coupon)
         await this.api.postItem('apply_coupon', {
             coupon_code: coupon
-        }).then(res => {
+        }, this.store.post_name).then(res => {
             this.couponMessage = res;
             if(this.couponMessage != null && this.couponMessage.notice) {
                 this.presentToast(this.couponMessage.notice)
@@ -75,7 +132,7 @@ export class CartPage {
     async removeCoupon(coupon) {
         await this.api.postItem('remove_coupon', {
             coupon: coupon
-        }).then(res => {
+        }, this.store.post_name).then(res => {
             this.getCart();
         }, err => {
             console.log(err);
@@ -83,8 +140,6 @@ export class CartPage {
     }
 
     async addToCart(id, item){
-        console.log(this.data.cart[id]);
-        console.log(item.value.manage_stock);
         if(item.value.manage_stock && (item.value.stock_quantity <= item.value.quantity)) {
             this.presentToast(this.lan.lowQuantity);
         } else {
@@ -105,7 +160,7 @@ export class CartPage {
             params.quantity = this.data.cartItem[item.key].quantity;
             params.update_cart = 'Update Cart';
             params._wpnonce = this.cart.cart_nonce;
-            await this.api.postItem('update-cart-item-qty', params).then(res => {
+            await this.api.postItem('update-cart-item-qty', params, this.store.post_name).then(res => {
                 this.cart = res;
                 this.data.updateCart(this.cart.cart_contents);
             }, err => {
@@ -134,7 +189,7 @@ export class CartPage {
         params.update_cart = 'Update Cart';
         params._wpnonce = this.cart.cart_nonce;
 
-        await this.api.postItem('update-cart-item-qty', params).then(res => {
+        await this.api.postItem('update-cart-item-qty', params, this.store.post_name).then(res => {
             this.cart = res;
             this.data.updateCart(this.cart.cart_contents);
         }, err => {
@@ -145,7 +200,7 @@ export class CartPage {
     redeem(){
        // wc_points_rewards_apply_discount_amount: 
        // wc_points_rewards_apply_discount: Apply Discount
-        this.api.postItem('ajax_maybe_apply_discount').then(res =>{
+        this.api.postItem('ajax_maybe_apply_discount', {}, this.store.post_name).then(res =>{
             console.log(res);
             this.getCart();
             })
@@ -164,14 +219,13 @@ export class CartPage {
           const { data } = await modal.onWillDismiss();
 
             if(this.settings.customer.id) {
-                this.navCtrl.navigateForward('/tabs/cart/address');
+                this.navCtrl.navigateForward('/tabs/cart/address/' + this.store.post_name + '/');
             }
     }
     async onSubmit(userData) {
         this.loginForm.username = userData.username;
         this.loginForm.password = userData.password;
-        console.log(this.loginForm);
-        await this.api.postItem('login', this.loginForm).then(res => {
+        await this.api.postItem('login', this.loginForm, this.store.post_name).then(res => {
             this.status = res;
             if (this.status.errors != undefined) {
                 this.errors = this.status.errors;
@@ -184,7 +238,7 @@ export class CartPage {
                 if(this.status.allcaps.administrator) {
                     this.settings.administrator = true;
                 }
-                this.navCtrl.navigateForward('/tabs/cart/address');
+                this.navCtrl.navigateForward('/tabs/cart/address/');
             }
         }, err => {
             console.log(err);

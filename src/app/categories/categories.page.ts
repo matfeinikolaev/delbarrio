@@ -12,6 +12,7 @@ import { Settings } from '../data/settings';
 })
 export class CategoriesPage {
     constructor(public api: ApiService, public data: Data, public loadingController: LoadingController, public navCtrl: NavController, public router: Router, public settings: Settings, public route: ActivatedRoute) {}
+    ngOnInit() {console.log(this);}
     getProducts(id) {
         this.navCtrl.navigateForward('/tabs/categories/products/' + id);
     }

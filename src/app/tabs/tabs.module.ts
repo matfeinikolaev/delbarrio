@@ -12,11 +12,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { TabsPage } from './tabs.page';
 import { HomePage } from './../home/home.page';
+import { StoresPage } from './../stores/stores.page';
 import { CartPage } from './../cart/cart.page';
 import { SearchPage } from './../search/search.page';
 import { CategoriesPage } from './../categories/categories.page';
 import { ProductsPage } from './../products/products.page';
 import { ProductPage } from './../product/product.page';
+import { StorePage } from './../store/store.page';
 import { ReviewPage } from './../review/review.page';
 import { PostPage } from './../post/post.page';
 import { ContactPage } from './../contact/contact.page';
@@ -32,6 +34,7 @@ import { ForgottenPage } from './../account/forgotten/forgotten.page';
 import { LoginPage } from './../account/login/login.page';
 
 import { MapPage } from './../account/map/map.page';
+import { MessagingPage } from './../messaging/messaging.page';
 import { OrderPage } from './../account/order/order.page';
 import { OrdersPage } from './../account/orders/orders.page';
 import { PointsPage } from './../account/points/points.page';
@@ -53,7 +56,7 @@ import { CategoryPage } from './../vendor/product-add/category/category.page';
 import { DetailsPage } from './../vendor/product-add/details/details.page';
 import { PhotosPage } from './../vendor/product-add/photos/photos.page';
 import { SubcategoryPage } from './../vendor/product-add/subcategory/subcategory.page';
-
+import { EditSettingsPage } from './../account/edit-settings/edit-settings.page';
 @NgModule({
   imports: [
     IonicModule,
@@ -68,11 +71,13 @@ import { SubcategoryPage } from './../vendor/product-add/subcategory/subcategory
   declarations: [
   TabsPage,
   HomePage,
+  StoresPage,
   CartPage,
   CategoriesPage,
   SearchPage,
   ProductsPage,
   ProductPage,
+  StorePage,
   ReviewPage,
   PostPage,
   ContactPage,
@@ -86,6 +91,7 @@ import { SubcategoryPage } from './../vendor/product-add/subcategory/subcategory
   ForgottenPage,
   LoginPage,
   MapPage,
+  MessagingPage,
   OrderPage,
   OrdersPage,
   PointsPage,
@@ -108,7 +114,7 @@ import { SubcategoryPage } from './../vendor/product-add/subcategory/subcategory
   DetailsPage,
   PhotosPage,
   SubcategoryPage,
-
+  EditSettingsPage,
   ]
 })
 export class TabsPageModule {}

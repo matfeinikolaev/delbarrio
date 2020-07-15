@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { LoadingController, NavController, Platform } from '@ionic/angular';
+import { LoadingController, NavController, Platform, ModalController } from '@ionic/angular';
 import { ApiService } from '../../api.service';
 import { Data } from '../../data';
 import { Settings } from './../../data/settings';
@@ -20,7 +20,7 @@ export class RegisterPage implements OnInit {
     phoneLogingInn: boolean = false;
     userInfo: any;
     phoneVerificationError: any;
-    constructor(public platform: Platform, private oneSignal: OneSignal, public api: ApiService, public data: Data, public loadingController: LoadingController, public settings: Settings, public navCtrl: NavController, private fb: FormBuilder) {
+    constructor(public modalCtrl: ModalController ,public platform: Platform, private oneSignal: OneSignal, public api: ApiService, public data: Data, public loadingController: LoadingController, public settings: Settings, public navCtrl: NavController, private fb: FormBuilder) {
         this.form = this.fb.group({
             first_name: ['', Validators.required],
             last_name: ['', Validators.required],
@@ -103,5 +103,10 @@ export class RegisterPage implements OnInit {
     handlePhoneLoginError(error){
         this.phoneVerificationError = error;
         this.phoneLogingInn = false;
+    }
+    close(status) {
+        this.modalCtrl.dismiss({
+          'loggedIn': status,
+        });
     }
 }

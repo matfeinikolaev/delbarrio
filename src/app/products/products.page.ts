@@ -111,16 +111,16 @@ export class ProductsPage {
         this.getProducts();
         this.getAttributes();
 
-        this.translate.get(['Oops!', 'Please Select', 'Please wait', 'Options', 'Option', 'Select', 'Item added to cart', 'Message', 'Requested quantity not available'  ]).subscribe(translations => {
-          this.lan.oops = translations['Oops!'];
-          this.lan.PleaseSelect = translations['Please Select'];
-          this.lan.Pleasewait = translations['Please wait'];
-          this.lan.options = translations['Options'];
-          this.lan.option = translations['Option'];
-          this.lan.select = translations['Select'];
-          this.lan.addToCart = translations['Item added to cart'];
-          this.lan.message = translations['Message'];
-          this.lan.lowQuantity = translations['Requested quantity not available'];
+        this.translate.get(['Oops!', 'Por favor seleccione', 'Por favor espera', 'Opciones', 'Opción', 'Seleccione', 'Artículo agregado al carrito', 'Mensaje', 'Cantidad solicitada no disponible'  ]).subscribe(translations => {
+            this.lan.oops = translations['Oops!'];
+            this.lan.PleaseSelect = translations['Por favor seleccione'];
+            this.lan.Pleasewait = translations['Por favor espera'];
+            this.lan.options = translations['Opciones'];
+            this.lan.option = translations['Opción'];
+            this.lan.select = translations['Seleccione'];
+            this.lan.addToCart = translations['Artículo agregado al carrito'];
+            this.lan.message = translations['Mensaje'];
+            this.lan.lowQuantity = translations['Cantidad solicitada no disponible'];
         });
     }
     getProduct(product) {

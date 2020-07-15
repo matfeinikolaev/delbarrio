@@ -1,9 +1,9 @@
 <ion-header mode='ios'>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button text="{{'Back' | translate}}" defaultHref="/tabs/cart"></ion-back-button>
+      <ion-back-button text="{{'' | translate}}" style="--color:black; margin-left: 20px;" size="small"defaultHref="/tabs/cart"></ion-back-button>
     </ion-buttons>
-    <ion-title>{{"Address" | translate}}</ion-title>
+    <ion-title>{{"Dirección de envío" | translate}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -15,58 +15,89 @@
 <ion-list no-margin>
 
   <ion-list-header>
-    <ion-label>{{"Billing Address" | translate}}</ion-label>
+    <ion-label>{{"Dirección de Envio" | translate}}</ion-label>
   </ion-list-header>
 
         <ion-item lines="full">
-            <ion-label position="stacked">{{"First Name" | translate}}</ion-label>
+            <ion-label position="stacked" color="medium" style="font-size: small;">{{"NOMBRE" | translate}}</ion-label>
             <ion-input required type="text" [(ngModel)]="checkoutData.form.billing_first_name" name="firstname"> </ion-input>
         </ion-item>
         <ion-item lines="full">
-            <ion-label position="stacked">{{"Last Name" | translate}}</ion-label>
+            <ion-label position="stacked" color="medium" style="font-size: small;">{{"APELLIDOS" | translate}}</ion-label>
             <ion-input required type="text" [(ngModel)]="checkoutData.form.billing_last_name" name="lastname"> </ion-input>
         </ion-item>
         <ion-item lines="full">
-            <ion-label position="stacked">{{"Phone" | translate}}</ion-label>
+            <ion-label position="stacked" color="medium" style="font-size: small;">{{"TELEFONO" | translate}}</ion-label>
             <ion-input required type="text" [(ngModel)]="checkoutData.form.billing_phone" name="telephone"> </ion-input>
         </ion-item>
         <ion-item lines="full">
-            <ion-label position="stacked">{{"Company" | translate}}</ion-label>
+            <ion-label position="stacked" color="medium" style="font-size: small;">{{"EMPRESA" | translate}}</ion-label>
             <ion-input required type="text" [(ngModel)]="checkoutData.form.billing_company" name="company"> </ion-input>
         </ion-item>
         <ion-item lines="full">
-            <ion-label position="stacked">{{"Street Address" | translate}}</ion-label>
-            <ion-input required type="text" [(ngModel)]="checkoutData.form.billing_address_1" name="street1"> </ion-input>
-        </ion-item>
-        <ion-item lines="full">
-            <ion-label position="stacked">{{"Street Address" | translate}} 2</ion-label>
-            <ion-input required type="text" [(ngModel)]="checkoutData.form.billing_address_2" name="street2"> </ion-input>
-        </ion-item>
-        <ion-item lines="full">
-            <ion-label position="stacked">{{"Email" | translate}}</ion-label>
-            <ion-input required type="email" [(ngModel)]="checkoutData.form.billing_email" name="email"> </ion-input>
-        </ion-item>
-        <ion-item lines="full">
-            <ion-label position="stacked">{{"City" | translate}}</ion-label>
-            <ion-input required type="text" [(ngModel)]="checkoutData.form.billing_city" name="city"> </ion-input>
-        </ion-item>
+            <ion-label position="stacked" color="medium" style="font-size: small;">{{"CÉDULA O RUC" | translate}}</ion-label>
+            <ion-input required type="text" [(ngModel)]="checkoutData.form.billing_wcccf_id_VZZ2HaJv5Ai44kg" name="billing_wcccf_id_VZZ2HaJv5Ai44kg" placeholder="#"> </ion-input>
+        </ion-item>        
         
         <ion-item lines="full">
-            <ion-label position="stacked">{{"Postcode" | translate}}</ion-label>
-            <ion-input required type="text" [(ngModel)]="checkoutData.form.billing_postcode" name="postcode"> </ion-input>
+            <ion-label position="stacked" color="medium" style="font-size: small;">{{"EMAIL" | translate}}</ion-label>
+            <ion-input required type="email" [(ngModel)]="checkoutData.form.billing_email" name="email"> </ion-input>
         </ion-item>
 
+        <ion-item lines="full">
+            <ion-label position="stacked" color="medium" style="font-size: small;">{{"DÍA DE ENTREGA" | translate}}</ion-label>
+            <ion-datetime displayFormat="DD/MM/YYYY" required [(ngModel)]="checkoutData.form.delivery_date" name="delivery_date"> </ion-datetime>
+        </ion-item>
+
+        <ion-item lines="full">
+            <ion-label position="stacked" color="medium" style="font-size: small;">{{"HORA DE ENTREGA" | translate}}</ion-label>
+            <ion-input required type="time" [(ngModel)]="checkoutData.form.delivery_time" name="delivery_time"> </ion-input>
+        </ion-item>
+
+
         <ion-item lines="full" *ngIf="checkoutData.form?.countries && checkoutData.form?.countries.length > 1">
-            <ion-label>{{"Country" | translate}}</ion-label>
+            <ion-label color="medium" style="font-size: small;">{{"PAÍS" | translate}}</ion-label>
             <ion-select [(ngModel)]="checkoutData.form.billing_country" (ngModelChange)="getBillingRegion()" name="billing_country">
                 <div *ngFor="let field of checkoutData.form.countries">
                     <ion-select-option value="{{field.value}}"><span [innerHTML]="field.label"></span> </ion-select-option>
                 </div>
             </ion-select>
         </ion-item>
+        <ion-item lines="full">
+            <ion-label position="stacked" color="medium" style="font-size: small;">{{"CIUDAD" | translate}}</ion-label>
+            <ion-input required type="text" (ionInput)="getCity()" [(ngModel)]="checkoutData.form.billing_city" name="city"> </ion-input>
+        </ion-item>
+        <ion-list [hidden]="!autocompleteItemsCity || autocompleteItemsCity.length == 0">
+            <ion-item *ngFor="let item of autocompleteItemsCity" tappable (click)="selectSearchResult(item, 'billing_city')">
+              {{ item.description }}
+            </ion-item>
+        </ion-list>
+        <ion-item lines="full">
+            <ion-label position="stacked" color="medium" style="font-size: small;">{{"DIRECCIÓN" | translate}}</ion-label>
+            <ion-input required type="text" (ionInput)="getFirstAddress()" [(ngModel)]="checkoutData.form.billing_address_1" name="street1" id="address1"> </ion-input>
+        </ion-item>
+        <ion-list [hidden]="!autocompleteItemsFirst || autocompleteItemsFirst.length == 0">
+            <ion-item *ngFor="let item of autocompleteItemsFirst" tappable (click)="selectSearchResult(item, 'billing_address_1')">
+              {{ item.description }}
+            </ion-item>
+        </ion-list>
+        <ion-item lines="full">
+            <ion-label position="stacked" color="medium" style="font-size: small;">{{"DIRECCIÓN" | translate}} 2</ion-label>
+            <ion-input required type="text" (ionInput)="getSecondAddress()" [(ngModel)]="checkoutData.form.billing_address_2" name="street2" id="address2"> </ion-input>
+        </ion-item>
+        <ion-list [hidden]="!autocompleteItemsSecond || autocompleteItemsSecond.length == 0">
+            <ion-item *ngFor="let item of autocompleteItemsSecond" tappable (click)="selectSearchResult(item, 'billing_address_2')">
+              {{ item.description }}
+            </ion-item>
+        </ion-list>
+
+        <ion-item lines="full">
+            <ion-label position="stacked" color="medium" style="font-size: small;">{{"CÓDIGO POSTAL" | translate}}</ion-label>
+            <ion-input required type="text" [(ngModel)]="checkoutData.form.billing_postcode" name="postcode"> </ion-input>
+        </ion-item>
 
         <ion-item lines="full" *ngIf="checkoutData.billingStates?.regions.length">
-            <ion-label>{{"State" | translate}}</ion-label>
+            <ion-label color="medium" style="font-size: small;">{{"REGIÓN/PROVINCIA" | translate}}</ion-label>
             <ion-select [(ngModel)]="checkoutData.form.billing_state" name="billing_state">
                 <div *ngFor="let field of checkoutData.billingStates.regions">
                     <ion-select-option value="{{field.value}}"><span [innerHTML]="field.label"></span></ion-select-option>
@@ -75,9 +106,14 @@
         </ion-item>
 
         <ion-item lines="full" *ngIf="!checkoutData.billingStates?.regions.length">
-            <ion-label position="stacked">{{"State" | translate}}</ion-label>
-            <ion-input required type="text" [(ngModel)]="checkoutData.form.billing_state" name="billing_state"> </ion-input>
+            <ion-label position="stacked" color="medium" style="font-size: small;">{{"REGIÓN/PROVINCIA" | translate}}</ion-label>
+            <ion-input required type="text" (ionInput)="getRegion()" [(ngModel)]="checkoutData.form.billing_state" name="billing_state"> </ion-input>
         </ion-item>
+        <ion-list [hidden]="!autocompleteItemsRegion || autocompleteItemsRegion.length == 0">
+            <ion-item *ngFor="let item of autocompleteItemsRegion" tappable (click)="selectSearchResult(item, 'billing_state')">
+              {{ item.description }}
+            </ion-item>
+        </ion-list>
 
         <!-- UnComment for Delivery Date time Customization -->
         <!--ion-item lines="full" *ngIf="mydate">
@@ -102,7 +138,7 @@
 
 
         <ion-item lines="full">
-            <ion-label>{{"Ship to different address" | translate}}</ion-label>
+            <ion-label color="medium" style="font-size: small;">{{"Enviar a una dirección diferente" | translate}}</ion-label>
             <ion-toggle color="{{settings.theme.button}}" [(ngModel)]="checkoutData.form.ship_to_different_address"></ion-toggle>
         </ion-item>
 
@@ -112,50 +148,65 @@
 <ion-list no-margin *ngIf="checkoutData.form.ship_to_different_address">
 
   <ion-list-header>
-    <ion-label>{{"Shipping Address" | translate}}</ion-label>
+    <ion-label>{{"DIRECCIÓN DE ENVÍO" | translate}}</ion-label>
   </ion-list-header>
 
         <ion-item lines="full">
-            <ion-label position="stacked">{{"First Name" | translate}}</ion-label>
+            <ion-label position="stacked" color="medium" style="font-size: small;">{{"NOMBRE" | translate}}</ion-label>
             <ion-input required type="text" [(ngModel)]="checkoutData.form.shipping_first_name" name="firstname"> </ion-input>
         </ion-item>
         <ion-item lines="full">
-            <ion-label position="stacked">{{"Last Name" | translate}}</ion-label>
+            <ion-label position="stacked" color="medium" style="font-size: small;">{{"APELLIDOS" | translate}}</ion-label>
             <ion-input required type="text" [(ngModel)]="checkoutData.form.shipping_last_name" name="lastname"> </ion-input>
         </ion-item>
         <ion-item lines="full">
-            <ion-label position="stacked">{{"Company" | translate}}</ion-label>
+            <ion-label position="stacked" color="medium" style="font-size: small;">{{"EMPRESA" | translate}}</ion-label>
             <ion-input required type="text" [(ngModel)]="checkoutData.form.shipping_company" name="company"> </ion-input>
-        </ion-item>
-        <ion-item lines="full">
-            <ion-label position="stacked">{{"Street Address" | translate}}</ion-label>
-            <ion-input required type="text" [(ngModel)]="checkoutData.form.shipping_address_1" name="street1"> </ion-input>
-        </ion-item>
-        <ion-item lines="full">
-            <ion-label position="stacked">{{"Street Address" | translate}} 2</ion-label>
-            <ion-input required type="text" [(ngModel)]="checkoutData.form.shipping_address_2" name="street2"> </ion-input>
-        </ion-item>
-        <ion-item lines="full">
-            <ion-label position="stacked">{{"City" | translate}}</ion-label>
-            <ion-input required type="text" [(ngModel)]="checkoutData.form.shipping_city" name="city"> </ion-input>
-        </ion-item>
-        
-        <ion-item lines="full">
-            <ion-label position="stacked">{{"Postcode" | translate}}</ion-label>
-            <ion-input required type="number" [(ngModel)]="checkoutData.form.shipping_postcode" name="postcode"> </ion-input>
         </ion-item>
 
         <ion-item lines="full" *ngIf="checkoutData.form?.countries && checkoutData.form?.countries.length > 1">
-            <ion-label>{{"Country" | translate}}</ion-label>
-            <ion-select [(ngModel)]="checkoutData.form.shipping_country" (ngModelChange)="getShippingRegion()" name="shipping_country">
+            <ion-label color="medium" style="font-size: small;">{{"PAÍS" | translate}}</ion-label>
+            <ion-select [(ngModel)]="checkoutData.form.shipping_country" (ngModelChange)="getBillingRegion()" name="shipping_country">
                 <div *ngFor="let field of checkoutData.form.countries">
                     <ion-select-option value="{{field.value}}"><span [innerHTML]="field.label"></span> </ion-select-option>
                 </div>
             </ion-select>
         </ion-item>
+        <ion-item lines="full">
+            <ion-label position="stacked" color="medium" style="font-size: small;">{{"CIUDAD" | translate}}</ion-label>
+            <ion-input required type="text" (ionInput)="getCityShip()" [(ngModel)]="checkoutData.form.shipping_city" name="city"> </ion-input>
+        </ion-item>
+        <ion-list [hidden]="!autocompleteItemsShipCity || autocompleteItemsShipCity.length == 0">
+            <ion-item *ngFor="let item of autocompleteItemsShipCity" tappable (click)="selectSearchResult(item, 'shipping_city')">
+              {{ item.description }}
+            </ion-item>
+        </ion-list>
+        <ion-item lines="full">
+            <ion-label position="stacked" color="medium" style="font-size: small;">{{"DIRECCIÓN" | translate}}</ion-label>
+            <ion-input required type="text" (ionInput)="getFirstAddressShip()" [(ngModel)]="checkoutData.form.shipping_address_1" name="street1" id="address1"> </ion-input>
+        </ion-item>
+        <ion-list [hidden]="!autocompleteItemsShipFirst || autocompleteItemsShipFirst.length == 0">
+            <ion-item *ngFor="let item of autocompleteItemsShipFirst" tappable (click)="selectSearchResult(item, 'shipping_address_1')">
+              {{ item.description }}
+            </ion-item>
+        </ion-list>
+        <ion-item lines="full">
+            <ion-label position="stacked" color="medium" style="font-size: small;">{{"DIRECCIÓN" | translate}} 2</ion-label>
+            <ion-input required type="text" (ionInput)="getSecondAddressShip()" [(ngModel)]="checkoutData.form.shipping_address_2" name="street2" id="address2"> </ion-input>
+        </ion-item>
+        <ion-list [hidden]="!autocompleteItemsShipSecond || autocompleteItemsShipSecond.length == 0">
+            <ion-item *ngFor="let item of autocompleteItemsShipSecond" tappable (click)="selectSearchResult(item, 'shipping_address_2')">
+              {{ item.description }}
+            </ion-item>
+        </ion-list>
+
+        <ion-item lines="full">
+            <ion-label position="stacked" color="medium" style="font-size: small;">{{"CÓDIGO POSTAL" | translate}}</ion-label>
+            <ion-input required type="text" [(ngModel)]="checkoutData.form.shipping_postcode" name="postcode"> </ion-input>
+        </ion-item>
 
         <ion-item lines="full" *ngIf="checkoutData.shippingStates?.regions.length">
-            <ion-label>{{"State" | translate}}</ion-label>
+            <ion-label color="medium" style="font-size: small;">{{"REGIÓN/PROVINCIA" | translate}}</ion-label>
             <ion-select [(ngModel)]="checkoutData.form.shipping_state" name="shipping_state">
                 <div *ngFor="let field of checkoutData.shippingStates.regions">
                     <ion-select-option value="{{field.value}}"><span [innerHTML]="field.label"></span></ion-select-option>
@@ -164,10 +215,14 @@
         </ion-item>
 
         <ion-item lines="full" *ngIf="!checkoutData.shippingStates?.regions.length">
-            <ion-label position="stacked">{{"State" | translate}}</ion-label>
-            <ion-input required type="text" [(ngModel)]="checkoutData.form.shipping_state" name="shipping_state"> </ion-input>
+            <ion-label position="stacked" color="medium" style="font-size: small;">{{"REGIÓN/PROVINCIA" | translate}}</ion-label>
+            <ion-input required type="text" (ionInput)="getRegionShip()" [(ngModel)]="checkoutData.form.shipping_state" name="shipping_state"> </ion-input>
         </ion-item>
-
+        <ion-list [hidden]="!autocompleteItemsShipRegion || autocompleteItemsShipRegion.length == 0">
+            <ion-item *ngFor="let item of autocompleteItemsShipRegion" tappable (click)="selectSearchResult(item, 'shipping_state')">
+              {{ item.description }}
+            </ion-item>
+        </ion-list>
 
         <!--ion-item *ngIf="countries?.options">
             <ion-label>{{"Country" | translate}}</ion-label>
@@ -201,7 +256,7 @@
   <h2 [innerHTML]="errorMessage" style="font-size: 14px;  color: red;margin: 16px; text-align: center;"></h2>
 </div>
 <div class="submit-button">
-<ion-button color="{{settings.theme.button}}" expand="block" fill="solid" (click)="continueCheckout()">{{"Continue" | translate}}</ion-button>
+<ion-button color="{{settings.theme.button}}" expand="block" fill="solid" (click)="continueCheckout()">{{"Continuar" | translate}}</ion-button>
 </div>
 </div>
 </ion-content>

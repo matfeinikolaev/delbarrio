@@ -21,6 +21,7 @@ export class Settings implements OnInit {
 
     //all
     lan: any = {};
+    locale: any = {};
     languages: any = [];//[{"code":"en","id":"1","native_name":"English","major":"1","active":"1","default_locale":"en_US","encode_url":"0","tag":"en","translated_name":"English","url":"https://morslon.com/","country_flag_url":"https://morslon.com/wp-content/plugins/sitepress-multilingual-cms/res/flags/en.png","language_code":"en"},{"code":"ar","id":"5","native_name":"العربية","major":"0","active":0,"default_locale":"ar","encode_url":"0","tag":"ar","translated_name":"Arabic","url":"https://morslon.com/?lang=ar","country_flag_url":"https://morslon.com/wp-content/plugins/sitepress-multilingual-cms/res/flags/ar.png","language_code":"ar"}];
     currencies: any = [];//[{"languages":{"ar":1,"en":1},"rate":0,"position":"left_space","thousand_sep":",","decimal_sep":".","num_decimals":"3","rounding":"disabled","rounding_increment":1,"auto_subtract":0,"code":"BHD"},{"languages":{"ar":1,"en":1},"rate":"10","updated":"2019-11-30 18:43:43","position":"left","thousand_sep":",","decimal_sep":".","num_decimals":"3","rounding":"disabled","rounding_increment":1,"auto_subtract":0,"previous_rate":"0.0001","code":"SAR"},{"languages":{"ar":1,"en":1},"rate":"11","updated":"2019-11-30 18:18:05","position":"left","thousand_sep":",","decimal_sep":".","num_decimals":2,"rounding":"disabled","rounding_increment":1,"auto_subtract":0,"previous_rate":0,"code":"AED"}];
     pages: any = [];
@@ -51,7 +52,9 @@ export class Settings implements OnInit {
         suCatBorderRadius: 0
     };
     settings: any = {};
-
+    add_wishlist:any = [];
+    remove_wishlist:any; 
+    store_wishlist: any = [];
     constructor(public translate: TranslateService, public api: ApiService, public toastController: ToastController) {
         this.customer.billing = {};
         this.customer.shipping = {};
@@ -60,16 +63,20 @@ export class Settings implements OnInit {
         this.theme.button = 'danger';
     }
     ngOnInit() {}
-    async addToWishlist(id) {
+    async addToWishlist(id, path) {
         if(this.customer.id){
             this.wishlist[id] = true;
             await this.api.postItem('add_wishlist', {
-                product_id: id
-            }).then(res => {
+                product_id: id,
+                store_path: path,
+            }, path).then(res => {
+                this.add_wishlist = res;
                 this.wishlist = [];
-                for (let item in res) {
-                    this.wishlist[res[item].id] = res[item].id;
+                for (let item in this.add_wishlist) {
+                    this.wishlist[this.add_wishlist [item].id] = this.add_wishlist [item].id;
                 }
+
+                this.store_wishlist.push(path);
             }, err => {
                 console.log(err);
             });
@@ -78,7 +85,7 @@ export class Settings implements OnInit {
         }
     }
     async presentToast(message) {
-        this.translate.get('Please login to add items to the wishlist').subscribe(translations => {
+        this.translate.get('Inicie sesión para agregar elementos a la lista de deseos').subscribe(translations => {
             this.lan.login = translations;
         });
         const toast = await this.toastController.create({
@@ -87,15 +94,17 @@ export class Settings implements OnInit {
         });
         toast.present();
     }
-    async removeFromWishlist(id) {
+    async removeFromWishlist(id, path) {
         this.wishlist[id] = false;
         if(this.customer.id){
             await this.api.postItem('remove_wishlist', {
-                product_id: id
-            }).then(res => {
+                product_id: id,
+                store_path: path,
+            }, path).then(res => {
+                this.remove_wishlist=res;
                 this.wishlist = [];
-                for (let item in res) {
-                    this.wishlist[res[item].id] = res[item].id;
+                for (let item in this.remove_wishlist) {
+                    this.wishlist[this.remove_wishlist[item].id] = this.remove_wishlist[item].id;
                 }
             }, err => {
                 console.log(err);

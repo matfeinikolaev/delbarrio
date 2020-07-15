@@ -5,9 +5,9 @@ import { ApiService } from '../../api.service';
 import { Settings } from './../../data/settings';
 import { FormBuilder, Validators } from '@angular/forms';
 import { OneSignal } from '@ionic-native/onesignal/ngx';
+import { ForgottenPage } from './../forgotten/forgotten.page';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook/ngx';
-import { ForgottenPage } from './../forgotten/forgotten.page';
 
 @Component({
     selector: 'app-login',
@@ -17,6 +17,8 @@ import { ForgottenPage } from './../forgotten/forgotten.page';
 export class LoginPage implements OnInit {
     @ViewChild('mySlider', {static: false})  slides: IonSlides;
     slideOpts = { autoplay: false, loop: false, lazy: true };
+    icons: any = new Array(60);
+    segment: any = 'login';
     form: any;
     formRegister: any;
     loginTab: boolean = true;
@@ -101,7 +103,7 @@ export class LoginPage implements OnInit {
           });
           modal.present();
           const { data } = await modal.onWillDismiss();
-        //this.navCtrl.navigateForward('/tabs/account/login/forgotten');
+        //this.navCtrl.navigateForward('/app/tabs/account/login/forgotten');
     }
     googleLogin(){
         this.googleLogingInn = true;
@@ -146,6 +148,7 @@ export class LoginPage implements OnInit {
             this.googleLogingInn = false;
         })
         .catch(err => {
+            console.log(err);
             this.googleStatus = err;
             this.googleLogingInn = false;
             this.dismissLoading();
@@ -273,7 +276,7 @@ export class LoginPage implements OnInit {
     }
     async presentLoading() {
         this.loading = await this.loadingController.create({
-          message: 'Please wait...',
+          message: 'Por favor espera...',
           duration: 2000
         });
         this.loading.present();
@@ -282,5 +285,8 @@ export class LoginPage implements OnInit {
         if(this.loading) {
             this.loading.dismiss();
         }
+    }
+    segmentChanged(event) {
+      this.segment = event.detail.value;
     }
 }

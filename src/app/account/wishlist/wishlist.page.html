@@ -1,9 +1,9 @@
 <ion-header mode="ios">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button text="{{'Back' | translate}}" defaultHref="/tabs/account"></ion-back-button>
+      <ion-back-button text="{{'Atrás' | translate}}" defaultHref="/tabs/account"></ion-back-button>
     </ion-buttons>
-    <ion-title>{{"Wishlist" | translate}}</ion-title>
+    <ion-title>{{"Lista de deseos" | translate}}</ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content class="wishlist">
@@ -15,6 +15,13 @@
 </div>
 
 <div *ngIf="settings.customer?.id">
+
+    <div *ngIf="multisite_wishlist?.length">
+        <div *ngFor="let store of multisite_wishlist">
+            <!-- {{store}} -->
+        </div>
+    </div>
+
     <div *ngIf="wishlist">
         <div *ngIf="!wishlist.length" text-center class="empty">
             <ion-icon name="heart-outline"></ion-icon>

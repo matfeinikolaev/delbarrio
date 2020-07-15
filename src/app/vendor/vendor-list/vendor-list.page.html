@@ -1,74 +1,39 @@
-<ion-header mode='ios'>
+<ion-header mode="ios">
   <ion-toolbar>
-    <ion-title>
-      {{"Vendors" | translate}}
-    </ion-title>
+  	<ion-buttons slot="start">
+      <ion-back-button defaultHref="{{'/tabs/home'}}"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{"Store" | translate}}</ion-title>
+    <!--ion-buttons slot="end">
+    <ion-button routerDirection="forward" [routerLink]="['/search']">
+      <ion-icon color="medium" slot="icon-only" name="search-outline"></ion-icon>
+    </ion-button>
+    </ion-buttons-->
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="vendor-list">
+<ion-content>
 	<div class="spinner" *ngIf="!vendors"><ion-spinner> </ion-spinner></div>
+	<div *ngIf="vendors?.length" class="vendors">
+		<ion-item *ngFor="let item of vendors" button="true" (click)="detail(item)" mode="md" button="true" lines="none" detail="false" disabled="{{isClosed(item)}}">
+			<ion-thumbnail slot="start">
+			  <img *ngIf="item.icon" src="{{item.icon}}">
+			  <ion-button color="danger" class="close-label" *ngIf="isClosed(item)" color="danger">{{"CLOSED" | translate}}</ion-button>
+			</ion-thumbnail>
+			<ion-label>
+			  <span class="product-name">{{ item.name }}</span>
+		  		<p *ngIf="item.description" class="product-description" [innerHTML]="item.description"></p>
+		  		<p *ngIf="api.userLocation.latitude" class="product-description info">{{distance(item)}} kms <span style="padding-right: 10px; padding-left: 10px">{{drivingTime(item)}} min delivery</span></p>
+			</ion-label>
+		</ion-item>
+	</div>
 
-	<!-- Common -->
-	<ion-row *ngIf="vendors?.length">
-	    <ion-col size="4" size-sm="4" size-md="3" *ngFor="let item of vendors" (click)="getDetail(item)">
-	    <ion-card class="category-card" mode="{{settings.settings.mode}}" class="ion-activatable ion-focusable hydrated {{settings.settings.product_shadow}}">
-	      <ion-img *ngIf="item.icon" src="{{item.icon}}"></ion-img>
-	      <ion-card-header>
-	        <ion-card-title>{{item.name}}</ion-card-title>
-	      </ion-card-header>
-	    </ion-card>
-	    </ion-col>
-  	</ion-row>
-	<!-- Common -->
-
-	<!-- WC Marketplace -->
-	<!--ion-row *ngIf="!vendors?.length">
-	    <ion-col size="4" size-sm="4" size-md="3" *ngFor="let item of vendors" (click)="getDetail(item)">
-	    <ion-card class="category-card" mode="md" class="ion-activatable ion-focusable hydrated">
-	      <ion-img *ngIf="item.shop?.logo" src="{{item.shop?.logo}}"></ion-img>
-	      <ion-card-header>
-	        <ion-card-title>{{item.shop.title}}</ion-card-title>
-	      </ion-card-header>
-	    </ion-card>
-	    </ion-col>
-  	</ion-row-->
-	<!-- WC Marketplace -->
-
-	<!--DOKAN-->
-	<!--ion-row>
-	    <ion-col size="4" size-sm="4" size-md="3" *ngFor="let item of vendors" (click)="getDetail(item)">
-	    <ion-card class="category-card" mode="md" class="ion-activatable ion-focusable hydrated">
-	      <ion-img *ngIf="item.logo" src="{{item.logo}}"></ion-img>
-	      <ion-img *ngIf="!item.logo" src="assets/image/logo.png"></ion-img>
-	      <ion-card-header>
-	        <ion-card-title>{{item.store_name}}</ion-card-title>
-	      </ion-card-header>
-	    </ion-card>
-	    </ion-col>
-  	</ion-row-->
-	<!--DOKAN-->
-
-	<!-- WCFM -->
-	<!--ion-row>
-	    <ion-col size="4" size-sm="4" size-md="3" *ngFor="let item of vendors" (click)="getDetail(item)">
-	    <ion-card class="category-card" mode="md" class="ion-activatable ion-focusable hydrated">
-	      <ion-img *ngIf="item?.banner" src="{{item?.banner}}"></ion-img>
-	      <ion-card-header>
-	        <ion-card-title>{{item.store_info.store_name}}</ion-card-title>
-	      </ion-card-header>
-	    </ion-card>
-	    </ion-col>
-  	</ion-row-->
-	<!-- WCFM -->
-
-
-	<ion-infinite-scroll threshold="100px" *ngIf="hasMoreItems && vendors?.length" (ionInfinite)="loadData($event)">
+	<ion-infinite-scroll threshold="100px" *ngIf="hasMoreItems && vendors?.length" (ionInfinite)="getMoreVendors($event)">
     <ion-infinite-scroll-content
       loadingSpinner="bubbles"
       loadingText="Loading more data...">
     </ion-infinite-scroll-content>
 	</ion-infinite-scroll>
 
-
 </ion-content>
+

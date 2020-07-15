@@ -4,7 +4,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../../api.service';
 import { Settings } from './../../data/settings';
 import { Product } from './../../data/product';
-
 @Component({
     selector: 'app-wishlist',
     templateUrl: './wishlist.page.html',
@@ -12,12 +11,23 @@ import { Product } from './../../data/product';
 })
 export class WishlistPage implements OnInit {
     wishlist: any = [];
+    multisite_wishlist: any = [];
     constructor(public api: ApiService, public router: Router, public settings: Settings, public loadingController: LoadingController, public navCtrl: NavController, public route: ActivatedRoute, public productData: Product) {}
     ngOnInit() {
     }
 
     ionViewDidEnter() {
         if(this.settings.customer.id){
+            /* HERE WE GET ALL THE STORES */
+            this.api.postItem('get_multisite_wishlist').then(res=>{
+                var result: any = res;
+                for ( let i in result ) {
+                    this.multisite_wishlist.push(result[i]);
+                }
+                console.log(this);
+            },err=>{
+                console.error(err);
+            });
             this.getWishlist();
         }
     }

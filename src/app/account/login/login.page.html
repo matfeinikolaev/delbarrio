@@ -1,47 +1,51 @@
-<ion-header mode="ios" mode='ios'>
+<ion-header mode="ios">
   <ion-toolbar>
-    <ion-buttons slot="start" (click)="close(false)">
-      <ion-back-button defaultHref="{{'/'+path}}"></ion-back-button>
+  <ion-buttons slot="start" (click)="close(false)">
+      <ion-back-button text="{{'' | translate}}" style="--color:black; margin-left: 20px;" size="small" defaultHref="/tabs/account"></ion-back-button>
     </ion-buttons>
-    <ion-title>{{"Login" | translate}}</ion-title>
+    <ion-title>{{"LOGIN" | translate}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content fullscreen="true">
+    <div class="logo-block" style="text-align: center;">
+    <!-- <ion-grid>
+      <ion-row class="ion-align-items-center">
+      <ion-col *ngFor="let item of icons; let i = index" size="2" size-md="2" class="ion-align-self-center">
+        <ion-icon *ngIf="i % 2" name="heart-outline"></ion-icon>
+        <ion-icon *ngIf="!(i % 2)" name="star-outline"></ion-icon>
+      </ion-col>
+      </ion-row>
+      <img class="logo" src="assets/image/logo.png">
+    </ion-grid> -->
+    <img src="assets/image/logo.png" style="height:175px">
+    </div>
+    <ion-segment scrollable="true" mode="md" color="secondary" value="{{segment}}" (ionChange)="segmentChanged($event)">
+      <ion-segment-button color="secondary" value="login">
+        <ion-label>{{"Login"| translate}}</ion-label>
+      </ion-segment-button>
+      <ion-segment-button color="secondary" value="register">
+        <ion-label>{{"Registrar"| translate}}</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+
     <div class="login1">
       <ion-card mode="{{settings.settings.mode}}">
-      <div class="form" *ngIf="loginTab">
-            <p><ion-text color="medium">-- {{"continue with" | translate}} --</ion-text></p>
-            <ion-grid>
-            <ion-row>
-            <ion-col size="6">
-            <ion-button expand="block" shape="undefined" mode="ios" fill="solid" color="google" (click)="googleLogin()" [disabled]="googleLogingInn">
-            <ion-icon slot="start" name="logo-google"></ion-icon>{{"Google"| translate}}</ion-button>
-            <br/>
-            </ion-col>
-            <ion-col size="6">
-            <ion-button expand="block" shape="undefined" mode="ios" fill="solid" color="facebook" (click)="facebookLogin()" [disabled]="facebookLogingInn">
-            <ion-icon slot="start" name="logo-facebook"></ion-icon>{{"Facebook"| translate}}</ion-button>
-            </ion-col>
-            </ion-row>
-            </ion-grid>
-            <p><ion-text color="medium">-- {{"or use email address" | translate}} --</ion-text></p>
+      <div class="form" *ngIf="segment == 'login'">
             <ion-list>
             <form [formGroup]="form">
               <ion-item mode="md">
               <ion-icon slot="start" name="person" mode="md"></ion-icon>
-              <ion-input type="text" formControlName="username" placeholder="Email/Username"></ion-input>
+              <ion-input type="text" formControlName="username" placeholder="{{'Email/Nombre de usario' | translate}}"></ion-input>
               </ion-item>
               <ion-item mode="md">
-              <ion-icon slot="start" name="key" mode="md"></ion-icon>
-              <ion-input type="password" formControlName="password" placeholder="Password"></ion-input>
+              <ion-icon slot="start" name="eye" mode="md"></ion-icon>
+              <ion-input type="password" formControlName="password" placeholder="{{'Contraseña' | translate}}"></ion-input>
               </ion-item>
              </form>
             </ion-list>
-            <ion-button shape="undefined" fill="solid" color="{{settings.theme.button}}" expand="block" [disabled]="disableSubmit" (click)="onSubmit()">{{"Login"| translate}}</ion-button>
-            <ion-button color="{{settings.theme.button}}" expand="full" fill="clear" (click)="forgotton()">{{"Forgot Password"| translate}}?</ion-button>
-            <br/>
-            <ion-button color="{{settings.theme.button}}" expand="full" fill="clear" (click)="loginTab = !loginTab">{{"Register"| translate}}</ion-button>
+            <ion-button fill="solid" mode="md" color="{{settings.theme.button}}" expand="full" [disabled]="disableSubmit" (click)="onSubmit()">{{"Login"| translate}}</ion-button>
+            <ion-button style="margin-top: 0px;" color="dark" expand="full" fill="clear" (click)="forgotton()">{{"Se te olvidó tu contraseña"| translate}}?</ion-button>
             <div class="errors" *ngIf="errors">
               <div *ngFor="let error of errors | keys" style="text-align: center; padding-top: 10px;">
                 <ion-label color="danger" [innerHTML]="error.value"></ion-label>
@@ -51,38 +55,71 @@
 
 
 
-  <div class="form" *ngIf="!loginTab">
-  <ion-list>
-    <form [formGroup]="formRegister">
-    <ion-item lines="full">
-    <ion-input required type="text" formControlName="first_name" placeholder="First Name"></ion-input>
-    </ion-item>
-    <ion-item lines="full">
-    <ion-input required type="text" formControlName="last_name" placeholder="Last Name"></ion-input>
-    </ion-item>
-    <ion-item lines="full">
-    <ion-input required type="text" formControlName="phone" placeholder="Phone"></ion-input>
-    </ion-item>
-    <ion-item lines="full">
-    <ion-input required type="email" formControlName="email" placeholder="Email"></ion-input>
-    </ion-item>
-    <ion-item lines="full">
-    <ion-input required type="password" formControlName="password" placeholder="Password"></ion-input>
-    </ion-item>
-  </form>
-  </ion-list>
-   <ion-button color="{{settings.theme.button}}" expand="block" fill="solid" [disabled]="!formRegister.valid || disableSubmit" (click)="onRegister()">{{"Register" | translate}}</ion-button>
-    <br/>
-   <ion-button color="{{settings.theme.button}}" expand="full" fill="clear" (click)="loginTab = !loginTab">{{"Login"| translate}}</ion-button>
-  <div class="errors" *ngIf="errorsRegister">
-    <div *ngFor="let error of errorsRegister | keys" style="text-align: center; padding-top: 20px;">
-      <ion-label color="danger" class="error" [innerHTML]="error.value"></ion-label>
-    </div>
-   </div>
-  </div>
+      <div class="form" *ngIf="segment == 'register'">
+        <ion-list>
+          <form [formGroup]="formRegister">
+            
+          <ion-label for="first_name" mode="ios" color="medium" style="font-size: small;">NOMBRE</ion-label>
+          <ion-item style="margin: 0 0 15px 0">
+          <ion-input required type="text" formControlName="first_name"></ion-input>
+          </ion-item>
+          <ion-label for="last_name" mode="ios" color="medium" style="font-size: small;">APELLIDOS</ion-label>
+          <ion-item style="margin: 0 0 15px 0">
+          <ion-input required type="text" formControlName="last_name"></ion-input>
+          </ion-item>
+          <ion-label for="phone" mode="ios" color="medium" style="font-size: small;">TELEFONO</ion-label>
+          <ion-item style="margin: 0 0 15px 0">
+          <ion-input type="text" formControlName="phone"></ion-input>
+          </ion-item>
+          <ion-label for="email" mode="ios" color="medium" style="font-size: small;">EMAIL</ion-label>
+          <ion-item style="margin: 0 0 15px 0">
+          <ion-input required type="email" formControlName="email"></ion-input>
+          </ion-item>
+          <ion-label for="password" mode="ios" color="medium" style="font-size: small;">CONTRASEÑA</ion-label>
+          <ion-item style="margin: 0 0 15px 0">
+          <ion-input required type="password" formControlName="password"></ion-input>
+          </ion-item>
+        </form>
+        </ion-list>
+        
+        <div class="errors" *ngIf="errorsRegister">
+          <div *ngFor="let error of errorsRegister | keys" style="text-align: center; padding-top: 20px;">
+            <ion-label color="danger" class="error" [innerHTML]="error.value"></ion-label>
+          </div>
+         </div>
+      </div>
 
 
       </ion-card>
+
+          <ion-grid class="socila-login">
+            <ion-row>
+            <ion-col size="6">
+            <ion-button shape="undefined" mode="md" fill="solid" color="google" (click)="googleLogin()" [disabled]="googleLogingInn" style="--border-radius: 15px; width: 150px;margin-left: -7px;">
+            <ion-icon slot="start" name="logo-google"></ion-icon>{{"Google"| translate}}</ion-button>
+            <br/>
+            </ion-col>
+            <ion-col size="6">
+            <ion-button shape="undefined" mode="md" fill="solid" color="facebook" (click)="facebookLogin()" [disabled]="facebookLogingInn" style="--border-radius: 15px; width: 150px;">
+            <ion-icon slot="start" name="logo-facebook"></ion-icon>{{"Facebook"| translate}}</ion-button>
+            </ion-col>
+            </ion-row>
+          </ion-grid>
+          <!-- <ion-grid class="socila-login">
+            <ion-row>
+            <ion-col size="6">
+            <ion-button expand="full" shape="undefined" mode="md" fill="solid" color="google" [disabled]="googleLogingInn">
+            <ion-icon slot="start" name="logo-google"></ion-icon>{{"Google"| translate}}</ion-button>
+            <br/>
+            </ion-col>
+            <ion-col size="6">
+            <ion-button expand="full" shape="undefined" mode="md" fill="solid" color="facebook" [disabled]="facebookLogingInn">
+            <ion-icon slot="start" name="logo-facebook"></ion-icon>{{"Facebook"| translate}}</ion-button>
+            </ion-col>
+            </ion-row>
+          </ion-grid> -->
     </div>
+
+
 
 </ion-content>

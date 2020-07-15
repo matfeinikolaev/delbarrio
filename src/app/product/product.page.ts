@@ -14,7 +14,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { HttpParams } from "@angular/common/http";
 import { Config } from '../config';
-
+import { LoginPage } from '../account/login/login.page';
 @Component({
     selector: 'app-product',
     templateUrl: 'product.page.html',
@@ -41,6 +41,8 @@ export class ProductPage {
     lan: any = {};
     variationId: any;
     results: any;
+    store: any;
+    incomeMessages: any;
     constructor(private config: Config, public translate: TranslateService, public toastController: ToastController, private socialSharing: SocialSharing, public modalCtrl: ModalController, public api: ApiService, public data: Data, public productData: Product, public settings: Settings, public router: Router, public loadingController: LoadingController, public navCtrl: NavController, public alertController: AlertController, public route: ActivatedRoute, public vendor: Vendor, public iab: InAppBrowser) {
         this.filter.page = 1;
         this.quantity = "1";
@@ -49,7 +51,7 @@ export class ProductPage {
         this.navCtrl.navigateForward(this.router.url + '/review/' + this.product.id);
     }
     getProduct() {
-        this.api.postItem('product', {'product_id': this.id}).then(res => {
+        this.api.postItem('product', {'product_id': this.id}, this.productData.product.path).then(res => {
             this.product = res;
             this.handleProduct();
         }, err => {
@@ -57,21 +59,23 @@ export class ProductPage {
         });
     }
     ngOnInit() {
-        this.translate.get(['Oops!', 'Please Select', 'Please wait', 'Options', 'Option', 'Select', 'Item added to cart', 'Message', 'Requested quantity not available'  ]).subscribe(translations => {
+        this.translate.get(['Oops!', 'Por favor seleccione', 'Por favor espera', 'Opciones', 'Opción', 'Seleccione', 'Artículo agregado al carrito', 'Mensaje', 'Cantidad solicitada no disponible'  ]).subscribe(translations => {
             this.lan.oops = translations['Oops!'];
-            this.lan.PleaseSelect = translations['Please Select'];
-            this.lan.Pleasewait = translations['Please wait'];
-            this.lan.options = translations['Options'];
-            this.lan.option = translations['Option'];
-            this.lan.select = translations['Select'];
-            this.lan.addToCart = translations['Item added to cart'];
-            this.lan.message = translations['Message'];
-            this.lan.lowQuantity = translations['Requested quantity not available'];
+            this.lan.PleaseSelect = translations['Por favor seleccione'];
+            this.lan.Pleasewait = translations['Por favor espera'];
+            this.lan.options = translations['Opciones'];
+            this.lan.option = translations['Opción'];
+            this.lan.select = translations['Seleccione'];
+            this.lan.addToCart = translations['Artículo agregado al carrito'];
+            this.lan.message = translations['Mensaje'];
+            this.lan.lowQuantity = translations['Cantidad solicitada no disponible'];
         });
         this.product = this.productData.product;
         this.id = this.route.snapshot.paramMap.get('id');
+        console.log(this);
         if (this.product.id) this.handleProduct();
-         else this.getProduct();
+         else 
+         this.getProduct();
     }
     handleProduct() {
 
@@ -113,12 +117,12 @@ export class ProductPage {
     getRelatedProducts() {
         var filter = [];
         filter['product_id'] = this.product.id;
-        this.api.postItem('product_details', filter).then(res => {
+        this.api.postItem('product_details', filter, this.product.path).then(res => {
             this.relatedProducts = res;
         }, err => {});
     }
     getReviews() {
-        this.api.postItem('product_reviews', {'product_id': this.product.id}).then(res => {
+        this.api.postItem('product_reviews', {'product_id': this.product.id}, this.product.path).then(res => {
             this.reviews = res;
             for (let item in this.reviews) {
                 this.reviews[item].avatar = md5(this.reviews[item].email);
@@ -130,6 +134,31 @@ export class ProductPage {
         var endIndex = this.router.url.lastIndexOf('/');
         var path = this.router.url.substring(0, endIndex);
         this.navCtrl.navigateForward(path + '/' + product.id);
+    }    
+    openChat() {
+        if(this.settings.user || this.settings.customer.id) {
+            this.navCtrl.navigateForward("tabs/home/store/" + this.data.store.ID + "/messaging/" + this.settings.customer.id);
+        }
+        else this.login();
+    }
+    async login() {
+        const modal = await this.modalCtrl.create({
+            component: LoginPage,
+            componentProps: {
+            path: 'tabs/home/product/'+this.id,
+            },
+            swipeToClose: true,
+            //presentingElement: this.routerOutlet.nativeEl,
+        });
+        modal.present();
+        const { data } = await modal.onWillDismiss();
+
+        if(this.settings.customer.id) {
+            this.navCtrl.navigateForward('/tabs/home/product/' + this.id);
+        }
+    }
+    openCart() {
+        this.navCtrl.navigateForward("tabs/cart/" + this.data.store.ID);
     }
     async addToCart(product) {
         if(product.manage_stock && product.stock_quantity < this.data.cart[product.id]) {
@@ -139,7 +168,7 @@ export class ProductPage {
             this.options.product_id = product.id;
             this.options.quantity = this.quantity;
             this.disableButton = true;
-            await this.api.postItem('add_to_cart', this.options).then(res => {
+            await this.api.postItem('add_to_cart', this.options, this.product.path).then(res => {
                 this.results = res;
                 if(this.results.error) {
                     this.presentToast(this.results.notice);
@@ -180,7 +209,7 @@ export class ProductPage {
           }
           params.update_cart = 'Update Cart';
           params._wpnonce = this.data.cartNonce;
-          await this.api.postItem('update-cart-item-qty', params).then(res => {
+          await this.api.postItem('update-cart-item-qty', params, this.product.path).then(res => {
               this.cart = res;
               this.data.updateCart(this.cart.cart_contents);
           }, err => {
@@ -212,7 +241,7 @@ export class ProductPage {
         }    
         params.update_cart = 'Update Cart';
         params._wpnonce = this.data.cartNonce;
-        await this.api.postItem('update-cart-item-qty', params).then(res => {
+        await this.api.postItem('update-cart-item-qty', params, this.product.path).then(res => {
             console.log(res);
             this.cart = res;
             this.data.updateCart(this.cart.cart_contents);
@@ -366,11 +395,11 @@ export class ProductPage {
     }
     share(){
         var options = {
-            message: "Check this out!",
+            message: "¡Mira esto!",
             subject: this.product.name,
             files: ['', ''],
             url: this.product.permalink,
-            chooserTitle: 'Choose an App'
+            chooserTitle: 'Elige una aplicación'
         }
         
         this.socialSharing.shareWithOptions(options);

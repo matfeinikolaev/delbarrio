@@ -1,18 +1,40 @@
-.vendor-list {
-    ion-card {
-        margin: 0;
+.vendors {
+    ion-item {
+        --background-activated-opacity: 0.03;
+        --border-color: var(--ion-color-light, #fff);
+        --detail-icon-opacity: 0.1;
+        padding-top: 6px;
+        padding-bottom: 6px;
+        .product-name {
+            margin-top: 4px;
+            margin-bottom: 4px; //font-size: 18px;
+            font-weight: bold;
+        }
+        .product-description {
+            margin-top: 6px;
+            margin-bottom: 6px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: var(--ion-color-medium, #000);
+        }
+        .info {
+            color: var(--ion-color-dark, #000);
+        }
+        img {
+            border-radius: 6px;
+        }
+        ion-thumbnail {
+            position: relative;
+            width: 80px;
+            height: 80px;
+        }
+        .close-label {
+            position: absolute;
+            top: 25px;
+            left: 0;
+            margin: 0;
+            width: 100%;
+            --border-radius: 0;
+        }
     }
-}
-ion-card-title{
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	font-size: 12px;
-    font-weight: 700;
-    letter-spacing: .4px;
-    text-transform: uppercase;
-}
-ion-card-header{
-	padding: 16px 8px;
-	text-align: center;
 }

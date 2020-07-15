@@ -16,9 +16,9 @@ export class OrderListPage implements OnInit {
     loader: boolean = true;
     constructor(public actionSheetController: ActionSheetController, public platform: Platform, public api: ApiService, public settings: Settings, public router: Router, public navCtrl: NavController, public route: ActivatedRoute) {
         this.filter.page = 1;
-        this.filter.vendorid = this.settings.customer.id;
+        this.filter.vendor = this.settings.customer.id;
         if(this.settings.administrator) {
-            delete this.filter.vendorid;
+            delete this.filter.vendor;
         }
     }
     ngOnInit() {

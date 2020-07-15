@@ -1,0 +1,32 @@
+<ion-header mode="ios" mode='ios'>
+  <ion-toolbar>
+  	<ion-buttons slot="start">
+      <ion-back-button text="{{'Atrás' | translate}}" (click)="backToStore()" defaultHref=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{"Mensajes" | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="messaging">
+  <ion-list no-lines *ngIf="chats">
+    <div no-lines *ngFor="let chat of chats | keys" (click)="presentActionSheet(chat.key)">
+      <div *ngIf="chat.value.type=='message' || chat.value.type=='notification'" class="chat-bubble {{chat.value.status == 'user-vendor' ? 'right' : 'left'}}">
+          <div class="message">{{chat.value.message}}</div>
+          <div class="message-detail">
+            <!-- <span>{{formatEpoch(chatMessage.epoch)}}</span> -->
+          </div>
+      </div>
+    </div>
+  </ion-list>
+</ion-content>
+
+<ion-footer no-border class="chatPageFooter">
+  <ion-toolbar>
+    <ion-item>
+        <ion-input [(ngModel)]="msgdata.message" type="text" name="send_message" placeholder="Enviar un mensaje a la tienda">
+        </ion-input>
+      <ion-button (click)="sendMessage()">
+        <ion-icon name="send"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-toolbar>
+</ion-footer>

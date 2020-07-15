@@ -1,9 +1,9 @@
 <ion-header mode='ios'>
   <ion-toolbar>
   	<ion-buttons slot="start">
-      <ion-back-button defaultHref="/tabs/account"></ion-back-button>
+      <ion-back-button text="{{'Atrás' | translate}}" defaultHref="/tabs/account"></ion-back-button>
     </ion-buttons>
-    <ion-title>{{"Orders" | translate}}</ion-title>
+    <ion-title>{{"Pedidos" | translate}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -29,11 +29,11 @@
         <p [innerHTML]="item.payment_method_title"></p>
         <ion-button size="small" (click)="getDetail(item); $event.stopPropagation()" color="{{settings.theme.button}}" fill="outline" slot="start">
         <ion-icon slot="icon-only" name="eye"></ion-icon>
-        {{"View" | translate}}
+        {{"Ver" | translate}}
         </ion-button>
         <ion-button size="small" (click)="editOrder(item); $event.stopPropagation()" color="{{settings.theme.button}}" fill="outline" slot="end">
         <ion-icon slot="icon-only" name="create" mode="ios"></ion-icon>
-        {{"Edit" | translate}}
+        {{"Editar" | translate}}
         </ion-button>
       </ion-card-content>
     </ion-card>

@@ -8,15 +8,19 @@
     </ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content class="post">
-  <div class="spinner" *ngIf="!post"><ion-spinner> </ion-spinner></div>
-    <ion-card *ngIf="post">
-      <ion-img alt="" *ngIf="post.image" src="{{post.image}}"></ion-img>
-      <ion-card-header>
-        <ion-card-title>{{post.post_title}}</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-          <div [innerHTML]="post.post_content"></div>
-      </ion-card-content>
-    </ion-card>
+<ion-content class="post.post">
+<div class="spinner" *ngIf="!post.post"><ion-spinner> </ion-spinner></div>
+<div *ngIf="post.post">
+<ion-card>
+  <div *ngIf="post.post._embedded && post.post._embedded['wp:featuredmedia'] && post.post._embedded['wp:featuredmedia'].length">
+    <ion-img alt="" src="{{post.post._embedded['wp:featuredmedia'][0].source_url}}"></ion-img>
+  </div>
+  <ion-card-header>
+    <ion-card-subtitle>{{post.post.date | datepipe}}</ion-card-subtitle>
+    <ion-card-title>{{post.post.title.rendered}}</ion-card-title>
+  </ion-card-header>
+  <ion-card-content [innerHTML]="post.post.content.rendered">
+  </ion-card-content>
+</ion-card>
+</div>
 </ion-content>

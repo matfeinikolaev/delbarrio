@@ -30,9 +30,10 @@ export class OrderPage implements OnInit {
         });
     }
     ngOnInit() {
-        this.translate.get(['Refund request submitted!', 'Unable to submit the refund request']).subscribe(translations => {
-            this.lan.refund = translations['Refund request submitted!'];
-            this.lan.unable = translations['Unable to submit the refund request'];
+        console.log(this);
+        this.translate.get(['Solicitud de reembolso enviada!', 'No se puede enviar la solicitud de reembolso']).subscribe(translations => {
+            this.lan.refund = translations['Solicitud de reembolso enviada!'];
+            this.lan.unable = translations['No se puede enviar la solicitud de reembolso'];
         });
         this.id = this.route.snapshot.paramMap.get('id');
         this.route.queryParams.subscribe(params => {

@@ -10,11 +10,18 @@ export class Data {
 	count: number = 0;
 	cartItem: any;
 	wishlistId: any = [];
-    freaturedProducts: any = [];
-    onsaleProducts: any = [];
-    products: any = [];
-    cartNonce: any = '';
-
+  freaturedProducts: any = [];
+  onsaleProducts: any = [];
+  products: any = [];
+  cartNonce: any = '';
+  storesNearby: any = [];
+  allStores: any = [];
+  messages: any;
+  store: any;
+  storeCategory: any;
+  storeCategories: any = [];
+  onesignal_ids: any;
+  onesignal_data: any;
 	constructor() {}
 
 	updateCart(cart_contents) {

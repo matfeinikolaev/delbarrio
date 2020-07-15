@@ -1,35 +1,35 @@
 <ion-tabs>
 
-  <ion-tab-bar slot="bottom">
-    <ion-tab-button tab="home">
+  <ion-tab-bar slot="bottom" style="background-color: #ececec">
+    <ion-tab-button tab="home" style="background-color: #ececec; border-right: 1px solid #ccd1d7;">
       <ion-icon name="home"></ion-icon>
-      <ion-label>{{'Home' | translate}}</ion-label>
+      <ion-label>{{'Tiendas' | translate}}</ion-label>
     </ion-tab-button>
 
     <!--ion-tab-button tab="vendor">
       <ion-icon name="apps"></ion-icon>
       <ion-label>{{'Store' | translate}}</ion-label>
     </ion-tab-button-->
-
+<!-- 
     <ion-tab-button tab="search">
       <ion-icon name="search"></ion-icon>
-      <ion-label>{{'Search' | translate}}</ion-label>
-    </ion-tab-button>
-
+      <ion-label>{{'Buscar' | translate}}</ion-label>
+    </ion-tab-button> -->
+<!-- 
     <ion-tab-button tab="categories">
       <ion-icon name="grid-outline" mode="md"></ion-icon>
-      <ion-label>{{'Category' | translate}}</ion-label>
-    </ion-tab-button>
+      <ion-label>{{'Categoría' | translate}}</ion-label>
+    </ion-tab-button> -->
 
-    <ion-tab-button tab="cart">
+    <!-- <ion-tab-button tab="cart">
       <ion-icon name="basket" mode="md"></ion-icon>
-      <ion-label>{{'Cart' | translate}}</ion-label>
+      <ion-label>{{'Carrito' | translate}}</ion-label>
       <ion-badge color="{{settings.theme.button}}" *ngIf="data.count != 0"><span class="count">{{data.count}}</span></ion-badge>
-    </ion-tab-button>
+    </ion-tab-button> -->
 
-    <ion-tab-button tab="account">
+    <ion-tab-button tab="account" style="background-color: #ececec; border-left: 1px solid #ccd1d7;">
       <ion-icon name="person"></ion-icon>
-      <ion-label>{{'Account' | translate}}</ion-label>
+      <ion-label>{{'Cuenta' | translate}}</ion-label>
     </ion-tab-button>
     
   </ion-tab-bar>

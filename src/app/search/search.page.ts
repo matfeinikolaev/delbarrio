@@ -34,7 +34,7 @@ export class SearchPage implements OnInit {
         if (this.settings.colWidthProducts == 4) this.filter.per_page = 15;
         this.filter.status = 'publish';
     }
-    ngOnInit() {}
+    ngOnInit() {console.log(this);}
     async loadData(event) {
         this.filter.page = this.filter.page + 1;
         this.api.postItem('products', this.filter).then(res => {

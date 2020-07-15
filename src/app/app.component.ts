@@ -9,10 +9,16 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ViewChild } from '@angular/core';
 import { Config } from './config';
 import { Subscription } from 'rxjs';
-
+import * as FireBase from 'firebase';
 
 declare var wkWebView: any;
-
+const fbconfig = {
+  apiKey: 'AIzaSyBbwfV969pzHaQrc2VQp8YFAGaGZlGp-k8',
+  authDomain: 'delbarrio-mobile-app.firebaseapp.com',
+  databaseURL: 'https://delbarrio-mobile-app.firebaseio.com/',
+  projectId: 'delbarrio-mobile-app',
+  storageBucket: 'YOUR_STORAGE_BUCKET',
+};
 @Component({
     selector: 'app-root',
     templateUrl: 'app.component.html'
@@ -24,6 +30,7 @@ export class AppComponent{
     @ViewChild(IonRouterOutlet, {static: false}) routerOutlet: IonRouterOutlet;
     constructor(public config: Config, public alertController: AlertController, private router: Router, public navCtrl: NavController, public translateService: TranslateService, public platform: Platform, private splashScreen: SplashScreen, private statusBar: StatusBar, private appMinimize: AppMinimize) {
         this.initializeApp();
+        FireBase.initializeApp(fbconfig);
     }
 
     ngAfterViewInit(): void {
@@ -50,13 +57,13 @@ export class AppComponent{
     initializeApp() {
         this.platform.ready().then(() => {
             this.statusBar.styleDefault();
-
+            this.statusBar.backgroundColorByHexString('#ffffff');
             document.addEventListener('deviceready', () => {
                 wkWebView.injectCookie(this.config.url + '/');
             });
 
 
-            this.statusBar.backgroundColorByHexString('#ffffff');
+            
 
             
 

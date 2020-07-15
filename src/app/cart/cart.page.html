@@ -1,18 +1,20 @@
 <ion-header mode='ios'>
   <ion-toolbar>
-  	<ion-buttons slot="start">
-      <ion-back-button text="{{'Back' | translate}}"></ion-back-button>
-    </ion-buttons>
+    <ion-buttons slot="start">
+      <ion-back-button text="{{'Atrás' | translate}}" (click)="backToStore()" defaultHref="/"></ion-back-button> <!--defaultHref="/tabs/home/store/{{store.id}}"-->
+   </ion-buttons>
     <ion-title>
-      {{"Cart" | translate}}
+      {{"Carrito" | translate}}
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="cart">
-  <div class="spinner" *ngIf="!cart?.cart_contents"><ion-spinner> </ion-spinner></div>
+<div class="spinner" *ngIf="!cart?.cart_contents"><ion-spinner> </ion-spinner></div>
 <div *ngIf="cart.cart_contents?.length == 0" class="empty">
   <ion-icon name="basket" mode="md"></ion-icon>
+  <br>
+  <ion-label style="color:lightgray">{{"Su carrito está vacio" | translate}}</ion-label>
 </div>
 
 <div *ngIf="cart.cart_contents">
@@ -56,9 +58,9 @@
 
 <form #f="ngForm" class="coupon">
     <ion-item>
-        <ion-input type="text" [(ngModel)]="cart.coupon" name="coupon" placeholder="{{'Enter coupon here' | translate}}"> </ion-input>
+        <ion-input type="text" [(ngModel)]="cart.coupon" name="coupon" placeholder="{{'Ingrese el cupón aquí' | translate}}"> </ion-input>
         <h2 item-right> 
-            <ion-button block color="{{settings.theme.button}}" type="submit" text-uppercase (click)="submitCoupon(cart.coupon)">{{"Apply" | translate}}
+            <ion-button block color="{{settings.theme.button}}" type="submit" text-uppercase (click)="submitCoupon(cart.coupon)">{{"Aplicar" | translate}}
             </ion-button>
         </h2>
     </ion-item>
@@ -68,14 +70,14 @@
 
       <div *ngIf="cart && settings.reward > '0' " style="margin-bottom: 3px">
       <ion-item>
-          <ion-label>{{"Complete this order and you will earn" | translate}} <span style="font-size: 16px; font-weight: 600">{{cart.purchase_point}}</span> {{"points" | translate}}, {{"you can use on future order." | translate}}</ion-label>
+          <ion-label>{{"Complete este pedido y ganará" | translate}} <span style="font-size: 16px; font-weight: 600">{{cart.purchase_point}}</span> {{"puntos" | translate}}, {{"que puede usar en futuros pedidos." | translate}}</ion-label>
       </ion-item>
       </div>
 
       <div *ngIf="settings.reward > '0' " style="padding: 10px 0;">
       <ion-item>
-        <ion-label>{{"Use" | translate}} <span style="font-size: 16px; font-weight: 600">{{cart.points.points}}</span> {{"Reward Points for a" | translate}} <span style="font-size: 16px; font-weight: 600">{{cart.points.discount_available | currency:settings.currency:'symbol':'1.2-2'}}</span> {{"discount on this order!" | translate}}
-          <ion-button color="{{settings.theme.button}}" fill="solid" type="submit" text-uppercase small (click)="redeem()"> {{"Redeem Points" | translate}}
+        <ion-label>{{"Usar" | translate}} <span style="font-size: 16px; font-weight: 600">{{cart.points.points}}</span> {{"Puntos de recompensa por un" | translate}} <span style="font-size: 16px; font-weight: 600">{{cart.points.discount_available | currency:settings.currency:'symbol':'1.2-2'}}</span> {{"¡descuento en este pedido!" | translate}}
+          <ion-button color="{{settings.theme.button}}" fill="solid" type="submit" text-uppercase small (click)="redeem()"> {{"Canjear puntos" | translate}}
           </ion-button> 
         </ion-label>
       </ion-item>
@@ -88,40 +90,40 @@
 <ion-list lines="none">
   <ion-item>
     <ion-label>
-     {{"Sub total" | translate}} <span class="totals-amount">{{1*cart.cart_totals.subtotal | currency:settings.currency:'symbol':'1.2-2'}}</span>
+     {{"Subtotal" | translate}} <span class="totals-amount">{{1*cart.cart_totals.subtotal | currency:settings.currency:'symbol':'1.2-2'}}</span>
     </ion-label>
   </ion-item>
   <ion-item *ngIf="cart.cart_totals.total_tax != 0">
     <ion-label>
-      {{"Tax total" | translate}} <span class="totals-amount">{{1*cart.cart_totals.total_tax | currency:settings.currency:'symbol':'1.2-2'}}</span>
+      {{"Total de impuestos" | translate}} <span class="totals-amount">{{1*cart.cart_totals.total_tax | currency:settings.currency:'symbol':'1.2-2'}}</span>
     </ion-label>
   </ion-item>
 
   <ion-item *ngFor="let coupon of cart.coupon_discount_totals | keys">
     <ion-label>
-      {{"Coupon" | translate}} - {{coupon.key}} <ion-text (click)="removeCoupon(coupon.key)" color="{{settings.theme.button}}">(Remove)</ion-text><span class="totals-amount">-{{1*coupon.value | currency:settings.currency:'symbol':'1.2-2'}}</span>
+      {{"Cupón" | translate}} - {{coupon.key}} <ion-text (click)="removeCoupon(coupon.key)" color="{{settings.theme.button}}">(Remove)</ion-text><span class="totals-amount">-{{1*coupon.value | currency:settings.currency:'symbol':'1.2-2'}}</span>
     </ion-label>
   </ion-item>
 
   <ion-item *ngIf="cart.cart_totals.discount_total != 0">
     <ion-label>
-      {{"Discount" | translate}}<span class="totals-amount">-{{1*cart.cart_totals.discount_total | currency:settings.currency:'symbol':'1.2-2'}}</span>
+      {{"Descuenta" | translate}}<span class="totals-amount">-{{1*cart.cart_totals.discount_total | currency:settings.currency:'symbol':'1.2-2'}}</span>
     </ion-label>
   </ion-item>
   <ion-item>
     <ion-label>
-      {{"Shipping" | translate}} <span class="totals-amount">{{1*cart.cart_totals.shipping_total | currency:settings.currency:'symbol':'1.2-2'}}</span>
+      {{"Envío" | translate}} <span class="totals-amount">{{1*cart.cart_totals.shipping_total | currency:settings.currency:'symbol':'1.2-2'}}</span>
     </ion-label>
   </ion-item>
   <ion-item>
     <ion-label class="grand-total">
-      {{"Grand Total" | translate}} <span class="totals-amount">{{1*cart.cart_totals.total | currency:settings.currency:'symbol':'1.2-2'}}</span>
+      {{"Gran total" | translate}} <span class="totals-amount">{{1*cart.cart_totals.total | currency:settings.currency:'symbol':'1.2-2'}}</span>
     </ion-label>
   </ion-item>
 
 </ion-list>
 
-<ion-button color="{{settings.theme.button}}" expand="block" fill="solid" (click)="checkout()" style="margin: 16px;">{{"Continue" | translate}}</ion-button>
+<ion-button color="{{settings.theme.button}}" expand="block" fill="solid" (click)="checkout()" style="margin: 16px;">{{"Continuar" | translate}}</ion-button>
 </div>
 </div>
 </ion-content>

@@ -3,7 +3,7 @@
   	<ion-buttons slot="start" (click)="close()">
       <ion-back-button defaultHref="/tabs/account"></ion-back-button>
     </ion-buttons>
-    <ion-title>{{"Forgotten" | translate}}</ion-title>
+    <ion-title>{{"Olvidado" | translate}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -17,7 +17,7 @@
 </form>
 </ion-list>
 
- <ion-button *ngIf="!status.status" color="{{settings.theme.button}}" expand="block" (click)="forgotten()" [disabled]="!email.valid || disableSubmit" fill="solid">{{"Send OTP" | translate}}</ion-button>
+ <ion-button *ngIf="!status.status" color="{{settings.theme.button}}" expand="block" (click)="forgotten()" [disabled]="!email.valid || disableSubmit" fill="solid">{{"Enviar OTP" | translate}}</ion-button>
 
 <ion-list *ngIf="status.status">
     <form [formGroup]="form">
@@ -25,12 +25,12 @@
   <ion-input required type="number" formControlName="otp" placeholder="OTP"></ion-input>
   </ion-item>
   <ion-item>
-  <ion-input required type="password" formControlName="password" placeholder="New Password"></ion-input>
+  <ion-input required type="password" formControlName="password" placeholder="Nueva contraseña"></ion-input>
   </ion-item>
 </form>
 </ion-list>
 
- <ion-button *ngIf="status.status" color="{{settings.theme.button}}" expand="block" (click)="resetPassword()" [disabled]="!form.valid || disableSubmit" fill="solid">{{"Reset Password" | translate}}</ion-button>
+ <ion-button *ngIf="status.status" color="{{settings.theme.button}}" expand="block" (click)="resetPassword()" [disabled]="!form.valid || disableSubmit" fill="solid">{{"Restablecer la contraseña" | translate}}</ion-button>
 
 
  <ion-item *ngIf="status?.status" lines="none">

@@ -10,14 +10,21 @@ import { Settings } from '../data/settings';
     styleUrls: ['post.page.scss']
 })
 export class PostPage {
-    post: any;
+    post: any = {};
     id: any;
     constructor(public api: ApiService, public router: Router, public navCtrl: NavController, public settings: Settings, public route: ActivatedRoute) {}
-    async getPost() {
+    /*async getPost() {
         await this.api.postItem('page_content', {
             page_id: this.id
         }).then(res => {
             this.post = res;
+        }, err => {
+            console.log(err);
+        });
+    }*/
+    async getPost() {
+        await this.api.getPosts('/ar/index.php/wp-json/wp/v2/posts/'+ this.id +'?_embed').then(res => {
+            this.post.post = res;
         }, err => {
             console.log(err);
         });
