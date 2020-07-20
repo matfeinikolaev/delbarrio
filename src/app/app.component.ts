@@ -13,10 +13,10 @@ import * as FireBase from 'firebase';
 
 declare var wkWebView: any;
 const fbconfig = {
-  apiKey: 'AIzaSyBbwfV969pzHaQrc2VQp8YFAGaGZlGp-k8',
-  authDomain: 'delbarrio-mobile-app.firebaseapp.com',
-  databaseURL: 'https://delbarrio-mobile-app.firebaseio.com/',
-  projectId: 'delbarrio-mobile-app',
+  apiKey: 'AIzaSyDH6N_HMEiYCg-sT186UeyrnHPl4FiIjv4',
+  authDomain: 'delbarrio-app.firebaseapp.com',
+  databaseURL: 'https://delbarrio-app.firebaseio.com/',
+  projectId: 'delbarrio-app',
   storageBucket: 'YOUR_STORAGE_BUCKET',
 };
 @Component({

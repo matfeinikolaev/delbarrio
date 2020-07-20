@@ -183,6 +183,7 @@ export class AccountPage {
               }
               this.googleLogingInn = false;
               this.dismissLoading();
+              this.redirectToHomePage();
           }, err => {
               this.googleLogingInn = false;
               this.dismissLoading();
@@ -227,6 +228,7 @@ export class AccountPage {
               }
               this.facebookLogingInn = false;
               this.dismissLoading();
+              this.redirectToHomePage();
           }, err => {
               this.facebookLogingInn = false;
               this.dismissLoading();
@@ -238,6 +240,9 @@ export class AccountPage {
           this.facebookLogingInn = false;
           this.dismissLoading();
       });
+  }
+  redirectToHomePage() {
+      this.navCtrl.navigateForward("/tabs/home");
   }
   async presentLoading() {
     this.loading = await this.loadingController.create({

@@ -26,7 +26,7 @@
     "@ionic-native/core": "^5.0.0",
     "@ionic-native/crop": "^5.21.6",
     "@ionic-native/email-composer": "^5.21.5",
-    "@ionic-native/facebook": "^5.23.0",
+    "@ionic-native/facebook": "^5.27.0",
     "@ionic-native/file-transfer": "^5.21.6",
     "@ionic-native/geolocation": "^5.26.0",
     "@ionic-native/google-plus": "^5.24.0",
@@ -45,8 +45,6 @@
     "@ngx-translate/core": "^12.1.2",
     "@ngx-translate/http-loader": "^4.0.0",
     "cordova-android": "8.1.0",
-    "cordova-browser": "6.0.0",
-    "cordova-ios": "5.1.1",
     "cordova-plugin-add-swift-support": "^2.0.2",
     "cordova-plugin-advanced-http": "^2.4.1",
     "cordova-plugin-android-permissions": "^1.0.2",
@@ -132,10 +130,8 @@
         "PLAY_SERVICES_VERSION": "15.0.1"
       },
       "cordova-plugin-facebook4": {
-        "APP_ID": "691375698089216",
-        "APP_NAME": "Quick Order",
-        "FACEBOOK_HYBRID_APP_EVENTS": "false",
-        "FACEBOOK_ANDROID_SDK_VERSION": "5.13.0"
+        "APP_ID": "1218520661837146",
+        "APP_NAME": "Del Barrio"
       },
       "cordova-sqlite-storage": {},
       "cordova-plugin-geolocation": {},
@@ -148,8 +144,7 @@
       "cordova-plugin-android-permissions": {}
     },
     "platforms": [
-      "android",
-      "ios"
+      "android"
     ]
   }
 }

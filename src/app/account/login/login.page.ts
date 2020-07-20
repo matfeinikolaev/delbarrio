@@ -146,6 +146,7 @@ export class LoginPage implements OnInit {
                 this.dismissLoading();
             });
             this.googleLogingInn = false;
+            this.redirectToHomePage();
         })
         .catch(err => {
             console.log(err);
@@ -185,6 +186,7 @@ export class LoginPage implements OnInit {
                 }
                 this.facebookLogingInn = false;
                 this.dismissLoading();
+                this.redirectToHomePage();
             }, err => {
                 this.facebookLogingInn = false;
                 this.dismissLoading();
@@ -196,6 +198,9 @@ export class LoginPage implements OnInit {
             this.facebookLogingInn = false;
             this.dismissLoading();
         });
+    }
+    redirectToHomePage() {
+        this.navCtrl.navigateForward("/tabs/home");
     }
     loginWithPhone(){
         this.phoneLogingInn = true;
