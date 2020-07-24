@@ -37,28 +37,28 @@
         </ion-toolbar>
       </ion-header> -->
 
-      <div *ngIf="!settings.user && !settings.customer.id">
+      <div *ngIf="!settings.user && !settings.customer.id" aria-label="Login or register page">
         <ion-list-header style="margin-bottom: 30px;">
           <ion-label class="delbarrio-header" style="font-weight: 100; font-size: 20pt;">{{"Continuar con" | translate}}</ion-label>
         </ion-list-header>
         <ion-grid class="socila-login">
           <ion-row>
             <ion-col size="12" style="text-align:center;">
-              <ion-button mode="md" shape="undefined" fill="solid" style="--border-radius:50px 50px 50px 50px; width:200px; --background:#b80000; --box-shadow:0;" (click)="googleLogin()" [disabled]="googleLogingInn">
+              <ion-button mode="md" shape="undefined" fill="solid" style="--border-radius:50px 50px 50px 50px; width:200px; height: 48dp; --background:#b80000; --box-shadow:0;" (click)="googleLogin()" [disabled]="googleLogingInn">
               <ion-icon slot="start" name="logo-google"></ion-icon>{{"Google"| translate}}</ion-button>
               <br/>
             </ion-col>
             <ion-col size="12" style="text-align:center; margin-top: 15px;">
-              <ion-button shape="undefined" mode="md" fill="solid" style="--border-radius:50px 50px 50px 50px; width:200px; --background:#2b3f5a; --box-shadow:0;" (click)="facebookLogin()" [disabled]="facebookLogingInn">
+              <ion-button shape="undefined" mode="md" fill="solid" style="--border-radius:50px 50px 50px 50px; width:200px; height: 48dp; --background:#2b3f5a; --box-shadow:0;" (click)="facebookLogin()" [disabled]="facebookLogingInn">
               <ion-icon slot="start" name="logo-facebook"></ion-icon>{{"Facebook"| translate}}</ion-button>
             </ion-col>
             <ion-col size="12" style="text-align:center; margin-top: 15px;">
-              <ion-button shape="undefined" mode="md" fill="clear" style="color:#4dcfc3; font-weight: bold; width:200px;" (click)="register()">
+              <ion-button shape="undefined" mode="md" fill="clear" style="color:#4dcfc3; font-weight: bold; width:200px; height: 48dp; " (click)="register()">
               {{"Registrate"| translate}}
               </ion-button>
             </ion-col>
             <ion-col size="12" style="text-align:center;">
-              <p style="color:#2a3d5d">{{"¿Tienes una cuenta?"}} <span style="color:#78ddcd" (click)="login()">{{"Iniciar sesión"}}</span> </p>
+              <p style="color:#2a3d5d">{{"¿Tienes una cuenta?"}} <span style="height: 48dp; color:#78ddcd" (click)="login()">{{"Iniciar sesión"}}</span> </p>
             </ion-col>
           </ion-row>
         </ion-grid>
