@@ -36,8 +36,9 @@ export class ApiService {
 	  };
 	}
 
-	getItem(endPoint, filter = {}) {
-		const url = this.config.setUrl('GET', endPoint + '?', filter);
+	getItem(endPoint, filter = {}, path = '') {
+		const url = this.config.setUrl('GET', endPoint + '?', filter, path);
+		console.log(url);
 		if (this.platform.is('ios') && this.platform.is('hybrid')) {
 			return new Promise((resolve, reject) => {
 	            this.ionicHttp.get(url, {}, {})
@@ -199,7 +200,11 @@ export class ApiService {
 			  	});
 	        });
 		} else {
-			for (var key in data) { if('object' !== typeof(data[key])) params = params.set(key, data[key]) }
+			for (var key in data) { 
+				if('object' !== typeof(data[key])) {
+					params = params.set(key, data[key]);
+				}
+			}
 			params = params.set('lang', this.config.lang);
 			return new Promise((resolve, reject) => {
 	            this.http.post(url, params, this.config.options).pipe(map((res: any) => res)).subscribe(data => {

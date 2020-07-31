@@ -166,6 +166,7 @@ export class AccountPage {
                   this.errors = this.status.errors;
               } else if (this.status.data) {
                   this.settings.customer.id = this.status.ID;
+                  this.settings.user = this.status.data;
                    if (this.platform.is('cordova')){
                       this.oneSignal.getIds().then((data: any) => {
                           this.form.onesignal_user_id = data.userId;
@@ -173,7 +174,7 @@ export class AccountPage {
                       });
                      this.api.postItem('update_user_notification', this.form).then(res =>{});
                    }
-                  if(this.status.allcaps.wc_product_vendors_admin_vendor || this.status.allcaps.dc_vendor || this.status.allcaps.seller || this.status.allcaps.wcfm_vendor){
+                  if(this.status.allcaps.shop_manager || this.status.allcaps.wc_product_vendors_admin_vendor || this.status.allcaps.dc_vendor || this.status.allcaps.seller || this.status.allcaps.wcfm_vendor){
                       this.settings.vendor = true;
                   }
                   if(this.status.allcaps.administrator) {
@@ -211,6 +212,7 @@ export class AccountPage {
                   this.errors = this.status.errors;
               } else if (this.status.data) {
                   this.settings.customer.id = this.status.ID;
+                  this.settings.user = this.status.data;
                    if (this.platform.is('cordova')){
                       this.oneSignal.getIds().then((data: any) => {
                           this.form.onesignal_user_id = data.userId;
@@ -218,7 +220,7 @@ export class AccountPage {
                       });
                      this.api.postItem('update_user_notification', this.form).then(res =>{});
                    }
-                  if(this.status.allcaps.wc_product_vendors_admin_vendor || this.status.allcaps.dc_vendor || this.status.allcaps.seller || this.status.allcaps.wcfm_vendor){
+                  if(this.status.allcaps.shop_manager || this.status.allcaps.wc_product_vendors_admin_vendor || this.status.allcaps.dc_vendor || this.status.allcaps.seller || this.status.allcaps.wcfm_vendor){
                       this.settings.vendor = true;
                   }
                   if(this.status.allcaps.administrator) {

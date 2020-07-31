@@ -125,7 +125,7 @@
           <ion-icon style="background-color: var(--ion-color-primary, #428xff); color: white" class="icon-start ion-margin-end" name="document" slot="start"></ion-icon>
         <ion-label>{{"Blog" | translate}}</ion-label>
         </ion-item> -->
-        <ion-item *ngIf="settings.user" detail="true"  lines="inset" (click)="goTo('tabs/account/setting')" lines="inset" class="ion-activatable">
+        <ion-item *ngIf="settings.user || settings.administrator || settings.vendor" detail="true"  lines="inset" (click)="goTo('tabs/account/setting')" lines="inset" class="ion-activatable">
             <ion-icon style="background-color: var(--ion-color-danger, #eb445a); color: white" class="icon-start ion-margin-end" name="settings" slot="start"></ion-icon>
             <ion-label>{{"Ajustes" | translate}}</ion-label>
         </ion-item>
@@ -166,13 +166,9 @@
         <ion-icon style="background-color: var(--ion-color-success, #2dd36f); color: white" class="icon-start ion-margin-end" name="document" slot="start"></ion-icon>
         <ion-label>{{"Pedidos" | translate}}</ion-label>
       </ion-item>
-      <ion-item detail="true" lines="inset" (click)="goTo('tabs/account/vendor-products')" class="ion-activatable">
-        <ion-icon style="background-color: var(--ion-color-danger, #eb445a); color: white" class="icon-start ion-margin-end" name="document" slot="start"></ion-icon>
-        <ion-label>{{"Productos" | translate}}</ion-label>
-      </ion-item>
-      <ion-item detail="true" lines="inset" (click)="goTo('tabs/account/add-products')" class="ion-activatable">
-        <ion-icon style="background-color: var(--ion-color-danger, #eb445a); color: white" class="icon-start ion-margin-end" name="add-circle" slot="start"></ion-icon>
-        <ion-label>{{"Añadir Productos" | translate}}</ion-label>
+      <ion-item detail="true" lines="inset" (click)="goTo('tabs/account/vendor-stores')" class="ion-activatable">
+        <ion-icon style="background-color: var(--ion-color-danger, #eb445a); color: white" class="icon-start ion-margin-end" name="basket" slot="start"></ion-icon>
+        <ion-label>{{"Mis Tiendas" | translate}}</ion-label>
       </ion-item>
     </ion-list>
     </div>

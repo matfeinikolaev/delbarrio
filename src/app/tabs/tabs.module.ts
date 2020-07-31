@@ -46,10 +46,12 @@ import { WishlistPage } from './../account/wishlist/wishlist.page';
 
 import { EditOrderPage } from './../vendor/edit-order/edit-order.page';
 import { EditProductPage } from './../vendor/edit-product/edit-product.page';
+import { EditStorePage } from './../vendor/edit-store/edit-store.page';
 import { EditVariationPage } from './../vendor/edit-variation/edit-variation.page';
 import { OrderListPage } from './../vendor/order-list/order-list.page';
 import { OrderNoteListPage } from './../vendor/order-note-list/order-note-list.page';
 import { ProductListPage } from './../vendor/product-list/product-list.page';
+import { StoreListPage } from './../vendor/store-list/store-list.page';
 import { VendorInfoPage } from './../vendor/vendor-info/vendor-info.page';
 import { VendorListPage } from './../vendor/vendor-list/vendor-list.page';
 import { CategoryPage } from './../vendor/product-add/category/category.page';
@@ -104,10 +106,12 @@ import { EditSettingsPage } from './../account/edit-settings/edit-settings.page'
   // Vendors
   EditOrderPage,
   EditProductPage,
+  EditStorePage,
   EditVariationPage,
   OrderListPage,
   OrderNoteListPage,
   ProductListPage,
+  StoreListPage,
   VendorInfoPage,
   VendorListPage,
   CategoryPage,

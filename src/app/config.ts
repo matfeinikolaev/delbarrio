@@ -51,7 +51,7 @@ export class Config {
         for (var i = length; i > 0; --i) result += chars[Math.round(Math.random() * (chars.length - 1))];
         return result;
     }
-    setUrl(method, endpoint, filter) {
+    setUrl(method, endpoint, filter, path = '') {
         var key;
         var unordered = {};
         var ordered = {};
@@ -72,10 +72,10 @@ export class Config {
             for (key in ordered) {
                 this.searchParams.set(key, ordered[key]);
             }
-            return this.url + '/wp-json/wc/v3/' + endpoint + this.searchParams.toString();
+            return this.url + path + '/wp-json/wc/v3/' + endpoint + this.searchParams.toString();
         }
         else {
-            var url = this.url + '/wp-json/wc/v3/' + endpoint;
+            var url = this.url +  + path + '/wp-json/wc/v3/' + endpoint;
             this.params['oauth_consumer_key'] = this.consumerKey;
             this.params['oauth_nonce'] = this.setOauthNonce(32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
             this.params['oauth_timestamp'] = new Date().getTime() / 1000;
@@ -96,7 +96,7 @@ export class Config {
                 this.searchParams.set(key, ordered[key]);
             }
             this.encodedSignature = this.oauth.generate(method, url, this.searchParams.toString(), this.consumerSecret);
-            return this.url + '/wp-json/wc/v3/' + endpoint + this.searchParams.toString() + '&oauth_signature=' + this.encodedSignature;
+            return this.url +  + path + '/wp-json/wc/v3/' + endpoint + this.searchParams.toString() + '&oauth_signature=' + this.encodedSignature;
         }
     }
 }

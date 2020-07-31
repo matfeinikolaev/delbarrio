@@ -38,10 +38,12 @@ import { WishlistPage } from './../account/wishlist/wishlist.page';
 //Vendor
 import { EditOrderPage } from './../vendor/edit-order/edit-order.page';
 import { EditProductPage } from './../vendor/edit-product/edit-product.page';
+import { EditStorePage } from './../vendor/edit-store/edit-store.page';
 import { EditVariationPage } from './../vendor/edit-variation/edit-variation.page';
 import { OrderListPage } from './../vendor/order-list/order-list.page';
 import { OrderNoteListPage } from './../vendor/order-note-list/order-note-list.page';
 import { ProductListPage } from './../vendor/product-list/product-list.page';
+import { StoreListPage } from './../vendor/store-list/store-list.page';
 import { VendorInfoPage } from './../vendor/vendor-info/vendor-info.page';
 import { VendorListPage } from './../vendor/vendor-list/vendor-list.page';
 
@@ -479,9 +481,91 @@ const routes: Routes = [
                 }
               ]
           },
-
+          {
+            path: 'vendor-stores',
+            children: [
+                {
+                  path: '',
+                  component: StoreListPage
+                },
+                // {
+                //   path: 'edit-product/:id',
+                //   children: [
+                //     {
+                //       path: '',
+                //       component: EditProductPage
+                //     },
+                //     {
+                //       path: 'edit-variation-product/:id',
+                //       component: EditVariationPage
+                //     }
+                //   ]
+                // },
+                {
+                  path: 'view-store/:id',
+                  children: [
+                    {
+                      path: '',
+                      component: ProductListPage
+                    },
+                    {
+                      path: 'view-product/:id',
+                      component: ProductPage
+                    },
+                    {
+                      path: 'edit-product/:id',
+                      children: [
+                        {
+                          path: '',
+                          component: EditProductPage
+                        },
+                        {
+                          path: 'edit-variation-product/:id',
+                          component: EditVariationPage
+                        }
+                      ]
+                    },
+                  ]
+                },
+                {
+                  path: 'edit-store/:id',
+                  children: [
+                    {
+                      path: '',
+                      component: EditStorePage
+                    }
+                  ]
+                },
+              ]
+          },
           {
             path: 'add-products',
+            children: [
+                {
+                  path: '',
+                  component: CategoryPage
+                },
+                {
+                  path: 'subcategory/:id',
+                  component: SubcategoryPage
+                },
+                {
+                  path: 'details/:id',
+                   children: [
+                    {
+                      path: '',
+                      component: DetailsPage
+                    },
+                    {
+                      path: 'photos',
+                      component: PhotosPage
+                    }
+                  ]
+                }
+              ]
+          },
+          {
+            path: 'add-stores',
             children: [
                 {
                   path: '',
