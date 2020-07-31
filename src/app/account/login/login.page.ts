@@ -61,6 +61,7 @@ export class LoginPage implements OnInit {
         this.disableSubmit = true;
         await this.api.postItem('login', this.form.value).then(res => {
             this.status = res;
+            console.log(this.status);
             if (this.status.errors) {
                 this.errors = this.status.errors;
                 for (var key in this.errors) {
@@ -72,6 +73,7 @@ export class LoginPage implements OnInit {
                 }
             } else if (this.status.data) {
                 this.settings.customer.id = this.status.ID;
+                this.settings.user = this.status.data;
                  if (this.platform.is('cordova')){
                     this.oneSignal.getIds().then((data: any) => {
                         this.form.onesignal_user_id = data.userId;
@@ -79,7 +81,7 @@ export class LoginPage implements OnInit {
                         this.api.postItem('update_user_notification', this.form).then(res =>{});
                     });
                  }
-                if(this.status.allcaps.wc_product_vendors_admin_vendor || this.status.allcaps.dc_vendor || this.status.allcaps.seller || this.status.allcaps.wcfm_vendor){
+                if(this.status.allcaps.shop_manager || this.status.allcaps.wc_product_vendors_admin_vendor || this.status.allcaps.dc_vendor || this.status.allcaps.seller || this.status.allcaps.wcfm_vendor){
                     this.settings.vendor = true;
                 }
                 if(this.status.allcaps.administrator) {
@@ -124,6 +126,7 @@ export class LoginPage implements OnInit {
                     this.errors = this.status.errors;
                 } else if (this.status.data) {
                     this.settings.customer.id = this.status.ID;
+                    this.settings.user = this.status.data;
                      if (this.platform.is('cordova')){
                         this.oneSignal.getIds().then((data: any) => {
                             this.form.onesignal_user_id = data.userId;
@@ -131,7 +134,7 @@ export class LoginPage implements OnInit {
                         });
                        this.api.postItem('update_user_notification', this.form).then(res =>{});
                      }
-                    if(this.status.allcaps.wc_product_vendors_admin_vendor || this.status.allcaps.dc_vendor || this.status.allcaps.seller || this.status.allcaps.wcfm_vendor){
+                    if(this.status.allcaps.shop_manager || this.status.allcaps.wc_product_vendors_admin_vendor || this.status.allcaps.dc_vendor || this.status.allcaps.seller || this.status.allcaps.wcfm_vendor){
                         this.settings.vendor = true;
                     }
                     if(this.status.allcaps.administrator) {
@@ -169,6 +172,7 @@ export class LoginPage implements OnInit {
                     this.errors = this.status.errors;
                 } else if (this.status.data) {
                     this.settings.customer.id = this.status.ID;
+                    this.settings.user = this.status.data;
                      if (this.platform.is('cordova')){
                         this.oneSignal.getIds().then((data: any) => {
                             this.form.onesignal_user_id = data.userId;
@@ -176,7 +180,7 @@ export class LoginPage implements OnInit {
                         });
                        this.api.postItem('update_user_notification', this.form).then(res =>{});
                      }
-                    if(this.status.allcaps.wc_product_vendors_admin_vendor || this.status.allcaps.dc_vendor || this.status.allcaps.seller || this.status.allcaps.wcfm_vendor){
+                    if(this.status.allcaps.shop_manager || this.status.allcaps.wc_product_vendors_admin_vendor || this.status.allcaps.dc_vendor || this.status.allcaps.seller || this.status.allcaps.wcfm_vendor){
                         this.settings.vendor = true;
                     }
                     if(this.status.allcaps.administrator) {
@@ -224,6 +228,7 @@ export class LoginPage implements OnInit {
                     this.errors = this.status.errors;
                 } else if (this.status.data) {
                     this.settings.customer.id = this.status.ID;
+                    this.settings.user = this.status.data;
                      if (this.platform.is('cordova')){
                         this.oneSignal.getIds().then((data: any) => {
                             this.form.onesignal_user_id = data.userId;
@@ -231,7 +236,7 @@ export class LoginPage implements OnInit {
                         });
                        this.api.postItem('update_user_notification', this.form).then(res =>{});
                      }
-                    if(this.status.allcaps.wc_product_vendors_admin_vendor || this.status.allcaps.dc_vendor || this.status.allcaps.seller || this.status.allcaps.wcfm_vendor){
+                    if(this.status.allcaps.shop_manager || this.status.allcaps.wc_product_vendors_admin_vendor || this.status.allcaps.dc_vendor || this.status.allcaps.seller || this.status.allcaps.wcfm_vendor){
                         this.settings.vendor = true;
                     }
                     if(this.status.allcaps.administrator) {
@@ -265,6 +270,7 @@ export class LoginPage implements OnInit {
             }
             else if (this.status.data != undefined) {
                 this.settings.customer.id = this.status.ID;
+                this.settings.user = this.status.data;
                  if (this.platform.is('cordova'))
                     this.oneSignal.getIds().then((data: any) => {
                         this.pushForm.onesignal_user_id = data.userId;

@@ -220,9 +220,9 @@ export class EditVariationPage implements OnInit {
 
       async replaceImage(index){
           const actionSheet = await this.actionSheetController.create({
-          header: 'Albums',
+          header: 'Álbumes',
           buttons: [{
-            text: 'Delete Image',
+            text: 'Borrar el Imagen',
             role: 'destructive',
             icon: 'trash',
             handler: () => {
@@ -230,7 +230,7 @@ export class EditVariationPage implements OnInit {
               this.imageIndex = this.imageIndex - 1;
             }
           }, {
-            text: 'Edit Image',
+            text: 'Editar el Imagen',
             icon: 'create',
             handler: () => {
               let options= {
@@ -246,7 +246,7 @@ export class EditVariationPage implements OnInit {
               });
             }
           }, {
-            text: 'Cancel',
+            text: 'Cancelar',
             icon: 'close',
             role: 'cancel',
             handler: () => {

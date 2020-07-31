@@ -1,9 +1,9 @@
 <ion-header mode="ios" mode='ios'>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button text="{{'Back' | translate}}" defaultHref="/tabs/account"></ion-back-button>
+      <ion-back-button text="{{'Atrás' | translate}}" defaultHref="/tabs/account"></ion-back-button>
     </ion-buttons>
-    <ion-title>{{"Points" | translate}}</ion-title>
+    <ion-title>{{"Puntos" | translate}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -11,10 +11,10 @@
       <div class="spinner" *ngIf="!points.points"><ion-spinner> </ion-spinner></div>
       <ion-list *ngIf="points.points">
         <ion-item lines="none" *ngIf="settings.reward == ''">
-          <ion-label text-wrap>{{"You currently have no loyalty points. Place a order with us today to start earning loyalty points." | translate}}</ion-label>
+          <ion-label text-wrap>{{"Actualmente no tienes puntos de fidelidad. Haga un pedido con nosotros hoy para comenzar a ganar puntos de fidelidad." | translate}}</ion-label>
         </ion-item>
         <ion-item lines="none">
-          <ion-label class="bold">{{"Points" | translate}} - {{points.points}} ({{1*points.points_vlaue | currency:settings.currency:'symbol':'1.2-2'}})</ion-label>
+          <ion-label class="bold">{{"Puntos" | translate}} - {{points.points}} ({{1*points.points_vlaue | currency:settings.currency:'symbol':'1.2-2'}})</ion-label>
         </ion-item>
       </ion-list>
 

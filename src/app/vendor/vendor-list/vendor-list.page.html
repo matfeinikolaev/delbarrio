@@ -1,9 +1,9 @@
 <ion-header mode="ios">
   <ion-toolbar>
   	<ion-buttons slot="start">
-      <ion-back-button defaultHref="{{'/tabs/home'}}"></ion-back-button>
+      <ion-back-button text="{{'Atrás' | translate}}" defaultHref="{{'/tabs/home'}}"></ion-back-button>
     </ion-buttons>
-    <ion-title>{{"Store" | translate}}</ion-title>
+    <ion-title>{{"Tienda" | translate}}</ion-title>
     <!--ion-buttons slot="end">
     <ion-button routerDirection="forward" [routerLink]="['/search']">
       <ion-icon color="medium" slot="icon-only" name="search-outline"></ion-icon>
@@ -18,12 +18,12 @@
 		<ion-item *ngFor="let item of vendors" button="true" (click)="detail(item)" mode="md" button="true" lines="none" detail="false" disabled="{{isClosed(item)}}">
 			<ion-thumbnail slot="start">
 			  <img *ngIf="item.icon" src="{{item.icon}}">
-			  <ion-button color="danger" class="close-label" *ngIf="isClosed(item)" color="danger">{{"CLOSED" | translate}}</ion-button>
+			  <ion-button color="danger" class="close-label" *ngIf="isClosed(item)" color="danger">{{"CERRADO" | translate}}</ion-button>
 			</ion-thumbnail>
 			<ion-label>
 			  <span class="product-name">{{ item.name }}</span>
 		  		<p *ngIf="item.description" class="product-description" [innerHTML]="item.description"></p>
-		  		<p *ngIf="api.userLocation.latitude" class="product-description info">{{distance(item)}} kms <span style="padding-right: 10px; padding-left: 10px">{{drivingTime(item)}} min delivery</span></p>
+		  		<p *ngIf="api.userLocation.latitude" class="product-description info">{{distance(item)}} kms <span style="padding-right: 10px; padding-left: 10px">{{drivingTime(item)}} min entrego</span></p>
 			</ion-label>
 		</ion-item>
 	</div>
@@ -31,7 +31,7 @@
 	<ion-infinite-scroll threshold="100px" *ngIf="hasMoreItems && vendors?.length" (ionInfinite)="getMoreVendors($event)">
     <ion-infinite-scroll-content
       loadingSpinner="bubbles"
-      loadingText="Loading more data...">
+      loadingText="Cargaando más datos...">
     </ion-infinite-scroll-content>
 	</ion-infinite-scroll>
 

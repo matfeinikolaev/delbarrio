@@ -6,7 +6,7 @@ import { Data } from './../../data';
 import { Settings } from './../../data/settings';
 import { Product } from './../../data/product';
 import { FilterPage } from './../../filter/filter.page';
-
+import { Store } from './../../data/store';
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.page.html',
@@ -20,11 +20,11 @@ export class ProductListPage {
     attributes: any;
     hasMoreItems: boolean = true;
     loader: boolean = false;
-    constructor(public platform: Platform, public alertController: AlertController, public modalController: ModalController, public api: ApiService, public data: Data, public product: Product, public settings: Settings, public router: Router, public navCtrl: NavController, public route: ActivatedRoute) {
+    constructor(public platform: Platform, public alertController: AlertController, public modalController: ModalController, public api: ApiService, public data: Data, public product: Product, public store: Store, public settings: Settings, public router: Router, public navCtrl: NavController, public route: ActivatedRoute) {
         this.filter.page = 1;
-        this.filter.vendor = this.settings.customer.id;
+        // this.filter.vendor = this.settings.customer.id;
         if(this.settings.administrator) {
-            delete this.filter.vendor;
+            // delete this.filter.vendor;
         }
     }
     async getFilter() {
@@ -58,7 +58,9 @@ export class ProductListPage {
     }
     async getProducts() {
         this.loader = true;
-        await this.api.getItem('products', this.filter).then(res => {
+        await this.api.postItem('products', {}, this.store.store.post_name).then(res => {
+            console.log(this.filter);
+            console.log(res);
             this.products = res;
             this.loader = false;
         }, err => {
@@ -68,13 +70,14 @@ export class ProductListPage {
     async getAttributes() {
         await this.api.postItem('product-attributes', {
             category: this.filter.category
-        }).then(res => {
+        }, '/testmatfei/').then(res => {
             this.attributes = res;
         }, err => {
             console.log(err);
         });
     }
     ngOnInit() {
+        console.log(this);
         this.filter.category = this.route.snapshot.paramMap.get('id');
         if (this.data.categories && this.data.categories.length) {
             for (var i = 0; i < this.data.categories.length; i++) {
@@ -99,6 +102,10 @@ export class ProductListPage {
     editProduct(product){
         this.product.product = product;
         this.navCtrl.navigateForward(this.router.url + '/edit-product/' + product.id);
+    }
+
+    goTo(link) {
+        this.navCtrl.navigateForward(link);
     }
 
     async delete(product){

@@ -25,17 +25,17 @@ export class DetailsPage implements OnInit {
 
   validateForm(){
     if(this.vendor.product.name == '' || this.vendor.product.name == undefined){
-      this.presentAlert('Please enter name');
+      this.presentAlert('Por favor ingrese el nombre');
       return false;
     }
 
     if(this.vendor.product.type == '' || this.vendor.product.type == undefined){
-      this.presentAlert('Please select product type');
+      this.presentAlert('Por favor seleccione el tipo de producto');
       return false;
     }
 
     if(this.vendor.product.regular_price == '' || this.vendor.product.regular_price == undefined){
-      this.presentAlert('Please enter regular price');
+      this.presentAlert('Por favor ingrese el precio regular');
       return false;
     }
 
@@ -44,7 +44,7 @@ export class DetailsPage implements OnInit {
 
   async presentAlert(message) {
     const alert = await this.alertController.create({
-      header: 'Alert',
+      header: 'Alerta',
       message: message,
       buttons: ['OK']
     });

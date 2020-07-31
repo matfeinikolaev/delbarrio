@@ -1,9 +1,9 @@
 <ion-header mode='ios'>
   <ion-toolbar>
   	<ion-buttons slot="start">
-      <ion-back-button text="{{'Back' | translate}}" defaultHref="/tabs/home/product"></ion-back-button>
+      <ion-back-button text="{{'Atrás' | translate}}" defaultHref="/tabs/home/product"></ion-back-button>
     </ion-buttons>
-    <ion-title>{{"Review" | translate}}</ion-title>
+    <ion-title>{{"Crítica" | translate}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -17,7 +17,7 @@
 <ion-grid class="review-percent-block">
 <ion-row>
   <ion-list-header>
-    <ion-label mode="ios" style="text-align: center; padding-bottom: 10px;">{{"Review" | translate}} {{"Summary" | translate}}</ion-label>
+    <ion-label mode="ios" style="text-align: center; padding-bottom: 10px;">{{"Crítica" | translate}} {{"Resumen" | translate}}</ion-label>
   </ion-list-header>
 </ion-row>
   <ion-row>
@@ -85,25 +85,25 @@
             <ion-card mode="md">
                 <ion-card-content>
                     <div class="new-review">
-                        <ion-label style="margin: 6px 0px 6px 18px; font-size:13px">{{form.name}} <span style="margin-right: 10px; margin-left: 10px;">{{"Your Rating" | translate}}</span> <span class="rating review-star" style="float:none;">
+                        <ion-label style="margin: 6px 0px 6px 18px; font-size:13px">{{form.name}} <span style="margin-right: 10px; margin-left: 10px;">{{"Tu clasificación" | translate}}</span> <span class="rating review-star" style="float:none;">
               <span tappable (click)="yourRating(1)" class="star-icon" [ngClass]="{full: form.value.rating >= 1, half: form.value.rating == 0.5}">&#x2605;</span> <span tappable (click)="yourRating(2)" class="star-icon" [ngClass]="{full: form.value.rating >= 2, half: form.value.rating == 1.5}">&#x2605;</span> <span tappable (click)="yourRating(3)" class="star-icon" [ngClass]="{full: form.value.rating >= 3, half: form.value.rating == 2.5}">&#x2605;</span> <span tappable (click)="yourRating(4)" class="star-icon" [ngClass]="{full: form.value.rating >= 4, half: form.value.rating == 3.5}">&#x2605;</span> <span tappable (click)="yourRating(5)" class="star-icon" [ngClass]="{full: form.value.rating >= 5, half: form.value.rating == 4.5}">&#x2605;</span> </span>
                         </ion-label>
                         <div class="comment-form">
                             <form [formGroup]="form">
                                 <ion-list>
                                     <ion-item *ngIf="!settings.customer?.id">
-                                        <ion-input type="text" formControlName="author"  placeholder="{{'Name' | translate}}"> </ion-input>
+                                        <ion-input type="text" formControlName="author"  placeholder="{{'Nombre' | translate}}"> </ion-input>
                                     </ion-item>
                                     <ion-item *ngIf="!settings.customer?.id">
                                         <ion-input type="email" formControlName="email" placeholder="{{'Email' | translate}}"> </ion-input>
                                     </ion-item>
                                     <ion-item>
-                                        <ion-input required formControlName="comment" placeholder="{{'Review' | translate}}">
+                                        <ion-input required formControlName="comment" placeholder="{{'Crítica' | translate}}">
                                         </ion-input>
                                     </ion-item>
                                 </ion-list>
                                 <div>
-                                    <ion-button [disabled]="!form.valid || disableSubmit" expand="block" (click)="onSubmit()">{{"Submit" | translate}}
+                                    <ion-button [disabled]="!form.valid || disableSubmit" expand="block" (click)="onSubmit()">{{"Enviar" | translate}}
                                     </ion-button>
                                 </div>
                             </form>

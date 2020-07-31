@@ -1,10 +1,10 @@
 <ion-header mode='ios'>
  <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/tabs/account/category/{{vendor.product.categories[0]}}/details"></ion-back-button>
+      <ion-back-button text="{{'Atrás' | translate}}" defaultHref="/tabs/account/category/{{vendor.product.categories[0]}}/details"></ion-back-button>
     </ion-buttons>
     <ion-title>
-      {{"Photos" | translate}}
+      {{"Fotos" | translate}}
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -33,10 +33,10 @@
     <ion-toolbar>
       <ion-row>
         <ion-col>
-          <ion-button size="full" (click)="publish()" color="{{settings.theme.button}}">{{"Publish" | translate}}</ion-button>
+          <ion-button size="full" (click)="publish()" color="{{settings.theme.button}}">{{"Publicar" | translate}}</ion-button>
         </ion-col>
         <ion-col>
-          <ion-button size="full" (click)="draft()" color="{{settings.theme.button}}">{{"Draft" | translate}}</ion-button>
+          <ion-button size="full" (click)="draft()" color="{{settings.theme.button}}">{{"Borrador" | translate}}</ion-button>
         </ion-col>
       </ion-row>
     </ion-toolbar>

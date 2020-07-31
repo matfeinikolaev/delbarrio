@@ -74,9 +74,9 @@ export class OrderListPage implements OnInit {
     
     async updateOrderStatus(order) {
       const actionSheet = await this.actionSheetController.create({
-      header: 'Status',
+      header: 'Estado',
       buttons: [{
-        text: 'Fulfilled',
+        text: 'Cumplido',
         icon: 'checkmark',
         handler: () => {
             this.api.postItem('set_fulfill_status', {status: 'fulfilled', order_item_id: order.order_item_id}).then(res => {
@@ -86,7 +86,7 @@ export class OrderListPage implements OnInit {
             });
         }
       }, {
-        text: 'Unfulfilled',
+        text: 'No cumplido',
         icon: 'close',
         handler: () => {
             this.api.postItem('set_fulfill_status', {status: 'unfulfilled', order_item_id: order.order_item_id}).then(res => {
@@ -96,7 +96,7 @@ export class OrderListPage implements OnInit {
             });
         }
       }, {
-        text: 'Cancel',
+        text: 'Cancelar',
         icon: 'close',
         role: 'cancel',
         handler: () => {

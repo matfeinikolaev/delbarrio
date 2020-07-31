@@ -167,124 +167,124 @@ export class EditProductPage {
           this.reduceImages(results).then((results) => this.handleUpload(results));
 
         }, (err) => { console.log(err) });
-      }
+    }
 
 
-      handleUpload(results){
-          this.upload();
-      }
+    handleUpload(results){
+        this.upload();
+    }
 
-      reduceImages(selected_pictures: any) : any{
-        return selected_pictures.reduce((promise:any, item:any) => {
-          return promise.then((result) => {
-            return this.crop.crop(item, {quality: 75, targetHeight: 100, targetWidth: 100})
-            .then(cropped_image => this.photos = cropped_image);
+    reduceImages(selected_pictures: any) : any{
+    return selected_pictures.reduce((promise:any, item:any) => {
+        return promise.then((result) => {
+        return this.crop.crop(item, {quality: 75, targetHeight: 100, targetWidth: 100})
+        .then(cropped_image => this.photos = cropped_image);
 
-          });
-        }, Promise.resolve());
-      }
-
-     
-      upload() {
-
-          this.uploadingImage = true;
-
-          const fileTransfer: FileTransferObject = this.transfer.create();
-
-          var headers = new Headers();
-              headers.append('Content-Type', 'multipart/form-data');
-
-          let options: FileUploadOptions = {
-             fileKey: 'file',
-             fileName: 'name.jpg',
-             headers: { headers }
-          }
-
-          fileTransfer.upload( this.photos, this.config.url + '/wp-admin/admin-ajax.php?action=mstoreapp_upload_image', options)
-           .then((data) => {
-
-            this.uploadingImage = false;
-            this.imageresult = JSON.parse(data.response);
-            this.product.images[this.imageIndex] = {};
-            this.product.images[this.imageIndex].src = this.imageresult.url;
-            this.imageIndex = this.imageIndex + 1;
-             // success
-           }, (err) => {
-             //this.functions.showAlert("error", err);
-          })
-      }
-
-      async replaceImage(index){
-          const actionSheet = await this.actionSheetController.create({
-          header: 'Albums',
-          buttons: [{
-            text: 'Delete Image',
-            role: 'destructive',
-            icon: 'trash',
-            handler: () => {
-              this.product.images.splice(index, 1);
-              this.imageIndex = this.imageIndex - 1;
-            }
-          }, {
-            text: 'Edit Image',
-            icon: 'create',
-            handler: () => {
-              let options= {
-                maximumImagesCount: 1,
-              }
-              this.photos = new Array<string>();
-              this.imagePicker.getPictures(options)
-              .then((results) => {
-                this.reduceImages(results).then((results) => this.replaceUpload(index));
-
-              }, (err) => {
-              //this.functions.showAlert("error", err);
-              });
-            }
-          }, {
-            text: 'Cancel',
-            icon: 'close',
-            role: 'cancel',
-            handler: () => {
-              console.log('Cancel clicked');
-            }
-          }]
         });
-        await actionSheet.present();
+    }, Promise.resolve());
+    }
 
-      }
+    
+    upload() {
 
-      replaceUpload(index) {
+        this.uploadingImage = true;
 
-          this.uploadingImage = true;
+        const fileTransfer: FileTransferObject = this.transfer.create();
 
-          const fileTransfer: FileTransferObject = this.transfer.create();
+        var headers = new Headers();
+            headers.append('Content-Type', 'multipart/form-data');
 
-          var headers = new Headers();
-              headers.append('Content-Type', 'multipart/form-data');
+        let options: FileUploadOptions = {
+            fileKey: 'file',
+            fileName: 'name.jpg',
+            headers: { headers }
+        }
 
-          let options: FileUploadOptions = {
-             fileKey: 'file',
-             fileName: 'name.jpg',
-             headers: { headers }
-          }
+        fileTransfer.upload( this.photos, this.config.url + '/wp-admin/admin-ajax.php?action=mstoreapp_upload_image', options)
+        .then((data) => {
 
-          fileTransfer.upload( this.photos, this.config.url + '/wp-admin/admin-ajax.php?action=mstoreapp_upload_image', options)
-           .then((data) => {
+        this.uploadingImage = false;
+        this.imageresult = JSON.parse(data.response);
+        this.product.images[this.imageIndex] = {};
+        this.product.images[this.imageIndex].src = this.imageresult.url;
+        this.imageIndex = this.imageIndex + 1;
+            // success
+        }, (err) => {
+            //this.functions.showAlert("error", err);
+        })
+    }
 
-            this.uploadingImage = false;
-            this.imageresult = JSON.parse(data.response);
-            this.product.images[index].src = this.imageresult.url;
-             // success
-           }, (err) => {
-             //this.functions.showAlert("error", err);
-          })
-      }
+    async replaceImage(index){
+        const actionSheet = await this.actionSheetController.create({
+        header: 'Álbumes',
+        buttons: [{
+        text: 'Borrar el imagen',
+        role: 'destructive',
+        icon: 'trash',
+        handler: () => {
+            this.product.images.splice(index, 1);
+            this.imageIndex = this.imageIndex - 1;
+        }
+        }, {
+        text: 'Editar el imagen',
+        icon: 'create',
+        handler: () => {
+            let options= {
+            maximumImagesCount: 1,
+            }
+            this.photos = new Array<string>();
+            this.imagePicker.getPictures(options)
+            .then((results) => {
+            this.reduceImages(results).then((results) => this.replaceUpload(index));
 
-      editProduct(product){
+            }, (err) => {
+            //this.functions.showAlert("error", err);
+            });
+        }
+        }, {
+        text: 'Cancelar',
+        icon: 'close',
+        role: 'cancel',
+        handler: () => {
+            console.log('Cancel clicked');
+        }
+        }]
+    });
+    await actionSheet.present();
+
+    }
+
+    replaceUpload(index) {
+
+        this.uploadingImage = true;
+
+        const fileTransfer: FileTransferObject = this.transfer.create();
+
+        var headers = new Headers();
+            headers.append('Content-Type', 'multipart/form-data');
+
+        let options: FileUploadOptions = {
+            fileKey: 'file',
+            fileName: 'name.jpg',
+            headers: { headers }
+        }
+
+        fileTransfer.upload( this.photos, this.config.url + '/wp-admin/admin-ajax.php?action=mstoreapp_upload_image', options)
+        .then((data) => {
+
+        this.uploadingImage = false;
+        this.imageresult = JSON.parse(data.response);
+        this.product.images[index].src = this.imageresult.url;
+            // success
+        }, (err) => {
+            //this.functions.showAlert("error", err);
+        })
+    }
+
+    editProduct(product){
         this.productData.variationProduct = product;
         this.navCtrl.navigateForward(this.router.url + '/edit-variation-product/' + product.id);
     }
-    }
+}
 
 

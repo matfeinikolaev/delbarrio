@@ -24,7 +24,7 @@ export class EditOrderPage implements OnInit {
 
   async getOrder() {
         const loading = await this.loadingController.create({
-            message: 'Loading...',
+            message: 'Cargando...',
             translucent: true,
             cssClass: 'custom-class custom-loading'
         });

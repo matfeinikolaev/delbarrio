@@ -1,9 +1,9 @@
 <ion-header mode="ios" mode='ios'>
    <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button text="{{'Back' | translate}}" defaultHref="/tabs/account"></ion-back-button>
+      <ion-back-button text="{{'Atrás' | translate}}" defaultHref="/tabs/account"></ion-back-button>
     </ion-buttons>
-      <ion-title>{{"Currency" | translate}}</ion-title>
+      <ion-title>{{"Moneda" | translate}}</ion-title>
    </ion-toolbar>
 </ion-header>
 <ion-content class="settings">
@@ -15,7 +15,7 @@
             <ion-radio value="{{item.code}}"> </ion-radio>
          </ion-item>
          </ion-radio-group>
-         <ion-button shape="undefined" mode="md" padding color="{{settings.theme.button}}" expand="block" fill="solid" (click)="applyCurrency()" >{{"Apply" | translate}}</ion-button>
+         <ion-button shape="undefined" mode="md" padding color="{{settings.theme.button}}" expand="block" fill="solid" (click)="applyCurrency()" >{{"Aplicar" | translate}}</ion-button>
       </ion-list>
    </div>
 </ion-content>

@@ -86,9 +86,9 @@ export class PhotosPage implements OnInit {
   }
   async replaceImage(index) {
       const actionSheet = await this.actionSheetController.create({
-          header: 'Albums',
+          header: 'Álbums',
           buttons: [{
-              text: 'Delete Image',
+              text: 'Borrar Imagen',
               role: 'destructive',
               icon: 'trash',
               handler: () => {
@@ -96,7 +96,7 @@ export class PhotosPage implements OnInit {
                   this.imageIndex = this.imageIndex - 1;
               }
           }, {
-              text: 'Edit Image',
+              text: 'Editar Imagen',
               icon: 'create',
               handler: () => {
                   let options = {
@@ -110,7 +110,7 @@ export class PhotosPage implements OnInit {
                   });
               }
           }, {
-              text: 'Cancel',
+              text: 'Cancelar',
               icon: 'close',
               role: 'cancel',
               handler: () => {
