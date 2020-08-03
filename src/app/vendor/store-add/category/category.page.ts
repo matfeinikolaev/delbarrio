@@ -5,29 +5,30 @@ import { ApiService } from './../../../api.service';
 import { Data } from './../../../data';
 import { Vendor } from './../../../data/vendor';
 import { Settings } from './../../../data/settings';
-import { Store } from './../../../data/store';
+
 @Component({
   selector: 'app-category',
   templateUrl: './category.page.html',
   styleUrls: ['./category.page.scss'],
 })
-export class CategoryPage {
+export class StoreCategoryPage {
 
 	items: any = {};
 	subcategories: any = [];
 	categories: any = [];
 
-    constructor(public vendor: Vendor, public api: ApiService, public data: Data, public loadingController: LoadingController, public navCtrl: NavController, public router: Router, public settings: Settings, public store: Store, public route: ActivatedRoute) {}
+    constructor(public vendor: Vendor, public api: ApiService, public data: Data, public loadingController: LoadingController, public navCtrl: NavController, public router: Router, public settings: Settings, public route: ActivatedRoute) {}
     ngOnInit() {
         console.log(this);
         if (this.data.mainCategories.length == 0) {
             if(this.subcategories.length){
-                this.navCtrl.navigateForward('/tabs/account/add-products/subcategory/');
+                this.navCtrl.navigateForward('/tabs/account/add-stores/subcategory/');
             }
-            else this.navCtrl.navigateForward('/tabs/account/add-products/details/');
+            else this.navCtrl.navigateForward('/tabs/account/add-stores/details');
         }
     }
     getCategory(ID, slug, name){
+        console.log(this);
     	this.subcategories = [];
         this.vendor.product.categories[0] = {id: ID};     
         this.items.id = ID;
@@ -42,9 +43,9 @@ export class CategoryPage {
         }
 
         if(this.subcategories.length){
-           this.navCtrl.navigateForward('/tabs/account/add-products/subcategory/' + ID);
+           this.navCtrl.navigateForward('/tabs/account/add-stores/subcategory/' + ID);
         }
 
-        else this.navCtrl.navigateForward('/tabs/account/add-products/details/' + ID);
+        else this.navCtrl.navigateForward('/tabs/account/add-stores/details/' + ID);
     }
 }

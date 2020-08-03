@@ -20,6 +20,7 @@ export class StoreListPage {
     attributes: any;
     hasMoreItems: boolean = true;
     loader: boolean = false;
+    searchInput: any;
     constructor(public platform: Platform, public alertController: AlertController, public modalController: ModalController, public api: ApiService, public data: Data, public store: Store, public settings: Settings, public router: Router, public navCtrl: NavController, public route: ActivatedRoute) {
         this.filter.page = 1;
         this.filter.vendor = this.settings.customer.id;
@@ -58,7 +59,7 @@ export class StoreListPage {
         });
     }
     async getStores() {
-        this.loader = true;
+        // this.loader = true;
         await this.api.postItem('get_user_stores', this.filter).then(res => {
             console.log(this.filter);
             console.log(res);
@@ -88,7 +89,7 @@ export class StoreListPage {
         }
         if (this.settings.colWidthProducts == 4) this.filter.per_page = 15;
         this.getStores();
-        this.getAttributes();
+        // this.getAttributes();
     }
     getStore(store) {
         this.store.store = store;
@@ -104,11 +105,23 @@ export class StoreListPage {
         this.navCtrl.navigateForward(this.router.url + '/edit-store/' + store.ID);
     }
 
-    goTo(link) {
+    goTo(link, store) {
+        this.store.store = store;
         this.navCtrl.navigateForward(link);
     }
+    
+    viewProducts(store) {
+        this.store.store = store;
+        this.navCtrl.navigateForward('tabs/account/vendor-stores/view-store/' + store.ID);
+    }
+    onInput() {
+        this.filter.page = 1;
+        delete this.filter.sku;
+        this.filter.q = this.searchInput;
+        this.getStores();
+    }
 
-    async delete(product){
+    async delete(store){
         const alert = await this.alertController.create({
           header: 'Borrar',
           message: 'Está seguro, que quiere borrar este producto?',
@@ -122,7 +135,7 @@ export class StoreListPage {
         }, {
           text: 'Borrar',
           handler: () => {
-            this.api.deleteItem('products/'+product.id).then(res => {
+            this.api.postItem('delete_user_post', {ID: store.ID}).then(res => {
                 this.getStores();
             }, err => {
                 console.log(err);

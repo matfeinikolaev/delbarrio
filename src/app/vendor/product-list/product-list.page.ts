@@ -20,6 +20,7 @@ export class ProductListPage {
     attributes: any;
     hasMoreItems: boolean = true;
     loader: boolean = false;
+    searchInput: any;
     constructor(public platform: Platform, public alertController: AlertController, public modalController: ModalController, public api: ApiService, public data: Data, public product: Product, public store: Store, public settings: Settings, public router: Router, public navCtrl: NavController, public route: ActivatedRoute) {
         this.filter.page = 1;
         // this.filter.vendor = this.settings.customer.id;
@@ -58,7 +59,7 @@ export class ProductListPage {
     }
     async getProducts() {
         this.loader = true;
-        await this.api.postItem('products', {}, this.store.store.post_name).then(res => {
+        await this.api.postItem('get_all_products', this.filter, this.store.store.post_name).then(res => {
             console.log(this.filter);
             console.log(res);
             this.products = res;
@@ -89,6 +90,13 @@ export class ProductListPage {
         if (this.settings.colWidthProducts == 4) this.filter.per_page = 15;
         this.getProducts();
         this.getAttributes();
+    }
+    onInput() {
+        this.filter.page = 1;
+        delete this.filter.sku;
+        this.filter.q = this.searchInput;
+        this.getProducts();
+        this.loader = false;
     }
     getProduct(product) {
         this.product.product = product;
@@ -122,7 +130,8 @@ export class ProductListPage {
         }, {
           text: 'Borrar',
           handler: () => {
-            this.api.deleteItem('products/'+product.id).then(res => {
+            this.api.postItem('delete_user_post', {ID: product.id}, product.path).then(res => {
+                console.log(product);
                 this.getProducts();
             }, err => {
                 console.log(err);

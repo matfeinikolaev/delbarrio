@@ -121,6 +121,13 @@ export class AccountPage {
             }
           }
         }
+        if( this.data.storeCategories.length == 0 ) {
+            this.api.postItem('get_store_categories').then(res => {
+                this.data.storeCategories = res;
+            }, err => {
+                console.error(err);
+            });
+        }
     }
     async login() {
         const modal = await this.modalController.create({

@@ -1,0 +1,111 @@
+<ion-header mode='ios'>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button text="{{'Atrás' | translate}}" defaultHref="/tabs/account/category"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      {{"Detalles" | translate}}
+    </ion-title>
+
+     <ion-buttons slot="end">
+	    <ion-button style="margin-right: 10px; text-transform: capitalize;" (click)="next()">{{"Próximo" | translate}}</ion-button>
+	  </ion-buttons>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+<ion-item>
+    <ion-label position="floating">{{"Nombre de tienda" | translate}}</ion-label>
+    <ion-input required type="text" [(ngModel)]="vendor.store.name" name="name"></ion-input>
+</ion-item>
+
+<ion-item>
+    <ion-label>{{"Tipo" | translate}}</ion-label>
+    <ion-select [(ngModel)]="vendor.store.type" name="type" okText="OK" cancelText="Cancelar">
+            <ion-select-option *ngFor="let cat of data.storeCategories" value="{{cat.term_id}}">{{cat.name}}</ion-select-option>
+    </ion-select>
+</ion-item>
+
+<ion-item>
+    <ion-label position="floating">{{"Breve Descripción" | translate}}</ion-label>
+    <ion-textarea  rows="2" required type="text" [(ngModel)]="vendor.store.short_description" name="short_description"></ion-textarea>
+</ion-item> 
+
+<ion-item>
+    <ion-label position="floating">{{"Descripción" | translate}}</ion-label>
+    <ion-textarea rows="3" required type="text" [(ngModel)]="vendor.store.description" name="short_description"></ion-textarea>
+</ion-item>
+
+<ion-item>
+    <ion-label>{{"Estado" | translate}}</ion-label>
+    <ion-select [(ngModel)]="vendor.store.status" name="status" okText="OK" cancelText="Cancelar">
+            <ion-select-option value="publish">Publicar</ion-select-option>
+            <ion-select-option value="draft">Borrador</ion-select-option>
+            <ion-select-option value="pending">Pendiente</ion-select-option>
+    </ion-select>
+</ion-item>
+
+<ion-item>
+    <ion-label position="floating">{{"Dirección" | translate}}</ion-label>
+    <ion-input required type="text" [(ngModel)]="vendor.store.address" name="address"></ion-input>
+</ion-item>
+
+<ion-item>
+    <ion-label position="floating">{{"Ciudad" | translate}}</ion-label>
+    <ion-input required type="text" [(ngModel)]="vendor.store.city" name="city"></ion-input>
+</ion-item>
+
+<ion-item>
+    <ion-label position="floating">{{"Región" | translate}}</ion-label>
+    <ion-input required type="text" [(ngModel)]="vendor.store.region" name="region"></ion-input>
+</ion-item>
+
+<ion-item>
+    <ion-label position="floating">{{"Country" | translate}}</ion-label>
+    <ion-input required type="text" [(ngModel)]="vendor.store.country" name="country"></ion-input>
+</ion-item>
+
+<ion-item>
+    <ion-label position="floating">{{"Código postal" | translate}}</ion-label>
+    <ion-input required type="text" [(ngModel)]="vendor.store.zip" name="zip"></ion-input>
+</ion-item>
+
+<ion-item>
+    <ion-label position="floating">{{"El Sitio web" | translate}}</ion-label>
+    <ion-input required type="text" [(ngModel)]="vendor.store.website" name="website"></ion-input>
+</ion-item>
+
+
+  <ion-item>
+      <ion-label>{{"Comprable" | translate}}</ion-label>
+      <ion-toggle color="{{settings.theme.button}}" checked="true" [(ngModel)]="vendor.product.purchasable" name="purchasable"></ion-toggle>
+  </ion-item>
+
+  <ion-item>
+      <ion-label>{{"En Stock" | translate}}</ion-label>
+      <ion-toggle color="{{settings.theme.button}}" checked="true" [(ngModel)]="vendor.product.in_stock" name="in_stock"></ion-toggle>
+  </ion-item>
+
+  <ion-item>
+      <ion-label>{{"Se requiere envío" | translate}}</ion-label>
+      <ion-toggle color="{{settings.theme.button}}" checked="true" [(ngModel)]="vendor.product.shipping_required" name="shipping_required"></ion-toggle>
+  </ion-item>
+
+  <ion-item>
+      <ion-label>{{"Vendidos individualmente" | translate}}</ion-label>
+      <ion-toggle color="{{settings.theme.button}}" checked="true" [(ngModel)]="vendor.product.sold_individually" name="sold_individually"></ion-toggle>
+  </ion-item>
+
+  <ion-item class="option" *ngIf="vendor.product.type != 'external'">
+    <ion-label>{{"Gestionar stock" | translate}}</ion-label>
+    <ion-toggle color="{{settings.theme.button}}" checked="true" [(ngModel)]="vendor.product.manage_stock" name="manage_stock"></ion-toggle>
+</ion-item>
+
+<ion-item *ngIf="vendor.product.manage_stock && vendor.product.type != 'external'">
+    <ion-label position="floating">{{"Cantidad" | translate}}</ion-label>
+    <ion-input required type="number" [(ngModel)]="vendor.product.stock_quantity" name="stock_quantity"></ion-input>
+</ion-item>
+
+</ion-content>

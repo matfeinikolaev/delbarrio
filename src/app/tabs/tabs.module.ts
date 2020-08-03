@@ -58,6 +58,10 @@ import { CategoryPage } from './../vendor/product-add/category/category.page';
 import { DetailsPage } from './../vendor/product-add/details/details.page';
 import { PhotosPage } from './../vendor/product-add/photos/photos.page';
 import { SubcategoryPage } from './../vendor/product-add/subcategory/subcategory.page';
+import { StoreCategoryPage } from './../vendor/store-add/category/category.page';
+import { StoreDetailsPage } from './../vendor/store-add/details/details.page';
+import { StorePhotosPage } from './../vendor/store-add/photos/photos.page';
+import { StoreSubcategoryPage } from './../vendor/store-add/subcategory/subcategory.page';
 import { EditSettingsPage } from './../account/edit-settings/edit-settings.page';
 @NgModule({
   imports: [
@@ -118,6 +122,10 @@ import { EditSettingsPage } from './../account/edit-settings/edit-settings.page'
   DetailsPage,
   PhotosPage,
   SubcategoryPage,
+  StoreCategoryPage,
+  StoreDetailsPage,
+  StorePhotosPage,
+  StoreSubcategoryPage,
   EditSettingsPage,
   ]
 })

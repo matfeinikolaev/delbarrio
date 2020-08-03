@@ -9,13 +9,13 @@ import { Headers } from '@angular/http';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer/ngx';
 import { Config } from './../../../config';
 import { ApiService } from '../../../api.service';
-import { Store } from './../../../data/store';
+
 @Component({
   selector: 'app-photos',
   templateUrl: './photos.page.html',
   styleUrls: ['./photos.page.scss'],
 })
-export class PhotosPage implements OnInit {
+export class StorePhotosPage implements OnInit {
   
   uploadingImageSpinner: boolean = false;
   photos: any;
@@ -25,7 +25,7 @@ export class PhotosPage implements OnInit {
   loading: any;
 
   err: any;
-  constructor(public platform: Platform, public api: ApiService, public actionSheetController: ActionSheetController, public config: Config, public vendor: Vendor, public settings: Settings, public loadingController: LoadingController, public navCtrl: NavController, public router: Router, private transfer: FileTransfer, private imagePicker: ImagePicker, private crop: Crop, public store: Store) { }
+  constructor(public platform: Platform, public api: ApiService, public actionSheetController: ActionSheetController, public config: Config, public vendor: Vendor, public settings: Settings, public loadingController: LoadingController, public navCtrl: NavController, public router: Router, private transfer: FileTransfer, private imagePicker: ImagePicker, private crop: Crop) { }
 
   ngOnInit() {
       console.log(this);
@@ -151,7 +151,7 @@ export class PhotosPage implements OnInit {
       this.submit();
   }
   async submit() {
-      this.vendor.product.vendor = this.settings.customer.id;
+      this.vendor.store.id = this.settings.customer.id;
       this.loading = await this.loadingController.create({
           spinner: 'crescent',
           translucent: true,
@@ -159,21 +159,21 @@ export class PhotosPage implements OnInit {
           backdropDismiss: true
       });
       await this.loading.present();
-      this.api.postItem('add_product', this.vendor.product, this.store.store.post_name).then(res => {
+      this.api.postItem('add_store', this.vendor.store).then(res => {
           //DOKAN AND WCFM Plugin
           this.res = res;
-          this.api.postItem('update-vendor-product', {
-              id: this.res.id
-          }, this.store.store.post_name).then(res => {
-              console.log(res);
-          }, err => {
-              console.log(err);
-          });
+        //   this.api.postItem('update-vendor-product', {
+        //       id: this.res.id
+        //   }).then(res => {
+        //       console.log(res);
+        //   }, err => {
+        //       console.log(err);
+        //   });
           //DOKAN AND WCFM Plugin
-          this.vendor.product = {};
-          this.vendor.product.categories = [];
-          this.vendor.product.images = [];
-          this.vendor.product.dimensions = {};
+          this.vendor.store = {};
+          this.vendor.store.categories = [];
+          this.vendor.store.images = [];
+          this.vendor.store.dimensions = {};
           this.loading.dismiss();
           this.navCtrl.navigateBack('tabs/account');
       }, err => {

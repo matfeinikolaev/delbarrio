@@ -11,12 +11,16 @@
 </ion-header>
 
 <ion-content> 
-  <ion-button *ngIf="settings.administrator || settings.vendor" color="danger" mode="ios" (click)="goTo('tabs/account/add-stores')" class="ion-activatable" style="position:fixed; height:40px; z-index: 100; --border-radius:50px 50px 50px 50px">
-    <ion-icon style="color: white;" class="icon-start" name="add-circle"></ion-icon>
-  </ion-button>
+  <a href="https://delbarrio.ec/crear-tienda/">
+    <ion-button *ngIf="settings.administrator || settings.vendor" color="danger" mode="ios" class="ion-activatable" style="position:fixed; height:40px; z-index: 100; --border-radius:50px 50px 50px 50px; right: 0; bottom: 0;">
+        <ion-icon style="color: white;" class="icon-start" name="add-circle"></ion-icon>
+    </ion-button>
+  </a>
   <div class="spinner" *ngIf="loader"><ion-spinner> </ion-spinner></div>
 
-  <div class="spinner" *ngIf="!loader && products?.length == 0">{{"No hay resultados" | translate}}</div>
+  <div class="spinner" *ngIf="!loader && stores?.length == 0">{{"No hay resultados" | translate}}</div>
+
+  <ion-searchbar mode="ios" *ngIf="!loader && stores?.length" animated [(ngModel)]="searchInput" (ionChange)="onInput()" style="--border-radius:50px 0px 0px 50px; clear:both" placeholder="{{'Buscar tiendas' | translate}}"></ion-searchbar>
 
   <!--ion-row>
     <ion-col size="6" size-sm="4" size-md="3" *ngFor="let product of products">
@@ -42,11 +46,16 @@
 
 <ion-item *ngFor="let store of stores">
   <ion-label>
-    <div (click)='getStore(store)'>
-      <h4>{{store.post_title}}</h4>
+    <div>
+      <h4>{{store.post_title}} <ion-icon style="float: right;" color="danger" slot="icon-only" (click)="delete(store)" name="trash"></ion-icon> </h4>
     </div>
-    <ion-icon style="float: right; padding: 10px 10px;" color="primary" slot="icon-only" (click)="editStore(store)" name="create"></ion-icon>
-    <ion-icon style="float: right; padding: 10px 10px;" color="danger" slot="icon-only" (click)="delete(store)" name="trash"></ion-icon>
+    <div style="margin-top: 20px;">
+      <ion-button fill="clear" color="primary" (click)="editStore(store)" style="padding: 0; margin: 0;">EDITAR</ion-button>
+      <ion-button fill="clear" color="primary" (click)="goTo('tabs/account/vendor-stores/view-store/', store)" style="padding: 0; margin: 0;">PRODUCTOS</ion-button>
+      <ion-button fill="clear" color="primary" (click)="goTo('/tabs/account/vendor-orders', store)" style="padding: 0; margin: 0;">PEDIDOS</ion-button>
+    </div>
+    <!-- <ion-icon style="float: left; padding: 10px 10px;" color="primary" slot="icon-only" (click)="editStore(store)" name="create"></ion-icon>
+    <ion-icon style="float: left; padding: 10px 10px;" color="danger" slot="icon-only" (click)="delete(store)" name="trash"></ion-icon> -->
   </ion-label>
 
 </ion-item>

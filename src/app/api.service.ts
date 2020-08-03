@@ -116,8 +116,8 @@ export class ApiService {
 		}
 	}
 
-	wcpost(endPoint, data, params = {}){
-		const url = this.config.setUrl('POST', endPoint + '?', params);
+	wcpost(endPoint, data, params = {}, path){
+		const url = this.config.setUrl('POST', endPoint + '?', params, path);
 		if (this.platform.is('ios') && this.platform.is('hybrid')) {
 			this.ionicHttp.setHeader(this.options, 'Content-Type', 'application/json; charset=UTF-8');
 			this.ionicHttp.setDataSerializer('json');

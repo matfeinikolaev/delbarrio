@@ -146,9 +146,10 @@ export class EditProductPage {
         }
         if (this.product.images.length) this.product.images[0].position = 0;
         if (this.product.type == 'external') this.product.manage_stock = false;
-
-        await this.api.putItem('products/' + this.id, this.product).then(res => {
-            this.product = res;
+        await this.api.postItem('update_product', this.product, this.product.path).then(res => {
+            // this.product = res;
+            console.log(this.product);
+            console.log(res);
             this.productData.product = {};
             this.navCtrl.navigateBack('/tabs/account/vendor-products');
         }, err => {

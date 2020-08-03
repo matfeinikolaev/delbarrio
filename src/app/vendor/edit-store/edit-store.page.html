@@ -11,17 +11,22 @@
 
 <ion-content class="product">
 
+  <ion-button *ngIf="settings.administrator || settings.vendor" color="danger" mode="ios" (click)="saveStore()" class="ion-activatable" style="position:fixed; height:40px; z-index: 100; --border-radius:50px 50px 50px 50px; right: 0;">
+    <ion-icon style="color: white;" class="icon-start" name="save"></ion-icon>
+  </ion-button>
+
   <div *ngIf="store" class="margin">
 
   <ion-list>
   <ion-list-header>
     <ion-label>{{"ID de la tienda" | translate}} - {{store.ID}}</ion-label>
   </ion-list-header>
-
-   <ion-item *ngFor="let item of store | keys">
+  <div *ngFor="let item of store | keys">
+    <ion-item *ngIf="item.key!='ID'">
       <ion-label position="floating">{{item.key}}</ion-label>
       <ion-input required type="text" [(ngModel)]="store[item.key]" name="name"></ion-input>
-  </ion-item>
+    </ion-item>
+  </div>
 
   <!-- <ion-item>
       <ion-label position="floating">{{"Nombre" | translate}}</ion-label>
@@ -149,9 +154,9 @@
             <ion-card class="ion-activatable ion-focusable hydrated">
               <div>
                 <div *ngIf="!item.image">
-                  <img src="{{item.images[0].src}}" (click)="getProduct(store)"/>
+                  <img src="{{item.images[0].src}}" (click)="getProduct(item)"/>
                 </div>
-                <div *ngIf="item.image" (click)="getProduct(store)">
+                <div *ngIf="item.image" (click)="getProduct(item)">
                    <ion-img src="{{item.image}}"></ion-img>
                 </div>
              </div>

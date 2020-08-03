@@ -3,6 +3,7 @@ import { NavController, Platform, ActionSheetController } from '@ionic/angular';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../../api.service';
 import { Settings } from './../../data/settings';
+import { Store } from './../../data/store';
 import { NavigationExtras } from '@angular/router';
 @Component({
   selector: 'app-order-list',
@@ -14,7 +15,7 @@ export class OrderListPage implements OnInit {
     orders: any = [];
     hasMoreItems: boolean = true;
     loader: boolean = true;
-    constructor(public actionSheetController: ActionSheetController, public platform: Platform, public api: ApiService, public settings: Settings, public router: Router, public navCtrl: NavController, public route: ActivatedRoute) {
+    constructor(public actionSheetController: ActionSheetController, public platform: Platform, public api: ApiService, public settings: Settings, public store: Store, public router: Router, public navCtrl: NavController, public route: ActivatedRoute) {
         this.filter.page = 1;
         this.filter.vendor = this.settings.customer.id;
         if(this.settings.administrator) {
@@ -22,6 +23,7 @@ export class OrderListPage implements OnInit {
         }
     }
     ngOnInit() {
+        console.log(this);
         if(this.settings.settings.vendorType === 'product_vendor') {
             this.getWooCommerceProductVendorOrders();
         } else {
@@ -33,7 +35,8 @@ export class OrderListPage implements OnInit {
     }
     
     getOrders() {
-        this.api.getItem('orders', this.filter).then(res => {
+        this.api.postItem('orders', this.filter, this.store.store.post_name).then(res => {
+            console.log(res);
             this.orders = res;
             this.loader = false;
         }, err => {
@@ -64,7 +67,7 @@ export class OrderListPage implements OnInit {
     }
 
     getWooCommerceProductVendorOrders() {
-        this.api.postItem('vendor-order-list', this.filter).then(res => {
+        this.api.postItem('vendor-order-list', this.filter, this.store.store.post_name).then(res => {
             this.orders = res;
             this.loader = false;
         }, err => {
@@ -79,7 +82,7 @@ export class OrderListPage implements OnInit {
         text: 'Cumplido',
         icon: 'checkmark',
         handler: () => {
-            this.api.postItem('set_fulfill_status', {status: 'fulfilled', order_item_id: order.order_item_id}).then(res => {
+            this.api.postItem('set_fulfill_status', {status: 'fulfilled', order_item_id: order.order_item_id}, this.store.store.post_name).then(res => {
                 order.fulfillment_status = res;
             }, err => {
                 console.log(err);
@@ -89,7 +92,7 @@ export class OrderListPage implements OnInit {
         text: 'No cumplido',
         icon: 'close',
         handler: () => {
-            this.api.postItem('set_fulfill_status', {status: 'unfulfilled', order_item_id: order.order_item_id}).then(res => {
+            this.api.postItem('set_fulfill_status', {status: 'unfulfilled', order_item_id: order.order_item_id}, this.store.store.post_name).then(res => {
                 order.fulfillment_status = res;
             }, err => {
                 console.log(err);

@@ -128,6 +128,12 @@ export class EditStorePage {
             }
         }, err => {});
     }
+    getProduct(product) {
+
+    }
+    editProduct(product) {
+
+    }
     goToProduct(product) {
         this.storeData.store = product;
         var endIndex = this.router.url.lastIndexOf('/');

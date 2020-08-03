@@ -136,6 +136,7 @@ export class HomePage {
     getBlocks() {
         this.api.postItem('get_store_categories').then(res => {
             this.stores = res;
+            this.data.storeCategories = res;
             console.log(this);
         }, err => {
             console.error(err);

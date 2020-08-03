@@ -3,7 +3,7 @@ import { Settings } from './../../../data/settings';
 import { LoadingController, NavController, AlertController } from '@ionic/angular';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Vendor } from './../../../data/vendor';
-
+import { Store } from './../../../data/store';
 @Component({
   selector: 'app-details',
   templateUrl: './details.page.html',
@@ -11,15 +11,17 @@ import { Vendor } from './../../../data/vendor';
 })
 export class DetailsPage implements OnInit {
 
-  constructor(public alertController: AlertController, public vendor: Vendor, public settings: Settings, public loadingController: LoadingController, public navCtrl: NavController, public router: Router, public route: ActivatedRoute) { }
+  constructor(public alertController: AlertController, public vendor: Vendor, public settings: Settings, public store: Store, public loadingController: LoadingController, public navCtrl: NavController, public router: Router, public route: ActivatedRoute) { }
 
   ngOnInit() {
+  	console.log(this);
   	console.log(this.vendor.product);
   }
 
   next(){
     if(this.validateForm()){
-      this.navCtrl.navigateForward('/tabs/account/add-products/details/' + this.vendor.product.categories[0].id + '/photos');
+      // this.navCtrl.navigateForward('/tabs/account/add-products/details/' + this.vendor.product.categories[0].id + '/photos');
+      this.navCtrl.navigateForward('/tabs/account/add-products/details/' + this.store.store.ID + '/photos');
     }
   }
 
