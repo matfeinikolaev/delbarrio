@@ -11,9 +11,9 @@
 </ion-header>
 
 <ion-content>
-  <!-- <ion-button *ngIf="!loader && products?.length" color="danger" mode="ios" (click)="goTo('tabs/account/add-products')" class="ion-activatable" style="position:fixed; height:40px; z-index: 100; --border-radius:50px 50px 50px 50px; right: 0; bottom: 0;">
+  <ion-button *ngIf="!loader && products?.length" color="danger" mode="ios" (click)="goTo('tabs/account/add-products')" class="ion-activatable" style="position:fixed; height:40px; z-index: 100; --border-radius:50px 50px 50px 50px; right: 0; bottom: 0;">
     <ion-icon style="color: white;" class="icon-start" name="add-circle"></ion-icon>
-  </ion-button> -->
+  </ion-button>
 
   <div class="spinner" *ngIf="loader"><ion-spinner> </ion-spinner></div>
 
@@ -21,7 +21,7 @@
     <a (click)="goTo('tabs/account/add-products')" style="text-decoration: none;">añadir productos</a>
   </div>
 
-  <ion-searchbar mode="ios" *ngIf="!loader && products?.length" animated [(ngModel)]="searchInput" (ionChange)="onInput()" style="--border-radius:50px 0px 0px 50px; clear:both" placeholder="{{'Buscar productos' | translate}}"></ion-searchbar>
+  <ion-searchbar mode="ios" *ngIf="!loader" animated [(ngModel)]="searchInput" (ionChange)="onInput()" style="--border-radius:50px 0px 0px 50px; clear:both" placeholder="{{'Buscar productos' | translate}}"></ion-searchbar>
 
   <!--ion-row>
     <ion-col size="6" size-sm="4" size-md="3" *ngFor="let product of products">
@@ -48,6 +48,7 @@
 <ion-item *ngFor="let product of products">
   <ion-thumbnail slot="start" style="width: 80px; height: 80px;">
     <img src="{{product.images[0].src}}" *ngIf="product.images.length">
+    <img style="clear: both;" src="../../../assets/image/logo.png" *ngIf="product.images.length == 0">
   </ion-thumbnail>
   <ion-label>
   <h4>{{product.name}}</h4>
@@ -56,8 +57,10 @@
     <span class="regular-price">{{1*product.price | currency:settings.currency:'symbol':'1.2-2'}}</span>
     <span *ngIf="product.sale_price" class="special-price"><del>{{1*product.sale_price | currency:settings.currency:'symbol':'1.2-2'}}</del></span>
   </h4>
+  <p>{{product.stock_quantity==null?0:product.stock_quantity}}</p>
+  <p>{{product.post_status}}</p>
   <ion-icon style="float: right;" color="danger" slot="icon-only" (click)="delete(product)" name="trash"></ion-icon> 
-  <!-- <ion-button fill="clear" color="primary" (click)="editProduct(product)">EDITAR</ion-button> -->
+  <ion-button fill="clear" color="primary" (click)="editProduct(product)">EDITAR</ion-button>
   <!-- <ion-button fill="clear" color="danger" (click)="delete(product)">BORRAR</ion-button> -->
   <!-- <ion-icon style="float: right; padding: 10px 10px;" color="primary" slot="icon-only" (click)="editProduct(product)" name="create"></ion-icon>
   <ion-icon style="float: left; padding: 10px 10px;" color="danger" slot="icon-only" (click)="delete(product)" name="trash"></ion-icon> -->

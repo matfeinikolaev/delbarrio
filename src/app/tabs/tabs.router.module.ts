@@ -517,7 +517,7 @@ const routes: Routes = [
                       component: ProductPage
                     },
                     {
-                      path: 'edit-product/:id',
+                      path: 'edit-product/:prod_id',
                       children: [
                         {
                           path: '',

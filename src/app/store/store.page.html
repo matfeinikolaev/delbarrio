@@ -7,7 +7,7 @@
          {{"DEL BARRIO" | translate}}
       </ion-title>
       <ion-buttons slot="end" (click)="share()">
-         <ion-icon name="share" style="margin-right: 8px;font-size: 23px"></ion-icon>
+         <ion-icon name="share-social" style="margin-right: 8px;font-size: 23px"></ion-icon>
       </ion-buttons>
    </ion-toolbar>
 </ion-header>
@@ -100,7 +100,7 @@
             </ion-fab-button>
          </a>
       </ion-fab>
-      <div *ngIf="product.id && product.stock_quantity>0 && product.status=='publish'">
+      <!-- *ngIf="(product.id || product.ID) && product.stock_quantity>0 && product.status=='publish'" -->
          <div style="display: flex; height:150px;">
             <ion-slides pager="true" *ngIf="!product.image" dir="{{settings.dir}}">
                <ion-slide *ngFor="let item of product.images">
@@ -113,12 +113,12 @@
          </div>
          <div class="product-details">
             <ion-item lines="none">
-               <ion-label text-wrap style="font-size: 10pt;  white-space: nowrap; width: 50px; overflow: hidden; text-overflow: ellipsis;">
+               <ion-label text-wrap style="font-size: 10pt; width: 50px; overflow: hidden; text-overflow: ellipsis;">
                   {{product.name}}
                </ion-label>
                <!-- <ion-label style="background-color:red" color="white" *ngIf="product.stock_status == 'outofstock'">{{"Agotado" | translate}}</ion-label> -->
                <div *ngIf="product.sale_price">
-                  <ion-label style="background-color:lightgreen" color="white" *ngIf="((product.regular_price - product.price) /product.regular_price*100) >= 1">{{(product.regular_price - product.price) /product.regular_price*100 | number : '1.0-0'}}% OFF</ion-label>
+                  <ion-label style="background-color:lightgreen" color="white" *ngIf="((product.regular_price - product.price) /product.regular_price*100) >= 1">{{(product.regular_price - product.price) /product.regular_price*100 | number : '1.0-0'}}% Descuenta</ion-label>
                </div>
                <ion-icon name="heart-outline" class="heartempty onpress" slot="end" (click)="settings.addToWishlist(product.id, product.path)" *ngIf="!settings.wishlist[product.id]"></ion-icon>
                <ion-icon name="heart" class="heartempty onpress" slot="end" color="{{settings.theme.button}}" (click)="settings.removeFromWishlist(product.id, product.path)" *ngIf="settings.wishlist[product.id]"></ion-icon>
@@ -129,7 +129,7 @@
          <ion-icon name="person"></ion-icon>
          <ion-label>{{"SoldBy" | translate }} - {{product.vendor.name}}</ion-label>
          </ion-chip>
-      -->
+         -->
          <ion-item lines="none">
             <ion-label *ngIf="product.sale_price">
                <span class="price" [innerHTML]="product.formated_sales_price"></span><del><span class="special-price" [innerHTML]="product.formated_price"></span></del>
@@ -262,6 +262,7 @@
             </ion-col>
          </ion-row>
          </div>
+
 <!-- 
          <ion-button style="--border-radius: 64px 64px 64px 64px;" mode="ios" *ngIf="product.type == 'external'" class="add-to-cart-button" color="{{settings.theme.button}}" expand="block" fill="solid" [disabled]="disableButton || product.stock_status == 'outofstock'" (click)="buyExternalProduct(product.id)">{{"COMPRAR AHORA" | translate}}</ion-button>
          <ion-item lines="none" *ngIf="product.short_description" class="description">
@@ -318,7 +319,6 @@
                </ion-card-content>
             </ion-card>
          </div> -->
-      </div>
    </ion-col>
 </ion-row>
    <!--

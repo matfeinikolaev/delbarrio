@@ -71,7 +71,7 @@ export class ProductListPage {
     async getAttributes() {
         await this.api.postItem('product-attributes', {
             category: this.filter.category
-        }, '/testmatfei/').then(res => {
+        }, this.store.store.post_name).then(res => {
             this.attributes = res;
         }, err => {
             console.log(err);
@@ -109,7 +109,7 @@ export class ProductListPage {
     }
     editProduct(product){
         this.product.product = product;
-        this.navCtrl.navigateForward(this.router.url + '/edit-product/' + product.id);
+        this.navCtrl.navigateForward(this.router.url + this.store.store.ID +'/edit-product/' + product.ID);
     }
 
     goTo(link) {
@@ -130,7 +130,7 @@ export class ProductListPage {
         }, {
           text: 'Borrar',
           handler: () => {
-            this.api.postItem('delete_user_post', {ID: product.id}, product.path).then(res => {
+            this.api.postItem('delete_user_post', {ID: product.ID}, product.path).then(res => {
                 console.log(product);
                 this.getProducts();
             }, err => {

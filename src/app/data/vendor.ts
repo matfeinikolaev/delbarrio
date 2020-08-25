@@ -9,9 +9,9 @@ export class Vendor {
 	constructor(){
 		this.product = {};
 	    this.product.categories = [];
-	    this.product.images = [];
+	    this.product.images = '';
 		this.store = {};
 	    this.store.categories = [];
-	    this.store.images = [];
+	    this.store.images = '';
     }
 }

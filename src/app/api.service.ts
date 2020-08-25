@@ -21,7 +21,7 @@ headers.append('Content-Type', 'application/x-www-form-urlencoded');
 export class ApiService {
 
   	options: any = {};
-  	userLocation: any = { latitude: 0, longitude: 0, address: '', distance: 10 }
+  	userLocation: any = { latitude: 0, longitude: 0, address: '', distance: 25 }
 	constructor(public platform: Platform, private http: HttpClient, private config: Config, private ionicHttp: HTTP) {
 		this.options.withCredentials = true;
 		this.options.headers = headers;

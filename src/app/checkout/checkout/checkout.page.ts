@@ -353,7 +353,7 @@ export class CheckoutPage implements OnInit {
             });
         } else {
             this.disableButton = false;
-            this.errorMessage = 'Cannot handle payment, Please check card details';
+            this.errorMessage = 'No se puede manejar el pago, verifique los detalles de la tarjeta';
         }
     }
     stripePlaceOrder(src){
@@ -368,7 +368,7 @@ export class CheckoutPage implements OnInit {
             });
         } else {
             this.disableButton = false;
-            this.errorMessage = 'Cannot handle payment, Please check card details';
+            this.errorMessage = 'No se puede manejar el pago, verifique los detalles de la tarjeta';
         }
     }
     isEmptyObject(obj) {

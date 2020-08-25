@@ -19,7 +19,7 @@
   <!-- <ion-searchbar mode="ios" animated searchIcon="undefined" style="width:80%; margin:auto;--placeholder-color: #5a6b7d;" [(ngModel)]="searchInput" (ionChange)="onInput()" placeholder="{{'¿Qué necesitas?' | translate}}"></ion-searchbar> -->
   <div style="margin-top:80px">
     <div *ngFor="let storeCat of stores" (click)="getStoreCategory(storeCat)" style="margin-top:40px; text-align: center;">
-      <img src="{{storeCat.icon.url}}" alt="{{storeCat.name}}" style="height: 50%;">
+      <img src="{{storeCat.icon.url}}" *ngIf="storeCat.name != 'Restaurante'"  alt="{{storeCat.name}}" style="height: 50%;">
     </div>
   </div>
 </ion-content>

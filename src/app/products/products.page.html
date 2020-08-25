@@ -96,7 +96,7 @@
                     <span class="regular-price" *ngIf="!product.sale_price" [innerHTML]="product.formated_price"></span>
                     <span class="regular-price" *ngIf="product.sale_price" [innerHTML]="product.formated_sales_price"></span>
                       <del><span *ngIf="product.sale_price" class="special-price" [innerHTML]="product.formated_price">{{product.formated_price}}</span></del>
-                    <span class="percent-off" *ngIf="((product.regular_price - product.price) /product.regular_price*100) >= 1">{{(product.regular_price - product.price) /product.regular_price*100 | number : '1.0-0'}}% OFF
+                    <span class="percent-off" *ngIf="((product.regular_price - product.price) /product.regular_price*100) >= 1">{{(product.regular_price - product.price) /product.regular_price*100 | number : '1.0-0'}}% Descuenta
                     </span>
                     </p>
                 </ion-col>

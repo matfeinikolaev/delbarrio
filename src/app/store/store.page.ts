@@ -226,12 +226,12 @@ export class StorePage {
     getRelatedProducts() {
         var filter = [];
         filter['product_id'] = this.product.id;
-        this.api.postItem('product_details', filter).then(res => {
+        this.api.postItem('product_details', filter, this.store.post_name).then(res => {
             this.relatedProducts = res;
         }, err => {});
     }
     getReviews() {
-        this.api.postItem('product_reviews', {'product_id': this.product.id}).then(res => {
+        this.api.postItem('product_reviews', {'product_id': this.product.id}, this.store.post_name).then(res => {
             this.reviews = res;
             for (let item in this.reviews) {
                 this.reviews[item].avatar = md5(this.reviews[item].email);

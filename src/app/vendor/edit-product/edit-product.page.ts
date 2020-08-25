@@ -39,7 +39,7 @@ export class EditProductPage {
     photos: any;
     imageresult: any;
     imageIndex: any = 0;
-
+    imageArray: any = [];
     constructor(public platform: Platform, public actionSheetController: ActionSheetController, public modalCtrl: ModalController, public api: ApiService, public data: Data, public productData: Product, public settings: Settings, public router: Router, public loadingController: LoadingController, public navCtrl: NavController, public alertController: AlertController, public route: ActivatedRoute, public config: Config, private transfer: FileTransfer, private imagePicker: ImagePicker, private crop: Crop) {
         this.filter.page = 1;
         this.filter.status = 'publish';
@@ -53,6 +53,7 @@ export class EditProductPage {
         });
     }
     ngOnInit() {
+        console.log(this);
         this.product = this.productData.product;
 
         if(this.product.images){
@@ -61,7 +62,7 @@ export class EditProductPage {
             } else this.imageIndex = this.product.images.length;
         }
 
-        this.id = this.route.snapshot.paramMap.get('id');
+        this.id = this.route.snapshot.paramMap.get('prod_id');
         if (this.product.id) this.handleProduct();
         else this.getProduct();
     }
@@ -139,6 +140,9 @@ export class EditProductPage {
     async saveProduct() {
         this.disableButton = true;
         this.product.categories = [];
+        this.product.post_title = this.product.name;
+        this.product.post_name = this.product.name.toLowerCase();
+        this.product.post_status = this.product.status;
         for (let id in this.categories) {
             this.product.categories[id] = {
                 id: parseInt(this.categories[id])
@@ -148,10 +152,9 @@ export class EditProductPage {
         if (this.product.type == 'external') this.product.manage_stock = false;
         await this.api.postItem('update_product', this.product, this.product.path).then(res => {
             // this.product = res;
-            console.log(this.product);
             console.log(res);
             this.productData.product = {};
-            this.navCtrl.navigateBack('/tabs/account/vendor-products');
+            this.navCtrl.navigateBack('/tabs/account/vendor-stores/view-store/');
         }, err => {
             console.log(err);
         });
@@ -201,13 +204,20 @@ export class EditProductPage {
             headers: { headers }
         }
 
-        fileTransfer.upload( this.photos, this.config.url + '/wp-admin/admin-ajax.php?action=mstoreapp_upload_image', options)
+        fileTransfer.upload( this.photos, this.config.url + '/' + this.product.path + '/wp-admin/admin-ajax.php?action=mstoreapp_upload_image', options)
         .then((data) => {
 
         this.uploadingImage = false;
         this.imageresult = JSON.parse(data.response);
-        this.product.images[this.imageIndex] = {};
-        this.product.images[this.imageIndex].src = this.imageresult.url;
+        // this.product.images[this.imageIndex] = {};
+        if(this.product.images == {}) {
+            this.product.images = '';
+            this.product.images = this.imageresult.url;
+        }
+        else {
+            this.product.images = this.product.images.concat( ' ' + this.imageresult.url );
+        }
+        this.imageArray = this.product.images.split(' ');
         this.imageIndex = this.imageIndex + 1;
             // success
         }, (err) => {
@@ -223,7 +233,9 @@ export class EditProductPage {
         role: 'destructive',
         icon: 'trash',
         handler: () => {
-            this.product.images.splice(index, 1);
+            this.imageArray.splice(index, 1);
+            //   this.vendor.product.images.splice(index, 1);
+            this.product.images = this.imageArray.join(' ');
             this.imageIndex = this.imageIndex - 1;
         }
         }, {
@@ -275,7 +287,14 @@ export class EditProductPage {
 
         this.uploadingImage = false;
         this.imageresult = JSON.parse(data.response);
-        this.product.images[index].src = this.imageresult.url;
+        if(this.product.images == {}) {
+            this.product.images = '';
+            this.product.images = this.imageresult.url;
+        }
+        else {
+            this.product.images = this.product.images.concat( ' ' + this.imageresult.url );
+        }
+        this.imageArray = this.product.images.split(' ');
             // success
         }, (err) => {
             //this.functions.showAlert("error", err);

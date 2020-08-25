@@ -91,10 +91,11 @@ export class ProductPage {
         if(this.settings.settings.switchAddons ===  1)
         this.getAddons();
 
-        this.usedVariationAttributes = this.product.attributes.filter(function(attribute) {
-            return attribute.variation == true
-        });
-    
+        if( this.product.attributes ) {
+            this.usedVariationAttributes = this.product.attributes.filter(function(attribute) {
+                return attribute.variation == true
+            });
+        }
         //if ((this.product.type == 'variable') && this.product.variations.length) this.getVariationProducts();
         if ((this.product.type == 'grouped') && this.product.grouped_products.length) this.getGroupedProducts();
         this.getRelatedProducts();

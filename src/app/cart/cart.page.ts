@@ -52,42 +52,8 @@ export class CartPage {
             });
         });
     }
-    // getCart() {
-    //     this.api.postItem('get_sites_list').then(res => {
-    //         this.multiSite = res;
-    //         if( Array.isArray(this.multiSite) ){
-    //             for (let blog of this.multiSite) {
-    //                 this.api.postItem('cart', {}, blog.path).then(res => {
-    //                     var result: any = res;
-    //                     if ( Object.keys(result.cart_contents).length !== 0 ) {
-    //                         if( Object.keys(this.cart).length==0 ) {
-    //                             this.cart = result;
-    //                         }
-    //                         else {
-    //                             for (let prop in result) {
-    //                                 if ( typeof(result[prop]) != 'string' && result[prop] != null ) {
-    //                                     for ( let i of Object.keys(result[prop]) ) {
-    //                                         if(result[prop][i]!=null && this.cart[prop]!=null)
-    //                                             this.cart[prop][i] = result[prop][i];
-    //                                     }
-    //                                 }
-    //                             }
-    //                         }
-    //                     }
-    //                     if (this.multiSite.indexOf(blog) == this.multiSite.length-1) {
-    //                         this.data.updateCart(this.cart.cart_contents);
-    //                     }
-    //                 }, err => {
-    //                     console.log(err);
-    //                 });
-    //             }
-    //         }
-    //     }, err => {
-    //         console.log(err);
-    //     });
-    // }
     async getCart() {
-        await this.api.postItem('cart').then(res => {
+        await this.api.postItem('cart', {}, this.store.post_name).then(res => {
             this.cart = res;
             this.data.updateCart(this.cart.cart_contents);
         }, err => {

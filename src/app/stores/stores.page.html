@@ -245,10 +245,12 @@
       <ion-label>{{"TIENDAS CERCA DE USTED" | translate}}</ion-label>
     </ion-list-header>
     <div *ngFor="let store of data.storesNearby" style="margin-top: 30px;">
-      <ion-card (click)="getStore(store)" style="position:relative; margin: auto; margin:auto; border-radius: 15px; color:white; text-align: center;box-shadow: 0px 0px;">
-        <ion-card-content style="background-image: url(../../assets/image/fondo-tiendas.png);background-repeat: no-repeat;background-position: center; text-align: center; padding-top:40px; padding-bottom: 15px;">
-          <h1>{{store.na}}</h1>
-          <p style="font-size: small; font-weight:100;font-weight: light;">{{store.ct}}, {{store.zp}}</p>
+      <ion-card (click)="getStore(store)" style="position:relative; margin: auto; margin:auto; border-radius: 65px; color:white; text-align: center;box-shadow: 0px 0px;">
+        <ion-card-content style="background-image: url(../../assets/image/fondo-tiendas.png);background-repeat: no-repeat;background-position: center; text-align: center; padding-top:40px; padding-bottom: 15px; border-radius: 65px; ">
+          <h1 *ngIf="store.post_title">{{store.post_title}}</h1>
+          <span *ngIf="store.wordpress_store_locator_city" style="font-size: small; font-weight:100;font-weight: light;">{{store.wordpress_store_locator_city}}</span>
+          <span *ngIf="store.wordpress_store_locator_city && store.wordpress_store_locator_zip">, </span>
+          <span *ngIf="store.wordpress_store_locator_zip" style="font-size: small; font-weight:100;font-weight: light;">{{store.wordpress_store_locator_zip}}</span>
         </ion-card-content>
       </ion-card>
     </div>
@@ -256,7 +258,7 @@
 
   <ion-row *ngIf="data.storesNearby.length == 0 && !loadingStoresNearby" class="products">
     <ion-list-header style="margin:auto; text-align:center; color:#687e95; font-size:larger; font-weight: light;">
-      <ion-label>{{"LO SENTIMOS, NO HAY TIENDAS CERCA DE USTED" | translate}}</ion-label>
+      <ion-label>{{"LO SENTIMOS, NO HAY TIENDAS CERCA DE " + api.userLocation.distance + " KM DE USTED" | translate}}</ion-label>
     </ion-list-header>
   </ion-row>
 
@@ -273,8 +275,11 @@
     <div *ngFor="let store of data.allStores" style="margin-top: 30px;">
       <ion-card (click)="getStore(store)" style="position:relative; margin: auto;margin:auto; border-radius: 15px; color:white; text-align: center;box-shadow: 0px 0px;">
         <ion-card-content style="background-image: url(../../assets/image/fondo-tiendas.png);background-repeat: no-repeat;background-position: center;text-align: center; padding-top:40px; padding-bottom: 15px;"> <!--background-color: #62788d;--> 
-          <h1>{{store.na}}</h1>
-          <p style="font-size: small; font-weight:100;font-weight: light;">{{store.ct}}, {{store.zp}}</p> <!--background-color: #62788d;--> 
+          <h1 *ngIf="store.post_title">{{store.post_title}}</h1>
+          <span *ngIf="store.wordpress_store_locator_city" style="font-size: small; font-weight:100;font-weight: light;">{{store.wordpress_store_locator_city}}</span>
+          <span *ngIf="store.wordpress_store_locator_city && store.wordpress_store_locator_zip">, </span>
+          <span *ngIf="store.wordpress_store_locator_zip" style="font-size: small; font-weight:100;font-weight: light;">{{store.wordpress_store_locator_zip}}</span>
+          <!--background-color: #62788d;--> 
           <!-- <img src="../../assets/image/store-icon.png" alt=""> -->
         </ion-card-content>
       </ion-card>

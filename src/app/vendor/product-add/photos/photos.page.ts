@@ -21,6 +21,7 @@ export class PhotosPage implements OnInit {
   photos: any;
   imageresult: any;
   imageIndex: any = 0;
+  imageArray: any = [];
   res: any;
   loading: any;
 
@@ -74,11 +75,17 @@ export class PhotosPage implements OnInit {
               headers
           }
       }
-      fileTransfer.upload(this.photos, this.config.url + '/wp-admin/admin-ajax.php?action=mstoreapp_upload_image', options).then((data) => {
+      fileTransfer.upload(this.photos, this.config.url + '/' + this.store.store.post_name + '/wp-admin/admin-ajax.php?action=mstoreapp_upload_image', options).then((data) => {
           this.uploadingImageSpinner = false;
           this.imageresult = JSON.parse(data.response);
-          this.vendor.product.images[this.imageIndex] = {};
-          this.vendor.product.images[this.imageIndex].src = this.imageresult.url;
+        //   this.vendor.product.images[this.imageIndex] = {};
+          if(this.vendor.product.images == '') {
+            this.vendor.product.images = this.imageresult.url;
+          }
+          else {
+            this.vendor.product.images = this.vendor.product.images.concat( ' ' + this.imageresult.url );
+          }
+          this.imageArray = this.vendor.product.images.split(' ');
           this.imageIndex = this.imageIndex + 1;
           // success
       }, (err) => {
@@ -93,7 +100,9 @@ export class PhotosPage implements OnInit {
               role: 'destructive',
               icon: 'trash',
               handler: () => {
-                  this.vendor.product.images.splice(index, 1);
+                  this.imageArray.splice(index, 1);
+                //   this.vendor.product.images.splice(index, 1);
+                  this.vendor.product.images = this.imageArray.join(' ');
                   this.imageIndex = this.imageIndex - 1;
               }
           }, {
@@ -133,17 +142,23 @@ export class PhotosPage implements OnInit {
               headers
           }
       }
-      fileTransfer.upload(this.photos, this.config.url + '/wp-admin/admin-ajax.php?action=mstoreapp_upload_image', options).then((data) => {
+      fileTransfer.upload(this.photos, this.config.url + '/' + this.store.store.post_name +'/wp-admin/admin-ajax.php?action=mstoreapp_upload_image', options).then((data) => {
           this.uploadingImageSpinner = false;
           this.imageresult = JSON.parse(data.response);
-          this.vendor.product.images[index].src = this.imageresult.url;
+          //   this.vendor.product.images[this.imageIndex] = {};
+          if(this.vendor.product.images == '') {
+            this.vendor.product.images = this.imageresult.url;
+          }
+          else {
+            this.vendor.product.images = this.vendor.product.images.concat( ' ' + this.imageresult.url );
+          }
           // success
       }, (err) => {
           //this.functions.showAlert("error", err);
       })
   }
   publish() {
-      this.vendor.product.status = 'publish';
+      this.vendor.product.status = this.vendor.product.status;
       this.submit();
   }
   draft() {
@@ -161,9 +176,10 @@ export class PhotosPage implements OnInit {
       await this.loading.present();
       this.api.postItem('add_product', this.vendor.product, this.store.store.post_name).then(res => {
           //DOKAN AND WCFM Plugin
+          console.log(res);
           this.res = res;
           this.api.postItem('update-vendor-product', {
-              id: this.res.id
+              id: this.res.ID
           }, this.store.store.post_name).then(res => {
               console.log(res);
           }, err => {
@@ -172,10 +188,11 @@ export class PhotosPage implements OnInit {
           //DOKAN AND WCFM Plugin
           this.vendor.product = {};
           this.vendor.product.categories = [];
-          this.vendor.product.images = [];
+          this.vendor.product.images = '';
           this.vendor.product.dimensions = {};
+          this.imageArray = [];
           this.loading.dismiss();
-          this.navCtrl.navigateBack('tabs/account');
+          this.navCtrl.navigateBack('tabs/account/vendor-stores/view-store/');
       }, err => {
           this.loading.dismiss();
           console.log(err);

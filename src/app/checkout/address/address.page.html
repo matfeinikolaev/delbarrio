@@ -11,13 +11,13 @@
 
     <div class="spinner" *ngIf="loader"><ion-spinner> </ion-spinner></div>
 
-<div *ngIf="!loader">
-<ion-list no-margin>
+<div *ngIf="!loader" class="form">
+<ion-list>
 
   <ion-list-header>
     <ion-label>{{"Dirección de Envio" | translate}}</ion-label>
   </ion-list-header>
-
+  <form [formGroup]="form">
         <ion-item lines="full">
             <ion-label position="stacked" color="medium" style="font-size: small;">{{"NOMBRE" | translate}}</ion-label>
             <ion-input required type="text" [(ngModel)]="checkoutData.form.billing_first_name" name="firstname"> </ion-input>
@@ -30,10 +30,10 @@
             <ion-label position="stacked" color="medium" style="font-size: small;">{{"TELEFONO" | translate}}</ion-label>
             <ion-input required type="text" [(ngModel)]="checkoutData.form.billing_phone" name="telephone"> </ion-input>
         </ion-item>
-        <ion-item lines="full">
+        <!-- <ion-item lines="full">
             <ion-label position="stacked" color="medium" style="font-size: small;">{{"EMPRESA" | translate}}</ion-label>
-            <ion-input required type="text" [(ngModel)]="checkoutData.form.billing_company" name="company"> </ion-input>
-        </ion-item>
+            <ion-input type="text" [(ngModel)]="checkoutData.form.billing_company" name="company"> </ion-input>
+        </ion-item> -->
         <ion-item lines="full">
             <ion-label position="stacked" color="medium" style="font-size: small;">{{"CÉDULA O RUC" | translate}}</ion-label>
             <ion-input required type="text" [(ngModel)]="checkoutData.form.billing_wcccf_id_VZZ2HaJv5Ai44kg" name="billing_wcccf_id_VZZ2HaJv5Ai44kg" placeholder="#"> </ion-input>
@@ -93,7 +93,7 @@
 
         <ion-item lines="full">
             <ion-label position="stacked" color="medium" style="font-size: small;">{{"CÓDIGO POSTAL" | translate}}</ion-label>
-            <ion-input required type="text" [(ngModel)]="checkoutData.form.billing_postcode" name="postcode"> </ion-input>
+            <ion-input type="text" [(ngModel)]="checkoutData.form.billing_postcode" name="postcode"> </ion-input>
         </ion-item>
 
         <ion-item lines="full" *ngIf="checkoutData.billingStates?.regions.length">
@@ -141,7 +141,7 @@
             <ion-label color="medium" style="font-size: small;">{{"Enviar a una dirección diferente" | translate}}</ion-label>
             <ion-toggle color="{{settings.theme.button}}" [(ngModel)]="checkoutData.form.ship_to_different_address"></ion-toggle>
         </ion-item>
-
+    </form>
 </ion-list>
 
 
@@ -159,10 +159,10 @@
             <ion-label position="stacked" color="medium" style="font-size: small;">{{"APELLIDOS" | translate}}</ion-label>
             <ion-input required type="text" [(ngModel)]="checkoutData.form.shipping_last_name" name="lastname"> </ion-input>
         </ion-item>
-        <ion-item lines="full">
+        <!-- <ion-item lines="full">
             <ion-label position="stacked" color="medium" style="font-size: small;">{{"EMPRESA" | translate}}</ion-label>
             <ion-input required type="text" [(ngModel)]="checkoutData.form.shipping_company" name="company"> </ion-input>
-        </ion-item>
+        </ion-item> -->
 
         <ion-item lines="full" *ngIf="checkoutData.form?.countries && checkoutData.form?.countries.length > 1">
             <ion-label color="medium" style="font-size: small;">{{"PAÍS" | translate}}</ion-label>
@@ -202,7 +202,7 @@
 
         <ion-item lines="full">
             <ion-label position="stacked" color="medium" style="font-size: small;">{{"CÓDIGO POSTAL" | translate}}</ion-label>
-            <ion-input required type="text" [(ngModel)]="checkoutData.form.shipping_postcode" name="postcode"> </ion-input>
+            <ion-input type="text" [(ngModel)]="checkoutData.form.shipping_postcode" name="postcode"> </ion-input>
         </ion-item>
 
         <ion-item lines="full" *ngIf="checkoutData.shippingStates?.regions.length">

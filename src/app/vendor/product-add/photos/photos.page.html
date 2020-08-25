@@ -19,10 +19,10 @@
 	    <ion-spinner *ngIf="uploadingImageSpinner"></ion-spinner>
 	</div>
 
-  <div class="images" *ngIf="vendor.product.images.length">
+  <div class="images" *ngIf="imageArray.length">
     <ion-row class="row">
-      <ion-col *ngFor="let item of vendor.product.images; let i = index;" class="col">
-        <img tappable src="{{item.src}}" (click)="replaceImage(i)">
+      <ion-col *ngFor="let item of imageArray; let i = index;" class="col">
+        <img tappable src="{{item}}" *ngIf="item != ''" (click)="replaceImage(i)">
       </ion-col>
     </ion-row>
   </div>

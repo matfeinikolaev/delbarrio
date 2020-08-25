@@ -11,11 +11,15 @@
 
 <ion-content class="product">
 
+  <ion-button *ngIf="settings.administrator || settings.vendor" color="danger" mode="ios" (click)="saveProduct()" class="ion-activatable" style="position:fixed; height:40px; z-index: 100; --border-radius:50px 50px 50px 50px; right: 0;">
+    <ion-icon style="color: white;" class="icon-start" name="save"></ion-icon>
+  </ion-button>
+
   <div *ngIf="product" class="margin">
 
   <ion-list>
   <ion-list-header>
-    <ion-label>{{"ID de producto" | translate}} - {{product.id}}</ion-label>
+    <ion-label>{{"ID de producto" | translate}} - {{product.ID}}</ion-label>
   </ion-list-header>
 
   <ion-item>
@@ -36,11 +40,12 @@
 
   <ion-item style="padding-top:10px">
       <ion-label position="floating">{{"Estado" | translate}}</ion-label>
-      <ion-select [(ngModel)]="product.status" name="status" okText="OK" cancelText="Cancel">
-                 <ion-select-option value="draft">{{"Borrador" | translate}}</ion-select-option>
-               <ion-select-option value="pending">{{"Pendiente" | translate}}</ion-select-option>
-               <!--ion-select-option value="public">public</ion-select-option-->
+      <ion-select value='draft' [(ngModel)]="product.status" name="status" okText="OK" cancelText="Cancel">
+               <ion-select-option value="draft">{{"Borrador" | translate}}</ion-select-option>
                <ion-select-option value="publish">{{"Publicado" | translate}}</ion-select-option>
+               <ion-select-option value="pending">{{"Pendiente" | translate}}</ion-select-option>
+               <ion-select-option value="trash">{{"Papelera" | translate}}</ion-select-option>
+               <!--ion-select-option value="public">public</ion-select-option-->
       </ion-select>
   </ion-item>
 
@@ -63,15 +68,15 @@
   <ion-list-header>
     <ion-label>{{"Imagen" | translate}}</ion-label>
   </ion-list-header>
-      <div style="padding: 8px 16px;">
-      <div *ngIf="product?.images && product.images.length">
-      <img tappable *ngFor="let item of product.images; let i = index;" src="{{item.src}}" style="width: 80px; height: auto; padding: 3px; border: 1px solid #f5fdff" (click)="replaceImage(i)">
-      </div>
-
-      <ion-spinner *ngIf="uploadingImage" name="circles" style="float: left; margin: 27px 27px 27px 27px; padding: 3px; display: inline;"></ion-spinner>
-      
-      <img tappable src="assets/image/upload_placeholder.png" style="width: 80px; height: auto; padding: 3px; border: 1px solid #f5fdff" (click)="picker()"/>
+  <div style="padding: 8px 16px;">
+    <div *ngIf="product?.images && imageArray.length">
+      <img tappable *ngFor="let item of imageArray; let i = index;" src="{{item.src}}" style="wIDth: 80px; height: auto; padding: 3px; border: 1px solid #f5fdff" (click)="replaceImage(i)">
     </div>
+
+    <ion-spinner *ngIf="uploadingImage" name="circles" style="float: left; margin: 27px 27px 27px 27px; padding: 3px; display: inline;"></ion-spinner>
+    
+    <img tappable src="assets/image/upload_placeholder.png" style="width: 80px; height: auto; padding: 3px; border: 1px solid #f5fdff" (click)="picker()"/>
+  </div>
   <ion-item>
       <ion-label position="floating">{{"Precio regular" | translate}}</ion-label>
       <ion-input required type="text" [(ngModel)]="product.regular_price" name="regular_price"></ion-input>

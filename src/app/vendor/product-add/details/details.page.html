@@ -30,6 +30,17 @@
 </ion-item>
 
 <ion-item>
+    <ion-label position="floating">{{"Estado" | translate}}</ion-label>
+    <ion-select value='draft' [(ngModel)]="vendor.product.status" name="status" okText="OK" cancelText="Cancel">
+             <ion-select-option value="draft">{{"Borrador" | translate}}</ion-select-option>
+             <ion-select-option value="publish">{{"Publicado" | translate}}</ion-select-option>
+             <ion-select-option value="pending">{{"Pendiente" | translate}}</ion-select-option>
+             <ion-select-option value="trash">{{"Papelera" | translate}}</ion-select-option>
+             <!--ion-select-option value="public">public</ion-select-option-->
+    </ion-select>
+</ion-item>
+
+<ion-item>
     <ion-label position="floating">{{"Precio regular" | translate}}</ion-label> 
     <ion-input required type="text" [(ngModel)]="vendor.product.regular_price" name="regular_price"></ion-input>
 </ion-item>
@@ -88,11 +99,11 @@
   <ion-item class="option" *ngIf="vendor.product.type != 'external'">
     <ion-label>{{"Gestionar stock" | translate}}</ion-label>
     <ion-toggle color="{{settings.theme.button}}" checked="true" [(ngModel)]="vendor.product.manage_stock" name="manage_stock"></ion-toggle>
-</ion-item>
+  </ion-item>
 
-<ion-item *ngIf="vendor.product.manage_stock && vendor.product.type != 'external'">
-    <ion-label position="floating">{{"Cantidad" | translate}}</ion-label>
-    <ion-input required type="number" [(ngModel)]="vendor.product.stock_quantity" name="stock_quantity"></ion-input>
-</ion-item>
+    <ion-item *ngIf="vendor.product.manage_stock && vendor.product.type != 'external'">
+        <ion-label position="floating">{{"Cantidad" | translate}}</ion-label>
+        <ion-input required type="number" [(ngModel)]="vendor.product.stock_quantity" name="stock_quantity"></ion-input>
+    </ion-item>
 
 </ion-content>

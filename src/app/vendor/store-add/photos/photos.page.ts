@@ -21,6 +21,7 @@ export class StorePhotosPage implements OnInit {
   photos: any;
   imageresult: any;
   imageIndex: any = 0;
+  imageArray: any = [];
   res: any;
   loading: any;
 
@@ -77,8 +78,13 @@ export class StorePhotosPage implements OnInit {
       fileTransfer.upload(this.photos, this.config.url + '/wp-admin/admin-ajax.php?action=mstoreapp_upload_image', options).then((data) => {
           this.uploadingImageSpinner = false;
           this.imageresult = JSON.parse(data.response);
-          this.vendor.product.images[this.imageIndex] = {};
-          this.vendor.product.images[this.imageIndex].src = this.imageresult.url;
+        //   this.vendor.product.images[this.imageIndex] = {};
+          if(this.vendor.product.images == '') {
+            this.vendor.product.images = this.imageresult.url;
+          }
+          else {
+            this.vendor.product.images = this.vendor.product.images.concat( ' ' + this.imageresult.url );
+          }
           this.imageIndex = this.imageIndex + 1;
           // success
       }, (err) => {
@@ -93,7 +99,9 @@ export class StorePhotosPage implements OnInit {
               role: 'destructive',
               icon: 'trash',
               handler: () => {
-                  this.vendor.product.images.splice(index, 1);
+                  this.imageArray.splice(index, 1);
+                  //   this.vendor.product.images.splice(index, 1);
+                  this.vendor.product.images = this.imageArray.join(' ');
                   this.imageIndex = this.imageIndex - 1;
               }
           }, {
@@ -136,7 +144,13 @@ export class StorePhotosPage implements OnInit {
       fileTransfer.upload(this.photos, this.config.url + '/wp-admin/admin-ajax.php?action=mstoreapp_upload_image', options).then((data) => {
           this.uploadingImageSpinner = false;
           this.imageresult = JSON.parse(data.response);
-          this.vendor.product.images[index].src = this.imageresult.url;
+          //   this.vendor.product.images[this.imageIndex] = {};
+          if(this.vendor.product.images == '') {
+            this.vendor.product.images = this.imageresult.url;
+          }
+          else {
+            this.vendor.product.images = this.vendor.product.images.concat( ' ' + this.imageresult.url );
+          }
           // success
       }, (err) => {
           //this.functions.showAlert("error", err);
@@ -172,8 +186,9 @@ export class StorePhotosPage implements OnInit {
           //DOKAN AND WCFM Plugin
           this.vendor.store = {};
           this.vendor.store.categories = [];
-          this.vendor.store.images = [];
+          this.vendor.store.images = '';
           this.vendor.store.dimensions = {};
+          this.imageArray = [];
           this.loading.dismiss();
           this.navCtrl.navigateBack('tabs/account');
       }, err => {
