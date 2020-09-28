@@ -56,6 +56,7 @@ import { StoreDetailsPage } from './../vendor/store-add/details/details.page';
 import { StorePhotosPage } from './../vendor/store-add/photos/photos.page';
 import { StoreSubcategoryPage } from './../vendor/store-add/subcategory/subcategory.page';
 import { EditSettingsPage } from './../account/edit-settings/edit-settings.page';
+import { HelpPage } from './../help/help.page';
 
 const routes: Routes = [
   {
@@ -272,24 +273,12 @@ const routes: Routes = [
             component: CartPage
           },
           {
-            path: 'address',
-            // component: CheckoutAddressPage,
-            children: [
-              {
-                path: ':storePath/',
-                component: CheckoutAddressPage
-              }
-            ]
+            path: 'address/:storePath/',
+            component: CheckoutAddressPage,
           },
           {
-            path: 'checkout',
-            // component: CheckoutPage,
-            children: [
-              {
-                path: ':storePath',
-                component: CheckoutPage
-              }
-            ]
+            path: 'checkout/:storePath/',
+            component: CheckoutPage,
           },
           {
             path: 'product/:id',
@@ -646,6 +635,14 @@ const routes: Routes = [
             ]
           }
         ]
+      },  
+      {
+        path: 'order-summary/:storeID/:id',
+        component: OrderSummaryPage,
+      },
+      {
+        path: 'help',
+        component: HelpPage,
       },
       {
         path: '',
@@ -658,7 +655,7 @@ const routes: Routes = [
     path: '',
     redirectTo: '/tabs/home',
     pathMatch: 'full'
-  }
+  },
 ];
 
 @NgModule({

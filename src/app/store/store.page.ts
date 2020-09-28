@@ -17,6 +17,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { HttpParams } from "@angular/common/http";
 import { Config } from '../config';
 import { ChatApi } from './../chat/chat.api';
+import { FormBuilder, FormArray, Validators } from '@angular/forms';
 @Component({
     selector: 'app-store',
     templateUrl: 'store.page.html',
@@ -48,11 +49,23 @@ export class StorePage {
     path: any;
     searchInput: any = "";
     chosenCategory: any;
+    chosenSubcategory: any;
+    chosenOrder: any;
     loadingProducts: any = false;
     incomeMessages: any = [];
-    constructor(private chatapi: ChatApi, private config: Config, public translate: TranslateService, public toastController: ToastController, private socialSharing: SocialSharing, public modalCtrl: ModalController, public api: ApiService, public data: Data, public productData: Product, public storeData: Store, public settings: Settings, public router: Router, public loadingController: LoadingController, public navCtrl: NavController, public alertController: AlertController, public route: ActivatedRoute, public vendor: Vendor, public iab: InAppBrowser) {
+    form: any;
+    formRegister: any;
+    openFeedbackForm: any = false;
+    errorMessage:any;
+    unavailableProduct:any;
+    constructor(private chatapi: ChatApi, private config: Config, public translate: TranslateService, public toastController: ToastController, private socialSharing: SocialSharing, public modalCtrl: ModalController, public api: ApiService, public data: Data, public productData: Product, public storeData: Store, public settings: Settings, public router: Router, public loadingController: LoadingController, public navCtrl: NavController, public alertController: AlertController, public route: ActivatedRoute, public vendor: Vendor, public iab: InAppBrowser, private fb: FormBuilder) {
         this.filter.page = 1;
-        this.quantity = "1";
+        this.quantity = "1";        
+        this.form = this.fb.group({
+            name: this.settings.user?this.settings.user.display_name:'',
+            phone: '',
+            email: this.settings.user?this.settings.user.user_email:'',
+        });
     }
     getReviewsPage() {
         this.navCtrl.navigateForward(this.router.url + '/review/' + this.product.id);
@@ -65,10 +78,12 @@ export class StorePage {
         this.api.postItem('store', {'store_id':this.id}).then(res => {
             this.data.store = res;
             this.store = res;
+            this.path =  this.store.wordpress_store_locator_website.split('/');
+            this.path = this.path[this.path.length -1];
         }, err=>{
             console.error(err);
         }).then(() => {
-            this.api.postItem('categories_json', {}, this.store.post_name).then(res => {
+            this.api.postItem('categories_json', {}, this.path).then(res => {
                 this.data.store.categories = res;
                 this.store.categories = res;
             }, err => {
@@ -77,8 +92,18 @@ export class StorePage {
         }, err => {
             console.error(err);
         }).then(()=>{
+            this.api.postItem('get_catalog_ordering', {}, this.path).then(res => {
+                this.data.store.ordering = res;
+                this.store.ordering = res;
+            }, err => {
+                console.error(err);
+            });
+        }, err => {
+            console.error(err);
+        }
+        ).then(()=>{
             this.loadingProducts = true;
-            this.api.postItem('products', {}, this.store.post_name).then(res => {
+            this.api.postItem('products', {}, this.path).then(res => {
                 this.data.store.products = res;
                 this.store.products = res;
                 this.loadingProducts = false;
@@ -89,14 +114,15 @@ export class StorePage {
         }, err=>{
             console.error(err);
         }).then(() => {
-            this.api.postItem('cart', {}, this.store.post_name).then(res => {
+            this.api.postItem('cart', {}, this.path).then(res => {
+                console.log(res);
                 this.store.cart = res;
                 this.cart.cart = this.store.cart.cart_contents;
                 this.data.updateCart(this.cart.cart);
             })
         }).then(() => {
             if( this.settings.customer.id) {
-                this.api.postItem('get_wishlist', {}, this.store.post_name).then(res => {
+                this.api.postItem('get_wishlist', {}, this.path).then(res => {
                     this.settings.add_wishlist = res;
                     this.settings.wishlist = [];
                     for (let item in this.settings.add_wishlist) {
@@ -128,28 +154,48 @@ export class StorePage {
         // }
     }
     async getProducts(id=null) {
+        this.filter.catalog_ordering = this.chosenOrder;
+        this.loadingProducts = true;
         if ( Array.isArray(this.chosenCategory) ) {
             var result: any = [];
             for (let catId of this.chosenCategory) {
-                this.filter.id = catId;
-                this.api.postItem('products', this.filter, this.store.post_name).then(res => {
+                this.filter.id = catId;            
+                this.api.postItem('products', this.filter, this.path).then(res => {
                     result = result.concat(res);
                     this.store.products = result;
                     this.data.store.products = result;
+                    this.loadingProducts = false;
                 }, err => {
                     console.log(err);
+                    this.loadingProducts = false;
                 });
             }
+            this.store.chosenCategory = this.store.categories.find(cat => {
+                return cat.term_id = this.chosenCategory;
+            });
         } 
         else {
-            this.filter.id = this.chosenCategory;
-            this.api.postItem('products', this.filter, this.store.post_name).then(res => {
+            this.filter.id = this.chosenSubcategory ? this.chosenSubcategory : this.chosenCategory;
+            this.api.postItem('products', this.filter, this.path).then(res => {
                 this.data.store.products = result;
                 this.store.products = res;
+                this.loadingProducts = false;
             }, err => {
                 console.log(err);
+                this.loadingProducts = false;
+            });        
+            this.store.chosenCategory = this.store.categories.find(cat => {
+                return cat.id == this.chosenCategory && cat.cat_ID == this.chosenCategory && cat.term_id == this.chosenCategory;
             });
         }
+    }
+    getCategory() {
+        this.chosenSubcategory = null;
+        this.getProducts();
+    }
+    getSubcategory(id) {
+        this.chosenSubcategory = id;
+        this.getProducts();
     }
     getCart() {
         this.api.postItem('cart', {}, this.store.path).then(res => {
@@ -158,7 +204,82 @@ export class StorePage {
             console.error(err);
         });
     }
+    notifyClient(product) {
+        this.unavailableProduct = product.id;
+        if(this.settings.user || this.settings.customer.id) {
+            this.openFeedbackForm = true;
+        }
+        else this.login();
+    }
+    closeForm() {
+        this.openFeedbackForm = false;
+    }
+    onSubmit() {
+        this.form.value.type = 'product-unavailable';
+        this.form.value.product = this.unavailableProduct;
+        if (this.checkFields()) {
+            this.api.postItem("notify-client", this.form.value).then(res => {
+                this.settings.clientDataSent = true;
+                console.log(res);
+            }, err => {
+                console.log(err);
+            });
+        }
+    }
+    checkFields() {
+        if (this.form.value.phone != "" || this.form.value.email != "") {
+            this.errorMessage = null;
+            return true;
+        } else {
+            this.errorMessage = "Por favor, ingrese su teléfono o correo electrónico"; //, ingrese su teléfono o correo electrónico
+            return false;
+        }
+    }
+    highlightCart() {
+        setTimeout(() => {
+            var cartIcon = document.querySelector("#cartIcon");
+            var cartBadge = document.querySelector("#cartBadge");
+            var cartStyle = cartIcon.getAttribute("style").split(";");
+            if (this.data.count > 0) {
+                setTimeout(() => {
+                    cartIcon.setAttribute("color", "warning");
+                    cartBadge.setAttribute("color", "warning");
+                }, 1000);
+
+                setTimeout(() => {
+                    cartIcon.setAttribute("color", "danger");
+                    cartBadge.setAttribute("color", "danger");
+                }, 1500);
+                setTimeout(() => {
+                    cartIcon.setAttribute("color", "warning");
+                    cartBadge.setAttribute("color", "warning");
+                }, 2000);
+
+                setTimeout(() => {
+                    cartIcon.setAttribute("color", "danger");
+                    cartBadge.setAttribute("color", "danger");
+                }, 2500);
+                setTimeout(() => {
+                    cartIcon.setAttribute("color", "warning");
+                    cartBadge.setAttribute("color", "warning");
+                }, 3000);
+
+                setTimeout(() => {
+                    cartIcon.setAttribute("color", "danger");
+                    cartBadge.setAttribute("color", "danger");
+                }, 3500);
+                this.highlightCart();
+            }
+            else {
+                // var style = "width: 1em";
+                // cartStyle.push(style);
+                // cartIcon.setAttribute("style", cartStyle.join(";"));
+                this.highlightCart();
+            }
+        }, 8000);
+    }
     ngOnInit() {
+        this.highlightCart();
         this.translate.get(['Oops!', 'Por favor seleccione', 'Por favor espera', 'Opciones', 'Opción', 'Seleccione', 'Artículo agregado al carrito', 'Mensaje', 'Cantidad solicitada no disponible'  ]).subscribe(translations => {
             this.lan.oops = translations['Oops!'];
             this.lan.PleaseSelect = translations['Por favor seleccione'];
@@ -272,13 +393,17 @@ export class StorePage {
     onPageScroll() {
         var cart = document.getElementById("cartIcon");
         var chat = document.getElementById("chatIcon");
+        var head = document.getElementById("pageHeader");
         var cartTop = cart.getBoundingClientRect().top;
         var chatTop = chat.getBoundingClientRect().top;
-        if(cartTop>54) {
+        var headTop = head.getBoundingClientRect().top;
+        if(cartTop > 54 ) {
             cart.style.marginTop = Number.parseInt(cart.style.marginTop.split('p')[0]) - 10 + 'px';
+            chat.style.marginTop = Number.parseInt(chat.style.marginTop.split('p')[0]) - 10 + 'px';
         }
-        if(chatTop >= 45) {
+        if(headTop > -56) {
             cart.style.marginTop = "-30px";
+            chat.style.marginTop = "-30px";
         }
     }
     async addToCart(product) {

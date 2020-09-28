@@ -41,6 +41,8 @@ export class Settings implements OnInit {
     status: any;
     mode: any = 'ios';
     dir: any = 'ltr';
+    currentPath: any;
+    faq: any;
     dimensions: any = {
         imageHeight: 100,
         productSliderWidth: 42,
@@ -55,6 +57,7 @@ export class Settings implements OnInit {
     add_wishlist:any = [];
     remove_wishlist:any; 
     store_wishlist: any = [];
+    clientDataSent: any;
     constructor(public translate: TranslateService, public api: ApiService, public toastController: ToastController) {
         this.customer.billing = {};
         this.customer.shipping = {};

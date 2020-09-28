@@ -55,11 +55,12 @@ export class LoginPage implements OnInit {
         });
     }
     ngOnInit() {
+        console.log(this);
         this.path = this.navParams.data.path;
     }
-    async onSubmit() {
+    async onSubmit(request = this.form.value) {
         this.disableSubmit = true;
-        await this.api.postItem('login', this.form.value).then(res => {
+        await this.api.postItem('login', request).then(res => {
             this.status = res;
             console.log(this.status);
             if (this.status.errors) {
@@ -83,12 +84,26 @@ export class LoginPage implements OnInit {
                  }
                 if(this.status.allcaps.shop_manager || this.status.allcaps.wc_product_vendors_admin_vendor || this.status.allcaps.dc_vendor || this.status.allcaps.seller || this.status.allcaps.wcfm_vendor){
                     this.settings.vendor = true;
+                    window.localStorage.setItem ("user_vendor", '1');
                 }
                 if(this.status.allcaps.administrator) {
                     this.settings.administrator = true;
+                    window.localStorage.setItem ("user_admin", '1');
                 }
                 this.close(true);
             }
+            window.localStorage.setItem ("user_id", this.settings.user.ID);
+            window.localStorage.setItem ("user_deleted", this.settings.user.deleted);
+            window.localStorage.setItem ("user_display_name", this.settings.user.display_name);
+            window.localStorage.setItem ("user_spam", this.settings.user.spam);
+            window.localStorage.setItem ("user_activation_key", this.settings.user.user_activation_key);
+            window.localStorage.setItem ("user_email", this.settings.user.user_email);
+            window.localStorage.setItem ("user_login", this.settings.user.user_login);
+            window.localStorage.setItem ("user_nicename", this.settings.user.user_nicename);
+            window.localStorage.setItem ("user_pass", this.settings.user.user_pass);
+            window.localStorage.setItem ("user_registered", this.settings.user.user_registered);
+            window.localStorage.setItem ("user_status", this.settings.user.user_status);
+            window.localStorage.setItem ("user_url", this.settings.user.user_url);
             this.disableSubmit = false;
         }, err => {
             this.disableSubmit = false;
@@ -136,14 +151,28 @@ export class LoginPage implements OnInit {
                      }
                     if(this.status.allcaps.shop_manager || this.status.allcaps.wc_product_vendors_admin_vendor || this.status.allcaps.dc_vendor || this.status.allcaps.seller || this.status.allcaps.wcfm_vendor){
                         this.settings.vendor = true;
+                        window.localStorage.setItem ("user_vendor", '1');
                     }
                     if(this.status.allcaps.administrator) {
                         this.settings.administrator = true;
+                        window.localStorage.setItem ("user_admin", '1');
                     }
                     this.close(true);
                 }
                 this.googleLogingInn = false;
                 this.dismissLoading();
+                window.localStorage.setItem ("user_id", this.settings.user.ID);
+                window.localStorage.setItem ("user_deleted", this.settings.user.deleted);
+                window.localStorage.setItem ("user_display_name", this.settings.user.display_name);
+                window.localStorage.setItem ("user_spam", this.settings.user.spam);
+                window.localStorage.setItem ("user_activation_key", this.settings.user.user_activation_key);
+                window.localStorage.setItem ("user_email", this.settings.user.user_email);
+                window.localStorage.setItem ("user_login", this.settings.user.user_login);
+                window.localStorage.setItem ("user_nicename", this.settings.user.user_nicename);
+                window.localStorage.setItem ("user_pass", this.settings.user.user_pass);
+                window.localStorage.setItem ("user_registered", this.settings.user.user_registered);
+                window.localStorage.setItem ("user_status", this.settings.user.user_status);
+                window.localStorage.setItem ("user_url", this.settings.user.user_url);
             }, err => {
                 this.googleLogingInn = false;
                 this.dismissLoading();
@@ -182,14 +211,28 @@ export class LoginPage implements OnInit {
                      }
                     if(this.status.allcaps.shop_manager || this.status.allcaps.wc_product_vendors_admin_vendor || this.status.allcaps.dc_vendor || this.status.allcaps.seller || this.status.allcaps.wcfm_vendor){
                         this.settings.vendor = true;
+                        window.localStorage.setItem ("user_vendor", '1');
                     }
                     if(this.status.allcaps.administrator) {
                         this.settings.administrator = true;
+                        window.localStorage.setItem ("user_admin", '1');
                     }
                     this.close(true);
                 }
                 this.facebookLogingInn = false;
                 this.dismissLoading();
+                window.localStorage.setItem ("user_id", this.settings.user.ID);
+                window.localStorage.setItem ("user_deleted", this.settings.user.deleted);
+                window.localStorage.setItem ("user_display_name", this.settings.user.display_name);
+                window.localStorage.setItem ("user_spam", this.settings.user.spam);
+                window.localStorage.setItem ("user_activation_key", this.settings.user.user_activation_key);
+                window.localStorage.setItem ("user_email", this.settings.user.user_email);
+                window.localStorage.setItem ("user_login", this.settings.user.user_login);
+                window.localStorage.setItem ("user_nicename", this.settings.user.user_nicename);
+                window.localStorage.setItem ("user_pass", this.settings.user.user_pass);
+                window.localStorage.setItem ("user_registered", this.settings.user.user_registered);
+                window.localStorage.setItem ("user_status", this.settings.user.user_status);
+                window.localStorage.setItem ("user_url", this.settings.user.user_url);
                 this.redirectToHomePage();
             }, err => {
                 this.facebookLogingInn = false;
@@ -238,13 +281,27 @@ export class LoginPage implements OnInit {
                      }
                     if(this.status.allcaps.shop_manager || this.status.allcaps.wc_product_vendors_admin_vendor || this.status.allcaps.dc_vendor || this.status.allcaps.seller || this.status.allcaps.wcfm_vendor){
                         this.settings.vendor = true;
+                        window.localStorage.setItem ("user_vendor", '1');
                     }
                     if(this.status.allcaps.administrator) {
                         this.settings.administrator = true;
+                        window.localStorage.setItem ("user_admin", '1');
                     }
                     this.close(true);
                 }
-                this.phoneLogingInn = false;
+                this.phoneLogingInn = false;            
+                window.localStorage.setItem ("user_id", this.settings.user.ID);
+                window.localStorage.setItem ("user_deleted", this.settings.user.deleted);
+                window.localStorage.setItem ("user_display_name", this.settings.user.display_name);
+                window.localStorage.setItem ("user_spam", this.settings.user.spam);
+                window.localStorage.setItem ("user_activation_key", this.settings.user.user_activation_key);
+                window.localStorage.setItem ("user_email", this.settings.user.user_email);
+                window.localStorage.setItem ("user_login", this.settings.user.user_login);
+                window.localStorage.setItem ("user_nicename", this.settings.user.user_nicename);
+                window.localStorage.setItem ("user_pass", this.settings.user.user_pass);
+                window.localStorage.setItem ("user_registered", this.settings.user.user_registered);
+                window.localStorage.setItem ("user_status", this.settings.user.user_status);
+                window.localStorage.setItem ("user_url", this.settings.user.user_url);
             }, err => {
                 this.phoneLogingInn = false;
             });

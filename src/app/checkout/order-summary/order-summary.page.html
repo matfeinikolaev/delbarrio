@@ -6,8 +6,9 @@
 
 <ion-content class="order">
 
-<ion-list *ngIf="order">
+<ion-list>
 
+  <div *ngIf="order">
   <ion-list-header>
     <ion-label style="font-weight: 900;">{{order.id}} - <span style="text-transform: uppercase;">{{order.status}}</span></ion-label>
   </ion-list-header>
@@ -66,46 +67,68 @@
   </ion-item>
   </div>
 
-  <ion-list-header>
-    <ion-label style="font-size: small; text-transform: uppercase; color:grey; ">{{"Metodo de pago" | translate}}</ion-label>
-  </ion-list-header>
-
-
-  <ion-item lines="full">
-    <ion-label text-wrap color="dark" style="font-size: larger; margin-left: 10px;">
-    <p>{{order.payment_method_title}}</p>
-    </ion-label>
-  </ion-item>
-
-  <ion-list-header>
-    <ion-label style="font-size: small; text-transform: uppercase; color:grey; ">{{"Artículos" | translate}}</ion-label>
-  </ion-list-header>
-
-  <ion-item lines="full">
-    <ion-label text-wrap color="dark" style="font-size: larger; margin-left: 10px;">
-    <p *ngFor="let item of order.line_items">{{item.name}} <span *ngFor="let meta of item.meta_data">{{meta.value}} </span> x {{item.quantity}}
-      <span style="float: right">{{item.total | currency:settings.currency:'symbol':'1.2-2'}}</span>
-    </p>
-    </ion-label>
-  </ion-item>
-
-  <ion-list-header>
-    <ion-label style="font-size: small; text-transform: uppercase; color:grey; ">{{"Totales" | translate}}</ion-label>
-  </ion-list-header>
-
-  <ion-item lines="full">
-    <ion-label text-wrap color="dark" style="font-size: larger; margin-left: 10px;">
-    <p>{{"Envío" | translate}}<span style="float: right">{{order.shipping_total | currency:settings.currency:'symbol':'1.2-2'}}</span></p>
-    <p>{{"Descuenta" | translate}}<span style="float: right">{{order.discount_total | currency:settings.currency:'symbol':'1.2-2'}}</span></p>
-    <p>{{"Impuesto" | translate}}<span style="float: right">{{order.total_tax | currency:settings.currency:'symbol':'1.2-2'}}</span></p>
-    <ion-label class="grand-total">Total<span style="float: right">{{order.total | currency:settings.currency:'symbol':'1.2-2'}}</span></ion-label>
-  </ion-label>
-  </ion-item>
-<div class="submit-button">
-<ion-button color="{{settings.theme.button}}" expand="block" fill="solid" (click)="continue()">{{"Continuar" | translate}}</ion-button>
 </div>
-  
 
+  <div>
+    <ion-list-header>
+      <ion-label style="font-size: small; text-transform: uppercase; color:grey; ">{{"Dirección de la tienda" | translate}}</ion-label>
+    </ion-list-header>
+    <ion-item text-wrap>
+      <ion-label color="dark" style="font-size: small; " class="ion-text-wrap">
+        {{data.store.wordpress_store_locator_address1}}, 
+        {{data.store.wordpress_store_locator_region}}, 
+        {{data.store.wordpress_store_locator_zip}}
+      </ion-label>
+    </ion-item>
+    <div #map style="height: 300px"></div>
+  </div>
+
+  <div *ngIf="order">
+    <ion-list-header>
+      <ion-label style="font-size: small; text-transform: uppercase; color:grey; ">{{"Metodo de pago" | translate}}</ion-label>
+    </ion-list-header>
+
+
+    <ion-item lines="full">
+      <ion-label text-wrap color="dark" style="font-size: larger; margin-left: 10px;">
+      <p>{{order.payment_method_title}}</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-list-header>
+      <ion-label style="font-size: small; text-transform: uppercase; color:grey; ">{{"Artículos" | translate}}</ion-label>
+    </ion-list-header>
+
+    <ion-item lines="full">
+      <ion-label text-wrap color="dark" style="font-size: larger; margin-left: 10px;">
+      <div *ngFor="let item of order.line_items">{{item.name}}
+        <p *ngFor="let meta of item.meta_data">
+          <span *ngIf="checkMetaType(meta.value)">{{meta.value}}</span> 
+        </p>
+        x {{item.quantity}}
+        <span style="float: right">{{item.total | currency:settings.currency:'symbol':'1.2-2'}}</span>
+      </div>
+      </ion-label>
+    </ion-item>
+
+    <ion-list-header>
+      <ion-label style="font-size: small; text-transform: uppercase; color:grey; ">{{"Totales" | translate}}</ion-label>
+    </ion-list-header>
+
+    <ion-item lines="full">
+      <ion-label text-wrap color="dark" style="font-size: larger; margin-left: 10px;">
+      <p>{{"Envío" | translate}}<span style="float: right">{{order.shipping_total | currency:settings.currency:'symbol':'1.2-2'}}</span></p>
+      <p>{{"Descuenta" | translate}}<span style="float: right">{{order.discount_total | currency:settings.currency:'symbol':'1.2-2'}}</span></p>
+      <p>{{"Impuesto" | translate}}<span style="float: right">{{order.total_tax | currency:settings.currency:'symbol':'1.2-2'}}</span></p>
+      <p>{{"Tarifa" | translate}}<span style="float: right">{{order.total_fee | currency:settings.currency:'symbol':'1.2-2'}}</span></p>
+      <ion-label class="grand-total">Total<span style="float: right">{{order.total | currency:settings.currency:'symbol':'1.2-2'}}</span></ion-label>
+    </ion-label>
+    </ion-item>
+    <div class="submit-button">
+    <ion-button color="{{settings.theme.button}}" expand="block" fill="solid" (click)="continue()">{{"Continuar" | translate}}</ion-button>
+    </div>
+    
+  </div>
 </ion-list>
 
 </ion-content>

@@ -36,7 +36,7 @@
                <ion-input formControlName="user_nicename" [disabled]="!editmode"></ion-input>
             </div>
          </ion-item>
-         <ion-item>
+         <ion-item *ngIf="storage.googleLogin == null && storage.facebookLogin == null">
             <div>
                <ion-label color="medium">Contraseña</ion-label>
                <ion-input formControlName="user_pass" type="password" [disabled]="!editmode"></ion-input>
@@ -51,8 +51,8 @@
          <ion-input type="hidden" formControlName="ID"></ion-input>
          </form>
       </ion-list>
-      <ion-button slot="end" fill="solid" expand="full" (click)="editMode()" [hidden]="editmode">{{"Editar" | translate}}</ion-button>
-      <ion-button slot="end" fill="solid" expand="full" (click)="onSubmit()" [hidden]="!editmode">{{"Guardar" | translate}}</ion-button>
+      <ion-button slot="end" fill="solid" expand="full" (click)="editMode()" [hidden]="editmode" *ngIf="storage.googleLogin == null && storage.facebookLogin == null">{{"Editar" | translate}}</ion-button>
+      <ion-button slot="end" fill="solid" expand="full" (click)="onSubmit()" [hidden]="!editmode" *ngIf="storage.googleLogin == null && storage.facebookLogin == null">{{"Guardar" | translate}}</ion-button>
    </div>
 </ion-content>
 

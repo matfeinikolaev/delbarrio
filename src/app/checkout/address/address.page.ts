@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, NgZone } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, NgZone, ContentChild, ViewChildren } from '@angular/core';
 import { NavController, Platform, ToastController, ModalController } from '@ionic/angular';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../../api.service';
@@ -9,7 +9,17 @@ import { Storage } from '@ionic/storage';
 import { Geolocation, GeolocationOptions, Geoposition, PositionError } from '@ionic-native/geolocation/ngx';
 import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
 import { mainModule } from 'process';
-
+import { format, formatDistance, formatRelative, subDays } from 'date-fns';
+import {
+    GoogleMaps,
+    GoogleMap,
+    GoogleMapsEvent,
+    GoogleMapOptions,
+    CameraPosition,
+    MarkerOptions,
+    Marker,
+    Environment
+  } from '@ionic-native/google-maps';
 declare var google;
 
 @Component({
@@ -39,9 +49,15 @@ export class CheckoutAddressPage implements OnInit {
     mydate: any;
     time: any;
     date: any;
+    currDate: any;
     selectedDate: any;
     storePath: any;
     store: any;
+    form: any;
+    marker: any;
+    // map: any;
+    @ViewChild('map', {static: true}) map: ElementRef ;
+    @ViewChild("form", {static: true, read: ElementRef}) formEl: ElementRef;
     constructor(
         public data: Data,
         public api: ApiService, 
@@ -56,6 +72,7 @@ export class CheckoutAddressPage implements OnInit {
         private tc: ToastController,
         private storage: Storage,
         public service: ApiService,
+        private platform: Platform,
         public modalCtrl: ModalController,) {
             this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
             this.autocomplete = { input: '' };
@@ -121,6 +138,119 @@ export class CheckoutAddressPage implements OnInit {
         this.getCheckoutForm();
         //this.getCountries();
     }
+    ngAfterViewInit() {
+        console.log(this.map.nativeElement);
+        this.loadMap();
+    }
+    loadMap() {
+        let coords = new google.maps.LatLng(this.api.userLocation.latitude, this.api.userLocation.longitude);
+        let mapOptions/*: google.maps.MapOptions*/ = {
+            center: coords,
+            zoom: 15,
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            fullscreenControl: false,
+            streetViewControl: false,
+            mapTypeControl: false,
+        };
+
+        var mapElement = document.createElement("ion-card");
+        var mapElementCont = document.createElement("ion-card-content");
+
+        mapElement.setAttribute("id", "map");
+        mapElementCont.setAttribute("id", "mapCont")
+        this.map.nativeElement.appendChild(mapElement);
+        mapElement.appendChild(mapElementCont);
+        mapElement.setAttribute("style", "width: 94%; height:100%;");
+        mapElementCont.setAttribute("style", "width: 100%; height:100%; ");
+
+        var map = new google.maps.Map(mapElementCont, mapOptions);
+        map.addListener("click", function (p) {
+            console.log(p.latLng.lat());
+            console.log(p.latLng.lng());
+            let coords = new google.maps.LatLng(p.latLng.lat(), p.latLng.lng());
+            this.marker = null;
+            this.marker = new google.maps.Marker({position: coords, map: map});
+        });
+
+        const input = document.getElementById("pac-input") as HTMLInputElement;
+        const searchBox = new google.maps.places.SearchBox(input);
+        map.controls[google.maps.ControlPosition.TOP].push(input);
+
+        // Bias the SearchBox results towards current map's viewport.
+        map.addListener("bounds_changed", () => {
+            searchBox.setBounds(map.getBounds());
+        });
+
+        let markers = [];
+        // Listen for the event fired when the user selects a prediction and retrieve
+        // more details for that place.
+        searchBox.addListener("places_changed", () => {
+            const places = searchBox.getPlaces();
+
+            if (places.length == 0) {
+                return;
+            }
+
+            // Clear out the old markers.
+            markers.forEach((marker) => {
+                marker.setMap(null);
+            });
+            markers = [];
+
+            // For each place, get the icon, name and location.
+            const bounds = new google.maps.LatLngBounds();
+            places.forEach((place) => {
+                if (!place.geometry) {
+                    console.log("Returned place contains no geometry");
+                    return;
+                }
+                const icon = {
+                    url: place.icon as string,
+                    size: new google.maps.Size(71, 71),
+                    origin: new google.maps.Point(0, 0),
+                    anchor: new google.maps.Point(17, 34),
+                    scaledSize: new google.maps.Size(25, 25),
+                };
+
+                // Create a marker for each place.
+                markers.push(
+                    new google.maps.Marker({
+                        map,
+                        icon,
+                        title: place.name,
+                        position: place.geometry.location,
+                    })
+                );
+
+                if (place.geometry.viewport) {
+                    // Only geocodes have viewport.
+                    bounds.union(place.geometry.viewport);
+                } else {
+                    bounds.extend(place.geometry.location);
+                }
+            });
+            console.log(places[0]);
+            places[0].address_components.forEach(element => {
+                if (element.types.includes("route")) {
+                    this.checkoutData.form.billing_address_1 = element.long_name;
+                }
+                else if (element.types.includes("locality", "political")) {
+                    this.checkoutData.form.billing_city = element.long_name;
+                }
+                else if (element.types.includes("administrative_area_level_1", "political")) {
+                    this.checkoutData.form.billing_state = element.long_name;
+                }
+                else if (element.types.includes("postal_code")) {
+                    this.checkoutData.form.billing_postcode = element.long_name;
+                }
+                else if (element.types.includes("country")) {
+                    this.checkoutData.form.billing_country = element.short_name;
+                }
+            });
+            map.fitBounds(bounds);
+        });
+    }
+
     getRegion() {
         this.GoogleAutocomplete.getPlacePredictions({ input: this.checkoutData.form.billing_state, types:['(regions)'], componentRestrictions: {country: this.checkoutData.form.billing_country } }, (predictions, status) => {
             this.autocompleteItemsRegion = predictions;
@@ -193,15 +323,19 @@ export class CheckoutAddressPage implements OnInit {
         await this.api.postItem('get_checkout_form', {}, this.storePath).then(res => {
             this.checkoutData.form = res;
             this.checkoutData.form.sameForShipping = true;
+            this.checkoutData.form.billing_country = "EC";
+            this.checkoutData.form.shipping_country = "EC";
             if(this.checkoutData.form.countries) {
-                if(this.checkoutData.form.countries.length == 1) {
-                this.checkoutData.form.billing_country = this.checkoutData.form.countries[0].value;
-                this.checkoutData.form.shipping_country = this.checkoutData.form.countries[0].value;
-                }
+                // if(this.checkoutData.form.countries.length == 1) {
+                // this.checkoutData.form.billing_country = this.checkoutData.form.countries[0].value;
+                // this.checkoutData.form.shipping_country = this.checkoutData.form.countries[0].value;
+                // }
                 this.checkoutData.billingStates = this.checkoutData.form.countries.find(item => item.value == this.checkoutData.form.billing_country);
                 this.checkoutData.shippingStates = this.checkoutData.form.countries.find(item => item.value == this.checkoutData.form.shipping_country);
             }
-            
+            if(this.checkoutData.form.ship_to_different_address == null) {
+                this.checkoutData.form.ship_to_different_address = false;
+            }
             this.loader = false;
         }, err => {
             console.log(err);
@@ -224,14 +358,14 @@ export class CheckoutAddressPage implements OnInit {
         this.checkoutData.form.shipping_state = '';
     }
     async updateOrderReview() {
-        await this.api.postItem('update_order_review', {}, this.storePath).then(res => {
+        await this.api.postItem('update_order_review', {}, this.data.store.path).then(res => {
             this.checkoutData.orderReview = res;
         }, err => {
             console.log(err);
         });
     }
     backToCart() {
-        this.navCtrl.navigateForward('/tabs/home/cart/' + this.storePath);
+        this.navCtrl.navigateForward('/tabs/home/cart' + this.data.store.path);
     }
     continueCheckout() {
 
@@ -240,11 +374,27 @@ export class CheckoutAddressPage implements OnInit {
         if(this.validateForm()){
             if(!this.checkoutData.form.ship_to_different_address)
             this.assgnShippingAddress();
-            this.navCtrl.navigateForward('/tabs/cart/checkout/' + this.storePath);
+            // this.navCtrl.navigateForward('/tabs/order-summary/' + this.storePath + '/' + 10996);
+            this.navCtrl.navigateForward('/tabs/cart/checkout/' + this.storePath + '/');
         }
     }
 
     validateForm(){
+        if(this.checkoutData.form.billing_company_type == '' || this.checkoutData.form.billing_company_type == undefined){
+            this.errorMessage = 'El tipo de empresa es un campo obligatorio';
+            return false;
+        }
+
+        if(this.checkoutData.form.billing_document_type == '' || this.checkoutData.form.billing_document_type == undefined){
+            this.errorMessage = 'El tipo de documento es un campo obligatorio';
+            return false;
+        }
+
+        if(this.checkoutData.form.billing_document == '' || this.checkoutData.form.billing_document == undefined){
+            this.errorMessage = 'La identificación es un campo obligatorio';
+            return false;
+        }
+
         if(this.checkoutData.form.billing_first_name == '' || this.checkoutData.form.billing_first_name == undefined){
             this.errorMessage = 'El nombre de facturación es un campo obligatorio';
             return false;
@@ -326,6 +476,34 @@ export class CheckoutAddressPage implements OnInit {
         else return true;
     }
 
+    delivDateLoaded() {
+        var currDate = format(new Date(), 'yyyy-MM-dd');
+        var deliv_date = document.getElementById("delivery_date");
+        deliv_date.setAttribute('min', currDate);
+    }
+    delivTimeLoaded() {
+        var deliv_date = document.getElementById("delivery_date");
+        var deliv_time = document.getElementById("delivery_time");
+        var dateValue = deliv_date.getAttribute('ng-reflect-model');
+        var chosenWeekDay = format(new Date(dateValue), 'iii');
+        var openHour = this.data.store[chosenWeekDay + '_o'];
+        var closeHour = this.data.store[chosenWeekDay + '_c'];
+        if (openHour != null) {
+            if(dateValue != format(new Date(), 'yyyy-MM-dd')) {
+                deliv_time.setAttribute('min', openHour);
+            }
+        }
+        if (closeHour != null) {
+            deliv_time.setAttribute('max', closeHour);
+        }
+    }
+    shipToDifferentAddress() {
+        if(this.checkoutData.form.ship_to_different_address == false) {
+            this.checkoutData.form.ship_to_different_address = true;
+        } else {
+            this.checkoutData.form.ship_to_different_address = false;
+        }
+    }
     assgnShippingAddress(){
         this.checkoutData.form.shipping_first_name = this.checkoutData.form.billing_first_name;
         this.checkoutData.form.shipping_last_name = this.checkoutData.form.billing_last_name;

@@ -6,6 +6,7 @@ import { Data } from '../data';
 import { Settings } from '../data/settings';
 import { Product } from '../data/product';
 import { Store } from '../data/store';
+import { FormBuilder, FormArray, Validators } from '@angular/forms';
 import { OneSignal } from '@ionic-native/onesignal/ngx';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
@@ -33,7 +34,8 @@ export class StoresPage {
     hasMoreItems: boolean = true;
     screenWidth: any = 300;
     slideOpts = { effect: 'flip', autoplay: true, parallax: true, loop: true, lazy: true };
-    
+    form: any;
+    formRegister: any;
     cart: any = {};
     options: any = {};
     lan: any = {};
@@ -42,18 +44,35 @@ export class StoresPage {
     loading: any = false;
     loadingStoresNearby: any = true;
     loadingAllStores: any = false;
-    
-    constructor(public routerOutlet: IonRouterOutlet, public modalCtrl: ModalController, private nativeGeocoder: NativeGeocoder, private geolocation: Geolocation, private locationAccuracy: LocationAccuracy, private storage: Storage, public translate: TranslateService, public alertController: AlertController, private config: Config, public api: ApiService, private splashScreen: SplashScreen, public platform: Platform, public translateService: TranslateService, public data: Data, public settings: Settings, public product: Product, public store: Store, public loadingController: LoadingController, public router: Router, public navCtrl: NavController, public route: ActivatedRoute, private oneSignal: OneSignal, private nativeStorage: NativeStorage, private chatapi: ChatApi) {
+    errorMessage: any;
+    constructor(public routerOutlet: IonRouterOutlet, public modalCtrl: ModalController, private nativeGeocoder: NativeGeocoder, private geolocation: Geolocation, private locationAccuracy: LocationAccuracy, private storage: Storage, public translate: TranslateService, public alertController: AlertController, private config: Config, public api: ApiService, private splashScreen: SplashScreen, public platform: Platform, public translateService: TranslateService, public data: Data, public settings: Settings, public product: Product, public store: Store, public loadingController: LoadingController, public router: Router, public navCtrl: NavController, public route: ActivatedRoute, private oneSignal: OneSignal, private nativeStorage: NativeStorage, private chatapi: ChatApi, private fb: FormBuilder) {
         this.filter.page = 1;
         this.filter.status = 'publish';
         this.screenWidth = this.platform.width();
+        this.form = this.fb.group({
+            name: this.settings.user?this.settings.user.display_name:'',
+            phone: '',
+            email: this.settings.user?this.settings.user.user_email:'',
+        });
     }
     ngOnInit() {
         if( this.data.storeCategory == null ) {
-            this.data.storeCategory = {displayName:'Tienda', term_id:'43'};
+            this.data.storeCategory = {};
+            this.data.storeCategory.term_id = window.localStorage.getItem('store-category-id');
+            this.data.storeCategory.displayName = window.localStorage.getItem('store-category-name');
         }
-        this.data.allStores = [];
-        this.data.storesNearby = [];
+        if (this.data.storesNearby.length > 0) {
+            if (this.data.storeCategory.term_id != this.data.storesNearby[0].cat) {
+                this.data.storesNearby = [];
+            }
+        }
+        if (this.data.allStores.length > 0) {
+            if (this.data.storeCategory.term_id != this.data.allStores[0].cat) {
+                this.data.allStores = [];
+            }
+        }
+        // this.data.allStores = [];
+        // this.data.storesNearby = [];
         this.platform.ready().then(() => {
              this.locationAccuracy.canRequest().then((canRequest: boolean) => {
               if(canRequest) {
@@ -231,37 +250,40 @@ export class StoresPage {
             }
 
             /* HERE WE GET ALL THE STORES */
-            
-            this.loadingStoresNearby = true;
-            this.api.postItem('get_stores', {'categories': this.data.storeCategory.term_id,'lat':this.api.userLocation['latitude'], 'lng':this.api.userLocation['longitude'], 'radius':this.api.userLocation['distance']}).then(res=>{
-                var result: any = res;
-                this.data.storesNearby = [];
-                if( Object.values(result).length >= 1) {
+            if (this.data.storesNearby.length == 0) {
+                this.loadingStoresNearby = true;
+                this.api.postItem('get_stores', {'categories': this.data.storeCategory.term_id,'lat':this.api.userLocation['latitude'], 'lng':this.api.userLocation['longitude'], 'radius':this.api.userLocation['distance']}).then(res=>{
+                    var result: any = res;
+                    this.data.storesNearby = [];
+                    if( Object.values(result).length >= 1) {
+                        for ( let i in result ) {
+                            this.data.storesNearby.push(result[i]);
+                        }
+                    }
+                    this.loadingStoresNearby = false;
+                },err=>{
+                    console.error(err);
+                    console.error(err.text);
+                    this.loadingStoresNearby = false;
+                });
+            }
+            if (this.data.allStores.length == 0) {
+                this.loadingAllStores = true;
+                this.api.postItem('get_stores', {'categories': this.data.storeCategory.term_id,'lat':this.api.userLocation['latitude'], 'lng':this.api.userLocation['longitude'], 'radius':'20000'}).then(res=>{
+                    var result: any = res;
+                    this.data.allStores = [];
                     for ( let i in result ) {
-                        this.data.storesNearby.push(result[i]);
+                        if (this.data.storesNearby.indexOf(result[i]) == '-1') {
+                            this.data.allStores.push(result[i]);
+                        }
                     }
-                }
-                this.loadingStoresNearby = false;
-            },err=>{
-                console.error(err);
-                console.error(err.text);
-                this.loadingStoresNearby = false;
-            });
-            
-            this.loadingAllStores = true;
-            this.api.postItem('get_stores', {'categories': this.data.storeCategory.term_id,'lat':this.api.userLocation['latitude'], 'lng':this.api.userLocation['longitude'], 'radius':'20000'}).then(res=>{
-                var result: any = res;
-                this.data.allStores = [];
-                for ( let i in result ) {
-                    if (this.data.storesNearby.indexOf(result[i]) == '-1') {
-                        this.data.allStores.push(result[i]);
-                    }
-                }
-                this.loadingAllStores = false;
-            },err=>{
-                console.error(err);
-                this.loadingAllStores = false;
-            });
+                    this.loadingAllStores = false;
+                },err=>{
+                    console.error(err);
+                    this.loadingAllStores = false;
+                });
+            } 
+
             if(this.settings.user) {
                 this.getIncomeMessages();
             }
@@ -470,5 +492,25 @@ export class StoresPage {
         }, err => {
             console.log(err);
         });
+    }
+    onSubmit() {
+        this.form.value.type = 'no-stores-nearby';
+        if (this.checkFields()) {
+            this.api.postItem("notify-client", this.form.value).then(res => {
+                this.settings.clientDataSent = true;
+                console.log(res);
+            }, err => {
+                console.log(err);
+            });
+        }
+    }
+    checkFields() {
+        if (this.form.value.phone != "" || this.form.value.email != "") {
+            this.errorMessage = null;
+            return true;
+        } else {
+            this.errorMessage = "Por favor, ingrese su teléfono o correo electrónico"; //, ingrese su teléfono o correo electrónico
+            return false;
+        }
     }
 }

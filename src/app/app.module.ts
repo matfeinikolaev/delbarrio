@@ -46,6 +46,7 @@ import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-nati
 import { FilterPage } from '../app/filter/filter.page';
 import { OrderSummaryPage } from './checkout/order-summary/order-summary.page';
 import { LocationPage } from '../app/location/location.page';
+import { AccountPage } from '../app/account/account.page';
 
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 //Geolocation
@@ -64,13 +65,12 @@ export function createTranslateLoader(http: HttpClient) {
   declarations: [
   AppComponent,
   FilterPage,
-  OrderSummaryPage,
-  LocationPage,
-  //HomePage
+  // OrderSummaryPage,
+  LocationPage
   ],
   entryComponents: [
   FilterPage,
-  OrderSummaryPage,
+  // OrderSummaryPage,
   LocationPage
   //HomePage
   ],
@@ -114,6 +114,7 @@ export function createTranslateLoader(http: HttpClient) {
     HTTP,
     AndroidPermissions,
     Geolocation, LocationAccuracy, NativeGeocoder,
+    // OrderSummaryPage,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

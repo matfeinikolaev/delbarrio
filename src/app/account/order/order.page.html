@@ -89,6 +89,7 @@
     <p>{{"Envío" | translate}}<span style="float: right">{{order.shipping_total | currency:settings.currency:'symbol':'1.2-2'}}</span></p>
     <p>{{"Descuenta" | translate}}<span style="float: right">{{order.discount_total | currency:settings.currency:'symbol':'1.2-2'}}</span></p>
     <p>{{"Impuesto" | translate}}<span style="float: right">{{order.total_tax | currency:settings.currency:'symbol':'1.2-2'}}</span></p>
+    <p>{{"Tarifa" | translate}}<span style="float: right">{{order.total_fee | currency:settings.currency:'symbol':'1.2-2'}}</span></p>
     <ion-label class="grand-total">Total<span style="float: right">{{order.total | currency:settings.currency:'symbol':'1.2-2'}}</span></ion-label>
   </ion-label>
   </ion-item>

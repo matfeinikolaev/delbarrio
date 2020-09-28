@@ -15,6 +15,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { HttpParams } from "@angular/common/http";
 import { Config } from '../config';
 import { LoginPage } from '../account/login/login.page';
+import { FormBuilder, FormArray, Validators } from '@angular/forms';
 @Component({
     selector: 'app-product',
     templateUrl: 'product.page.html',
@@ -41,11 +42,21 @@ export class ProductPage {
     lan: any = {};
     variationId: any;
     results: any;
+    form: any;
+    formRegister: any;
+    openFeedbackForm: any = false;
+    errorMessage:any;
+    unavailableProduct:any;
     store: any;
     incomeMessages: any;
-    constructor(private config: Config, public translate: TranslateService, public toastController: ToastController, private socialSharing: SocialSharing, public modalCtrl: ModalController, public api: ApiService, public data: Data, public productData: Product, public settings: Settings, public router: Router, public loadingController: LoadingController, public navCtrl: NavController, public alertController: AlertController, public route: ActivatedRoute, public vendor: Vendor, public iab: InAppBrowser) {
+    constructor(private fb: FormBuilder ,private config: Config, public translate: TranslateService, public toastController: ToastController, private socialSharing: SocialSharing, public modalCtrl: ModalController, public api: ApiService, public data: Data, public productData: Product, public settings: Settings, public router: Router, public loadingController: LoadingController, public navCtrl: NavController, public alertController: AlertController, public route: ActivatedRoute, public vendor: Vendor, public iab: InAppBrowser) {
         this.filter.page = 1;
         this.quantity = "1";
+        this.form = this.fb.group({
+            name: this.settings.user?this.settings.user.display_name:'',
+            phone: '',
+            email: this.settings.user?this.settings.user.user_email:'',
+        });
     }
     getReviewsPage() {
         this.navCtrl.navigateForward(this.router.url + '/review/' + this.product.id);
@@ -88,7 +99,7 @@ export class ProductPage {
         });
 
         /* Product Addons */
-        if(this.settings.settings.switchAddons ===  1)
+        if(this.settings.settings.switchAddons ===  1 || this.product.add_ons)
         this.getAddons();
 
         if( this.product.attributes ) {
@@ -166,6 +177,7 @@ export class ProductPage {
             this.presentAlert(this.lan.message, this.lan.lowQuantity);
         }
         else if (this.selectAdons() && this.setVariations2() && this.setGroupedProducts()) {
+            console.log(this.options);
             this.options.product_id = product.id;
             this.options.quantity = this.quantity;
             this.disableButton = true;
@@ -428,16 +440,25 @@ export class ProductPage {
         } else return true;
     }
 
+    backToStore() {
+        this.navCtrl.navigateBack('tabs/home/store/' + this.data.store.ID);
+    }
+
     /* PRODUCT ADDONS */
     getAddons(){
-        if(this.product.meta_data){
+        if(this.product.meta_data && !this.product.add_ons){
             for(let item in this.product.meta_data){
                 if(this.product.meta_data[item].key == '_product_addons' && this.product.meta_data[item].value.length){
                     this.addonsList.push(...this.product.meta_data[item].value)           
                 }
             }
+            this.getGlobalAddons();
+        } else if (this.product.add_ons) {
+            this.addonsList = this.product.add_ons;
+            for (let i in this.addonsList) {
+                this.addonsList[i].selected = false;
+            }
         }
-        this.getGlobalAddons()
     }
     getGlobalAddons(){
         this.api.getAddonsList('product-add-ons').then(res => {
@@ -455,41 +476,107 @@ export class ProductPage {
         let valid = this.validateform();
         if(valid) {
             this.addonsList.forEach((value, i) => {
-                value.selectedName = value.name.toLowerCase();
-                value.selectedName = value.selectedName.split(' ').join('-');
-                value.selectedName = value.selectedName.split('.').join('');
-                value.selectedName = value.selectedName.replace(':','');
+                value.selectedName = value.name ? value.name : value.label;
+                // value.selectedName = value.selectedName.split(' ').join('-');
+                // value.selectedName = value.selectedName.split('.').join('');
+                // value.selectedName = value.selectedName.replace(':','');
                     value.options.forEach((option, j) => {
-                        option.selectedLabel = option.label.toLowerCase();
-                        option.selectedLabel = option.selectedLabel.split(' ').join('-');
-                        option.selectedLabel = option.selectedLabel.split('.').join('');
-                        option.selectedLabel = option.selectedLabel.replace(':','');
+                        option.selectedLabel = option.label;
+                        // option.selectedLabel = option.selectedLabel.split(' ').join('-');
+                        // option.selectedLabel = option.selectedLabel.split('.').join('');
+                        // option.selectedLabel = option.selectedLabel.replace(':','');
                         if (value.selected instanceof Array) {
                             if (value.selected.includes(option.label)) {
-                                this.options['addon-' + this.product.id + '-' + value.selectedName + '-' + i + '[' + j + ']' ] = option.selectedLabel;
+                                this.options['addon-' + this.product.id + '[' + i + ']' + '[' + j + ']' + '[value]'] = option.selectedLabel;
+                                this.options['addon-' + this.product.id + '[' + i + ']' + '[' + j + ']' + '[name]'] = value.selectedName;
+                                this.options['addon-' + this.product.id + '[' + i + ']' + '[' + j + ']' + '[price]'] = Number.parseFloat(option.price);
+                                this.options['addon-' + this.product.id + '[' + i + ']' + '[' + j + ']' + '[price_original]'] = Number.parseFloat(option.price);
+                                this.options['addon-' + this.product.id + '[' + i + ']' + '[' + j + ']' + '[original_value]'] = [];
+                                for (let k=0; k<j; k++) {
+                                    this.options['addon-' + this.product.id + '[' + i + ']' + '[' + j + ']' + '[original_value]'][k] = 'ywapo_value_' + value.id;
+                                }
+                                this.options['addon-' + this.product.id + '[' + i + ']' + '[' + j + ']' + '[original_index]'] = j;
+                                this.options['addon-' + this.product.id + '[' + i + ']' + '[' + j + ']' + '[price_type]'] = option.type;
+                                this.options['addon-' + this.product.id + '[' + i + ']' + '[' + j + ']' + '[type_id]'] = value.id;
+                                this.options['addon-' + this.product.id + '[' + i + ']' + '[' + j + ']' + '[sold_individually]'] = value.sold_individually;
+                                this.options['addon-' + this.product.id + '[' + i + ']' + '[' + j + ']' + '[calculate_quantity_sum]'] = value.calculate_quantity_sum;
+                                this.options['addon-' + this.product.id + '[' + i + ']' + '[' + j + ']' + '[add_on_type]'] = value.type;
                             }
                         }
                         else if (option.label == value.selected && value.type == 'select') {
-                            this.options['addon-' + this.product.id + '-' + value.selectedName + '-' + i ] = option.selectedLabel + '-' + (j + 1);
+                            this.options['addon-' + this.product.id + '[' + i + ']' + '[' + j + ']' + '[value]'] = option.selectedLabel;
+                            this.options['addon-' + this.product.id + '[' + i + ']' + '[' + j + ']' + '[name]'] = value.selectedName;
+                            this.options['addon-' + this.product.id + '[' + i + ']' + '[' + j + ']' + '[price]'] = Number.parseFloat(option.price);
+                            this.options['addon-' + this.product.id + '[' + i + ']' + '[' + j + ']' + '[price_type]'] = option.type;
+                            this.options['addon-' + this.product.id + '[' + i + ']' + '[' + j + ']' + '[type_id]'] = value.id;
+                            this.options['addon-' + this.product.id + '[' + i + ']' + '[' + j + ']' + '[sold_individually]'] = value.sold_individually;
+                            this.options['addon-' + this.product.id + '[' + i + ']' + '[' + j + ']' + '[calculate_quantity_sum]'] = value.calculate_quantity_sum;
+                            this.options['addon-' + this.product.id + '[' + i + ']' + '[' + j + ']' + '[add_on_type]'] = value.type;
                         }
                         else if (option.label == value.selected && value.type == 'radiobutton') {
-                            this.options['addon-' + this.product.id + '-' + value.selectedName + '-' + i + '[' + j + ']' ] = option.selectedLabel;
+                            this.options['addon-' + this.product.id + '[' + i + ']' + '[' + j + ']' + '[value]'] = option.selectedLabel;
+                            this.options['addon-' + this.product.id + '[' + i + ']' + '[' + j + ']' + '[name]'] = value.selectedName;
+                            this.options['addon-' + this.product.id + '[' + i + ']' + '[' + j + ']' + '[price]'] = Number.parseFloat(option.price);
+                            this.options['addon-' + this.product.id + '[' + i + ']' + '[' + j + ']' + '[price_type]'] = option.type;
+                            this.options['addon-' + this.product.id + '[' + i + ']' + '[' + j + ']' + '[type_id]'] = value.id;
+                            this.options['addon-' + this.product.id + '[' + i + ']' + '[' + j + ']' + '[sold_individually]'] = value.sold_individually;
+                            this.options['addon-' + this.product.id + '[' + i + ']' + '[' + j + ']' + '[calculate_quantity_sum]'] = value.calculate_quantity_sum;
+                            this.options['addon-' + this.product.id + '[' + i + ']' + '[' + j + ']' + '[add_on_type]'] = value.type;
                         }
-                        else if (value.type === 'custom_textarea' && option.input && option.input !== '') {
-                            this.options['addon-' + this.product.id + '-' + value.selectedName + '-' + i + '[' + option.selectedLabel + ']' ] = option.input;
+                        else if ( ( value.type === 'custom_textarea' || value.type == "text" ) && value.input && value.input !== '') {
+                            this.options['addon-' + this.product.id + '[' + i + ']' + '[' + j + ']' + '[value]'] = value.input;
+                            this.options['addon-' + this.product.id + '[' + i + ']' + '[' + j + ']' + '[price_type]'] = option.type;
+                            this.options['addon-' + this.product.id + '[' + i + ']' + '[' + j + ']' + '[type_id]'] = value.id;
+                            this.options['addon-' + this.product.id + '[' + i + ']' + '[' + j + ']' + '[sold_individually]'] = value.sold_individually;
+                            this.options['addon-' + this.product.id + '[' + i + ']' + '[' + j + ']' + '[calculate_quantity_sum]'] = value.calculate_quantity_sum;
+                            this.options['addon-' + this.product.id + '[' + i + ']' + '[' + j + ']' + '[add_on_type]'] = value.type;
                         }
                     });
-                if(value.type == 'custom_text'){
-                    let label = value.name;
-                    label = label.toLowerCase();
-                    label = label.split(' ').join('-');
-                    label = label.split('.').join('');
-                    label = label.replace(':','');
-                    this.options['addon-' + this.product.id + '-' + label + '-' + i ] = value.input;
-                }    
+                // if(value.type == 'custom_text'){
+                //     let label = value.name ? value.name : value.label;
+                //     label = label.toLowerCase();
+                //     label = label.split(' ').join('-');
+                //     label = label.split('.').join('');
+                //     label = label.replace(':','');
+                //     this.options['addon-' + this.product.id + '-' + label + '-' + i ] = value.input;
+                // }    
             });
         }
         return valid;
+    }
+    checkTextValue() {
+        
+    }
+    notifyClient(product) {
+        this.unavailableProduct = product.id;
+        if(this.settings.user || this.settings.customer.id) {
+            this.openFeedbackForm = true;
+        }
+        else this.login();
+    }
+    closeForm() {
+        this.openFeedbackForm = false;
+    }
+    onSubmit() {
+        this.form.value.type = 'product-unavailable';
+        this.form.value.product = this.unavailableProduct;
+        if (this.checkFields()) {
+            this.api.postItem("notify-client", this.form.value).then(res => {
+                this.settings.clientDataSent = true;
+                console.log(res);
+            }, err => {
+                console.log(err);
+            });
+        }
+    }
+    checkFields() {
+        if (this.form.value.phone != "" || this.form.value.email != "") {
+            this.errorMessage = null;
+            return true;
+        } else {
+            this.errorMessage = "Por favor, ingrese su teléfono o correo electrónico"; //, ingrese su teléfono o correo electrónico
+            return false;
+        }
     }
     validateform(){
         if(this.addonsList){

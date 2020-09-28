@@ -1,7 +1,7 @@
 <ion-header mode='ios' class="product-header" >
    <ion-toolbar>
       <ion-buttons slot="start">
-         <ion-back-button text="{{'Atrás' | translate}}" defaultHref="/tabs/home/stores-by-cat"></ion-back-button>
+         <ion-back-button text="{{'Atrás' | translate}}" (click)="backToStore()"></ion-back-button>
       </ion-buttons>
       <ion-title class="delbarrio-header">
          {{"DELBARRIO" | translate}}
@@ -15,6 +15,53 @@
    <div class="spinner" *ngIf="!product.id">
       <ion-spinner> </ion-spinner>
    </div>   
+   
+   <ion-row style="position: fixed; z-index: 1000; width: 100%; padding: 10px 0;" [hidden]="!openFeedbackForm">
+      <ion-list style="border: #2b3f5a 1px solid; width: 80%; margin:auto; text-align:center; border-radius: 15px;">
+        <div style="width: 100%; padding: 20px; clear:both;">
+           <div style="width: 250px; color:#687e95; font-size:larger; font-weight: light; margin-bottom: 20px;">
+              <ion-label>{{"Déjanos tus contactos, te avisaremos, cuando aparezca este producto" | translate}}</ion-label>
+           </div>
+           <form [formGroup]="form"> 
+           <ion-label for="name" mode="ios" color="medium" style="font-size: small;">NOMBRE</ion-label>
+           <ion-item style="margin: 0 0 15px 0;   
+           --border-color: var(--ion-color-medium-shade);
+           --border-radius: 50px;
+           --border-width: 1px;
+           --highlight-height: 0;
+           --background: #f8f9fa;">
+           <ion-input type="text" formControlName="name" clearInput="true"></ion-input>
+           </ion-item>
+           <ion-label for="phone" mode="ios" color="medium" style="font-size: small;">TELEFONO</ion-label>
+           <ion-item style="margin: 0 0 15px 0;   
+           --border-color: var(--ion-color-medium-shade);
+           --border-radius: 50px;
+           --border-width: 1px;
+           --highlight-height: 0;
+           --background: #f8f9fa;">
+           <ion-input type="number" formControlName="phone" clearInput="true"></ion-input>
+           </ion-item>
+           <ion-label for="email" mode="ios" color="medium" style="font-size: small;">EMAIL</ion-label>
+           <ion-item style="margin: 0 0 15px 0;   
+           --border-color: var(--ion-color-medium-shade);
+           --border-radius: 50px;
+           --border-width: 1px;
+           --highlight-height: 0;
+           --background: #f8f9fa;">
+           <ion-input type="email" formControlName="email" clearInput="true"></ion-input>
+           </ion-item>        
+           </form>
+           <ion-item lines="none" *ngIf="errorMessage" style="width: 250px;">
+           <span style="color: red;">{{errorMessage}}</span>
+           </ion-item>
+           <ion-button color="tertiary" style="--border-radius:50px 50px 50px 50px; height:40px; margin-top:40px;" expand="block" fill="solid" (click)="onSubmit()">{{"Enviar" | translate}}</ion-button>
+           <ion-button color="danger" (click)="closeForm()" style="--border-radius:50px 50px 50px 50px; height:40px;" expand="block" fill="solid">
+              <ion-icon name="close"></ion-icon>{{"Cerrar" | translate}}
+           </ion-button>
+        </div>
+     </ion-list>
+     </ion-row>
+
    <div style="height:100px; background-color: #2b3f5a; color:white; text-align: center;">
       <ion-title style="margin-top: auto;">
          <p *ngIf="store">{{store?.post_title}}</p>
@@ -110,6 +157,51 @@
             <div *ngFor="let item of addonsList; let i = index">
                <ion-item lines="none" *ngIf="item.description !== ''"><ion-label>{{item.description}}</ion-label></ion-item>
                <ion-item *ngIf="item.type == 'checkbox' || item.type == 'multiple_choice' || item.type == 'radiobutton'  || item.type == 'select'" class="addons" lines="none">
+                  
+                  <ion-label *ngIf="item.name">{{item.name}}</ion-label>
+                  <ion-label *ngIf="item.label && !item.name">{{item.label}}</ion-label>
+
+                  <ion-select required="{{item.required == 1 ? true : false}}" [(ngModel)]="item.selected" multiple="true" *ngIf="(item.type == 'checkbox' || item.operator == 'OR') && item.options.length">
+                     <ion-select-option *ngFor="let option of item.options" value="{{option.label}}">{{option.label}}<span *ngIf="option.price"> + {{option.price | currency:settings.currency:true:'1.2-2'}}</span></ion-select-option> 
+                     <!-- {name: '{{item.name}}', value: '{{option.label}}', price: '{{option.price}}', add_on_type: '{{item.type}}', type_id: '{{item.id}}', price_type: '{{option.type}}', sold_individually: '{{item.sold_individually}}', calculate_quantity_sum: '{{item.calculate_quantity_sum}}'}" -->
+                  </ion-select>
+
+                  <ion-select required="{{item.required == 1 ? true : false}}" [(ngModel)]="item.selected" *ngIf="(item.type == 'radiobutton' || item.operator == 'AND') && item.options.length">
+                     <ion-select-option *ngFor="let option of item.options" value="{{option.label}}">{{option.label}}<span *ngIf="option.price"> + {{option.price | currency:settings.currency:true:'1.2-2'}}</span></ion-select-option>
+                  </ion-select>
+
+                  <ion-select required="{{item.required == 1 ? true : false}}" [(ngModel)]="item.selected" *ngIf="item.type == 'select' && item.options.length">
+                     <ion-select-option *ngFor="let option of item.options" value="{{option.label}}">{{option.label}}<span *ngIf="option.price"> + {{option.price | currency:settings.currency:true:'1.2-2'}}</span></ion-select-option>
+                  </ion-select>
+
+               </ion-item>
+
+
+               
+               <div style="padding: 0 16px;" *ngFor="let option of item.options; let j = index">
+                  <div *ngIf="item.type == 'custom_textarea'">
+                  <textarea [(ngModel)]="item.options[j].input" placeholder="{{item.name}}" type ="text" style="width: 100%; height: 80px;"></textarea>
+                  </div>
+               </div>
+
+            </div>
+            
+            <div *ngFor="let item of addonsList; let i = index">
+                  <div *ngFor="let option of item.options; let j = index">
+                     <ion-item *ngIf="item.type == 'text'" lines="full" [hidden]="checkTextValue()">
+                        <ion-label  position="stacked" color="dark" style="font-size:large;" [innerHTML]="item.label"></ion-label>
+                        <ion-input [(ngModel)]="item.input" required="{{item.required == 1 ? true : false}}" type ="text" ></ion-input> 
+                     </ion-item>
+                     <p style="font-size:x-small;color: grey; font-style: italic; margin:6px 0 0 20px">{{item.options[j].description}}</p>
+                  </div>
+            </div>
+
+         </div>
+
+         <!-- <div *ngIf="addonsList.length">
+            <div *ngFor="let item of addonsList; let i = index">
+               <ion-item lines="none" *ngIf="item.description !== ''"><ion-label>{{item.description}}</ion-label></ion-item>
+               <ion-item *ngIf="item.type == 'checkbox' || item.type == 'multiple_choice' || item.type == 'radiobutton'  || item.type == 'select'" class="addons" lines="none">
                   <ion-label>{{item.name}}</ion-label>
                   <ion-select [(ngModel)]="item.selected" multiple="true" *ngIf="(item.type == 'checkbox' || item.type == 'multiple_choice') && item.options.length">
                   <ion-select-option *ngFor="let option of item.options" value="{{option.label}}">{{option.label}}<span *ngIf="option.price"> + {{option.price | currency:settings.currency:true:'1.2-2'}}</span></ion-select-option>
@@ -143,7 +235,7 @@
                   </ion-input>
                </ion-item>
             </div>
-         </div>
+         </div> -->
 
          <ion-item lines="none" *ngIf="product.showPoints">
             <ion-label>Gane {{product.showPoints}} puntos de regalías</ion-label>
@@ -159,12 +251,17 @@
          </div-->
 
 
-         <div *ngIf="product.type != 'external'" class="add-to-cart-button">
+         <div *ngIf="product.type != 'external'" class="add-to-cart-button" style="margin-top: 50px; margin-bottom: 50px;">
             <ion-row class="ion-align-items-center ion-justify-content-center" *ngIf="product.type == 'variable'">
             <ion-col *ngIf="data.cart[product.variation_id] == undefined || data.cart[product.id] == 0">
-                  <ion-button style="--border-radius: 64px 64px 64px 64px;" mode="ios" expand="block" color="{{settings.theme.button}}" [disabled]="product.stock_status == 'outofstock'" (click)="addToCart(product)">
-                     {{product.stock_status == 'outofstock' ? "Agotado" : "Añadir"  | translate}}
-                  </ion-button>
+               <ion-button *ngIf="product.price != 0 && product.stock_status == 'instock'" style="--border-radius: 64px 64px 64px 64px; height: 30px;" mode="ios" expand="block" color="{{settings.theme.button}}"  (click)="addToCart(product)">
+                  <!-- [disabled]="product.price == 0 && product.regular_price == 0 && product.sale_price == 0" -->
+                  {{"Añadir"  | translate}}
+               </ion-button>
+               <ion-button *ngIf="product.price == 0 || product.stock_status=='outofstock'" style="height: 30px;" mode="ios" expand="block" color="primary"  (click)="notifyClient(product)">
+                  <!-- [disabled]="product.price == 0 && product.regular_price == 0 && product.sale_price == 0" -->
+                  {{ "Avisar, cuando llega" | translate}}
+               </ion-button>
                </ion-col>
                <ion-col style="text-align: center;" *ngIf="data.cart[product.variation_id] >= 1" align-self-end>
             <ion-row>
@@ -187,9 +284,14 @@
             </ion-row>
             <ion-row class="ion-align-items-center ion-justify-content-center" *ngIf="product.type != 'variable'">
             <ion-col *ngIf="data.cart[product.id] == undefined || data.cart[product.id] == 0">
-                  <ion-button style="--border-radius: 64px 64px 64px 64px;" mode="ios" expand="block" color="{{settings.theme.button}}" [disabled]="product.stock_status == 'outofstock'" (click)="addToCart(product)">
-                     {{product.stock_status == 'outofstock' ? "Agotado" : "Añadir"  | translate}}
-                  </ion-button>
+               <ion-button *ngIf="product.price != 0 && product.stock_status == 'instock'" style="--border-radius: 64px 64px 64px 64px; height: 30px;" mode="ios" expand="block" color="{{settings.theme.button}}"  (click)="addToCart(product)">
+                  <!-- [disabled]="product.price == 0 && product.regular_price == 0 && product.sale_price == 0" -->
+                  {{"Añadir"  | translate}}
+               </ion-button>
+               <ion-button *ngIf="product.price == 0 || product.stock_status=='outofstock'" style="height: 30px;" mode="ios" expand="block" color="primary"  (click)="notifyClient(product)">
+                  <!-- [disabled]="product.price == 0 && product.regular_price == 0 && product.sale_price == 0" -->
+                  {{ "Avisar, cuando llega" | translate}}
+               </ion-button>
                </ion-col>
                <ion-col style="text-align: center;" *ngIf="data.cart[product.id] >= 1" align-self-end>
             <ion-row>

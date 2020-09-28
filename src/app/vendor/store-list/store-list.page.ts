@@ -6,7 +6,7 @@ import { Data } from './../../data';
 import { Settings } from './../../data/settings';
 import { Store } from './../../data/store';
 import { FilterPage } from './../../filter/filter.page';
-
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 @Component({
   selector: 'app-store-list',
   templateUrl: './store-list.page.html',
@@ -21,7 +21,7 @@ export class StoreListPage {
     hasMoreItems: boolean = true;
     loader: boolean = false;
     searchInput: any;
-    constructor(public platform: Platform, public alertController: AlertController, public modalController: ModalController, public api: ApiService, public data: Data, public store: Store, public settings: Settings, public router: Router, public navCtrl: NavController, public route: ActivatedRoute) {
+    constructor(public iab: InAppBrowser, public platform: Platform, public alertController: AlertController, public modalController: ModalController, public api: ApiService, public data: Data, public store: Store, public settings: Settings, public router: Router, public navCtrl: NavController, public route: ActivatedRoute) {
         this.filter.page = 1;
         this.filter.vendor = this.settings.customer.id;
         if(this.settings.administrator) {
@@ -121,10 +121,27 @@ export class StoreListPage {
         this.getStores();
     }
 
+    addStore() {
+        var options = "location=no,hidden=yes,toolbar=yes,hidespinner=yes";
+        var browser = this.iab.create("https://delbarrio.ec/crear-tienda/", "_self", options);
+        browser.show();
+        browser.on("loadstart").subscribe(data => {
+            for (let k in data) {
+                console.log(k);
+                console.log(data[k]);
+            }
+        }, err => {
+            console.error(err);
+        });
+        // browser.on('exit').subscribe(data => {
+        //     console.log(data);
+        // });
+    }
+
     async delete(store){
         const alert = await this.alertController.create({
           header: 'Borrar',
-          message: 'Está seguro, que quiere borrar este producto?',
+          message: 'Está seguro, que quiere borrar esta tienda?',
           buttons: [{
           text: 'Cancelar',
           role: 'cancel',

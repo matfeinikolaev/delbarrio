@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { LoadingController, NavController, Platform, ToastController } from '@ionic/angular';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../../api.service';
@@ -7,6 +7,17 @@ import { Data } from '../../data';
 import { Settings } from './../../data/settings';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { OneSignal } from '@ionic-native/onesignal/ngx';
+import {
+    GoogleMaps,
+    GoogleMap,
+    GoogleMapsEvent,
+    GoogleMapOptions,
+    CameraPosition,
+    MarkerOptions,
+    Marker,
+    Environment
+  } from '@ionic-native/google-maps';
+declare var google;
 //import { CardIO } from '@ionic-native/card-io/ngx';
 //import { Braintree, ApplePayOptions, PaymentUIOptions, PaymentUIResult } from '@ionic-native/braintree/ngx';
 declare var Stripe;
@@ -33,11 +44,40 @@ export class CheckoutPage implements OnInit {
     cardResponse: any = {};
     stripeForm: any = {};
     storePath: any;
+    @ViewChild ("map", {static: true}) map: ElementRef;
     constructor(public data: Data, private oneSignal: OneSignal, public toastController: ToastController, public platform: Platform, public api: ApiService, public checkoutData: CheckoutData, public settings: Settings, public router: Router, public iab: InAppBrowser, public loadingController: LoadingController, public navCtrl: NavController, public route: ActivatedRoute/*, private braintree: Braintree*/) {}
     ngOnInit() {
         this.storePath = this.route.snapshot.paramMap.get('storePath');
         console.log(this);
         this.updateOrder();
+    }
+    ngAfterViewInit() {
+        this.loadMap();
+    }
+    loadMap() {
+        let coords = new google.maps.LatLng(this.data.store.wordpress_store_locator_lat, this.data.store.wordpress_store_locator_lng);
+        let mapOptions/*: google.maps.MapOptions*/ = {
+            center: coords,
+            zoom: 18,
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            fullscreenControl: false,
+            streetViewControl: false,
+            mapTypeControl: false,
+        };
+
+        var mapElement = document.createElement("ion-card");
+        var mapElementCont = document.createElement("ion-card-content");
+
+        mapElement.setAttribute("id", "map");
+        mapElementCont.setAttribute("id", "mapCont")
+        this.map.nativeElement.appendChild(mapElement);
+        mapElement.appendChild(mapElementCont);
+        mapElement.setAttribute("style", "width: 94%; height:100%;");
+        mapElementCont.setAttribute("style", "width: 100%; height:100%; ");
+
+        var map = new google.maps.Map(mapElementCont, mapOptions);
+
+        var marker = new google.maps.Marker({position: coords, map: map});
     }
     async updateOrder() {
         this.checkoutData.form.security = this.checkoutData.form.nonce.update_order_review_nonce;
@@ -89,43 +129,48 @@ export class CheckoutPage implements OnInit {
         this.disableButton = true;
         this.errorMessage = undefined;
 
-        /** Comment this if not using OneSignal Push notification ***/
-        if (this.platform.is('cordova') && this.settings.settings.onesignal_app_id && this.settings.settings.google_project_id) {
-            await this.oneSignal.getIds().then((data: any) => {
-                this.checkoutData.form.onesignal_user_id = data.userId;
-            });
+        if (this.checkoutData.form.show_terms && !this.checkoutData.form.terms_checked) {
+            this.errorMessage = "Por favor, lee y acepta los términos y condiciones para proceder con tu pedido.";
         }
-            
-        if (this.checkoutData.form.payment_method == 'authnet'){
-            this.checkoutData.form['authnet-card-expiry'] = this.checkoutData.form.expiryMonth + ' / ' + this.checkoutData.form.expiryYear;
-        }
-
-        if (this.checkoutData.form.payment_method == 'stripe'){
-            this.setStripeForm();
-            await this.api.getExternalData('https://api.stripe.com/v1/tokens', this.stripeForm).then(res => {
-                this.handleStipeToken(res);
-            }, err => { 
-                if(err.error.error.message)
-                this.errorMessage = err.error.error.message;
-                this.disableButton = false;
-                });
-        } /*else if (this.checkoutData.form.payment_method == 'braintree_credit_card'){
-            this.brainTreePayment();
-        }*/
         else {
-            await this.api.ajaxCall('/index.php/checkout?wc-ajax=checkout', this.checkoutData.form, this.storePath).then(res => {
-                this.results = res;
-                console.log(res);
-                this.api.postItem('save_checkout_store', {store_path: this.storePath}).then(res => {
-                    // console.log(res);
+            /** Comment this if not using OneSignal Push notification ***/
+            if (this.platform.is('cordova') && this.settings.settings.onesignal_app_id && this.settings.settings.google_project_id) {
+                await this.oneSignal.getIds().then((data: any) => {
+                    this.checkoutData.form.onesignal_user_id = data.userId;
+                });
+            }
+                
+            if (this.checkoutData.form.payment_method == 'authnet'){
+                this.checkoutData.form['authnet-card-expiry'] = this.checkoutData.form.expiryMonth + ' / ' + this.checkoutData.form.expiryYear;
+            }
+
+            if (this.checkoutData.form.payment_method == 'stripe'){
+                this.setStripeForm();
+                await this.api.getExternalData('https://api.stripe.com/v1/tokens', this.stripeForm).then(res => {
+                    this.handleStipeToken(res);
+                }, err => { 
+                    if(err.error.error.message)
+                    this.errorMessage = err.error.error.message;
+                    this.disableButton = false;
+                    });
+            } /*else if (this.checkoutData.form.payment_method == 'braintree_credit_card'){
+                this.brainTreePayment();
+            }*/
+            else {
+                await this.api.ajaxCall('/index.php/checkout?wc-ajax=checkout', this.checkoutData.form, this.storePath).then(res => {
+                    this.results = res;
+                    console.log(res);
+                    // this.api.postItem('save_checkout_store', {store_path: this.storePath}).then(res => {
+                    //     // console.log(res);
+                    // }, err => {
+                    //     console.log(err);
+                    // })
+                    this.handleOrder();
                 }, err => {
+                    this.disableButton = false;
                     console.log(err);
-                })
-                this.handleOrder();
-            }, err => {
-                this.disableButton = false;
-                console.log(err);
-            });
+                });
+            }
         }
     }
     handleOrder() {
@@ -152,7 +197,7 @@ export class CheckoutPage implements OnInit {
         var pos2 = str.lastIndexOf("/?key=wc_order");
         var pos3 = pos2 - (pos1 + 10);
         var order_id = str.substr(pos1 + 10, pos3);
-        this.navCtrl.navigateRoot('/order-summary/' + this.storePath + '/' + order_id);
+        this.navCtrl.navigateForward('/tabs/order-summary/' + this.storePath + '/' + order_id);
     }
     handlePayment() {
         var options = "location=no,hidden=yes,toolbar=no,hidespinner=yes";
@@ -586,7 +631,7 @@ export class CheckoutPage implements OnInit {
     backToAddress() {
         this.navCtrl.navigateForward('/tabs/cart/address/' + this.storePath + '/');
     }
-    brainTreePayment(){
+    brainTreePayment() {
 
         /*console.log('Braintree payment.......');
         

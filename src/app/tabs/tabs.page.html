@@ -1,5 +1,4 @@
 <ion-tabs>
-
   <ion-tab-bar slot="bottom" style="background-color: #ececec">
     <ion-tab-button tab="home" style="background-color: #ececec; border-right: 1px solid #ccd1d7;">
       <ion-icon name="home"></ion-icon>
@@ -31,7 +30,9 @@
       <ion-icon name="person"></ion-icon>
       <ion-label tabindex="0" role="button" aria-label="Login or register page">{{'Cuenta' | translate}}</ion-label>
     </ion-tab-button>
-    
   </ion-tab-bar>
 
+  <ion-button *ngIf="checkPage()" (click)='openHelp()' mode="md" class="ion-activatable" style="position:fixed; height:50px; width:50px; z-index: 100; --border-radius:50px 50px 50px 50px; right: 0; bottom: 0; margin-bottom: 70px; margin-right: 10px">
+    <ion-icon name="help" size="larger"></ion-icon>
+  </ion-button>
 </ion-tabs>

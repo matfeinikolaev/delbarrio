@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.delbarrio.ec" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.delbarrio.ec" version="0.0.2" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Del Barrio</name>
     <description>An awesome Mobile app for WooCommerce Grocery and Restaurant.</description>
     <author email="support@mstoreapp.com" href="https://metamorf.net">Metamorf Team</author>
@@ -26,6 +26,8 @@
     <preference name="StatusBarStyle" value="blackopaque" />
     <preference name="Orientation" value="portrait" />
     <preference name="WKWebViewOnly" value="true" />
+    <preference name="GOOGLE_MAPS_ANDROID_API_KEY" value="AIzaSyAvD9Yy6fXp0sqNYTmhc_K27SfVX30Tw1M" />
+    <preference name="GOOGLE_MAPS_IOS_API_KEY" value="AIzaSyAvD9Yy6fXp0sqNYTmhc_K27SfVX30Tw1M" />
     <platform name="android">
         <hook src="hooks/copy_android_notification_icons.js" type="after_prepare" />
         <allow-intent href="market:*" />

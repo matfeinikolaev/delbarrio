@@ -25,6 +25,7 @@ import { ContactPage } from './../contact/contact.page';
 import { AccountPage } from './../account/account.page';
 import { CheckoutAddressPage } from './../checkout/address/address.page';
 import { CheckoutPage } from './../checkout/checkout/checkout.page';
+import { OrderSummaryPage } from './../checkout/order-summary/order-summary.page';
 
 import { AddressPage } from './../account/address/address.page';
 import { BlogPage } from './../account/blog/blog.page';
@@ -63,6 +64,7 @@ import { StoreDetailsPage } from './../vendor/store-add/details/details.page';
 import { StorePhotosPage } from './../vendor/store-add/photos/photos.page';
 import { StoreSubcategoryPage } from './../vendor/store-add/subcategory/subcategory.page';
 import { EditSettingsPage } from './../account/edit-settings/edit-settings.page';
+import { HelpPage } from './../help/help.page';
 @NgModule({
   imports: [
     IonicModule,
@@ -91,6 +93,7 @@ import { EditSettingsPage } from './../account/edit-settings/edit-settings.page'
   CheckoutAddressPage,
   CheckoutPage,
   AddressPage,
+  OrderSummaryPage,
   BlogPage,
   BlogsPage,
   EditAddressPage,
@@ -127,6 +130,7 @@ import { EditSettingsPage } from './../account/edit-settings/edit-settings.page'
   StorePhotosPage,
   StoreSubcategoryPage,
   EditSettingsPage,
+  HelpPage
   ]
 })
 export class TabsPageModule {}

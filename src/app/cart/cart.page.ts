@@ -26,6 +26,8 @@ export class CartPage {
     lan: any = {};
     store: any;
     id: any;
+    IhaveCouponChecked: any = false;
+    addonsTotal: any = 0;
     constructor(public modalController: ModalController, public translate: TranslateService, private alertCtrl: AlertController, public toastController: ToastController, public config: Config, public api: ApiService, public data: Data, public router: Router, public settings: Settings, public loadingController: LoadingController, public navCtrl: NavController, public route: ActivatedRoute, public productData: Product, public storeData: Store) {}
     ngOnInit() {
         console.log(this);
@@ -44,7 +46,7 @@ export class CartPage {
         }, err=>{
             console.error(err);
         }).then(() => {
-            this.api.postItem('cart', {}, this.store.post_name).then(res => {
+            this.api.postItem('cart', {}, this.store.path).then(res => {
                 this.cart = res;
                 this.data.updateCart(this.cart.cart_contents);
             }, err => {
@@ -53,7 +55,7 @@ export class CartPage {
         });
     }
     async getCart() {
-        await this.api.postItem('cart', {}, this.store.post_name).then(res => {
+        await this.api.postItem('cart', {}, this.store.path).then(res => {
             this.cart = res;
             this.data.updateCart(this.cart.cart_contents);
         }, err => {
@@ -65,7 +67,7 @@ export class CartPage {
     }
     checkout() {
         if(this.settings.customer.id || this.settings.settings.disable_guest_checkout == 0) {
-            this.navCtrl.navigateForward('/tabs/cart/address/' + this.store.post_name + '/');
+            this.navCtrl.navigateForward('/tabs/cart/address' + this.store.path);
         }
         else this.login();
     }
@@ -74,7 +76,7 @@ export class CartPage {
         this.navCtrl.navigateForward(this.router.url + '/product/' + id);
     }
     async deleteItem(itemKey, qty) {
-        await this.api.postItem('remove_cart_item&item_key=' + itemKey, {}, this.store.post_name).then(res => {
+        await this.api.postItem('remove_cart_item&item_key=' + itemKey, {}, this.store.path).then(res => {
             this.cart = res;
             this.data.updateCart(this.cart.cart_contents);
         }, err => {
@@ -85,7 +87,7 @@ export class CartPage {
         if(coupon)
         await this.api.postItem('apply_coupon', {
             coupon_code: coupon
-        }, this.store.post_name).then(res => {
+        }, this.store.path).then(res => {
             this.couponMessage = res;
             if(this.couponMessage != null && this.couponMessage.notice) {
                 this.presentToast(this.couponMessage.notice)
@@ -98,7 +100,7 @@ export class CartPage {
     async removeCoupon(coupon) {
         await this.api.postItem('remove_coupon', {
             coupon: coupon
-        }, this.store.post_name).then(res => {
+        }, this.store.path).then(res => {
             this.getCart();
         }, err => {
             console.log(err);
@@ -126,7 +128,7 @@ export class CartPage {
             params.quantity = this.data.cartItem[item.key].quantity;
             params.update_cart = 'Update Cart';
             params._wpnonce = this.cart.cart_nonce;
-            await this.api.postItem('update-cart-item-qty', params, this.store.post_name).then(res => {
+            await this.api.postItem('update-cart-item-qty', params, this.store.path).then(res => {
                 this.cart = res;
                 this.data.updateCart(this.cart.cart_contents);
             }, err => {
@@ -155,7 +157,7 @@ export class CartPage {
         params.update_cart = 'Update Cart';
         params._wpnonce = this.cart.cart_nonce;
 
-        await this.api.postItem('update-cart-item-qty', params, this.store.post_name).then(res => {
+        await this.api.postItem('update-cart-item-qty', params, this.store.path).then(res => {
             this.cart = res;
             this.data.updateCart(this.cart.cart_contents);
         }, err => {
@@ -166,7 +168,7 @@ export class CartPage {
     redeem(){
        // wc_points_rewards_apply_discount_amount: 
        // wc_points_rewards_apply_discount: Apply Discount
-        this.api.postItem('ajax_maybe_apply_discount', {}, this.store.post_name).then(res =>{
+        this.api.postItem('ajax_maybe_apply_discount', {}, this.store.path).then(res =>{
             console.log(res);
             this.getCart();
             })
@@ -185,13 +187,13 @@ export class CartPage {
           const { data } = await modal.onWillDismiss();
 
             if(this.settings.customer.id) {
-                this.navCtrl.navigateForward('/tabs/cart/address/' + this.store.post_name + '/');
+                this.navCtrl.navigateForward('/tabs/cart/address' + this.store.path);
             }
     }
     async onSubmit(userData) {
         this.loginForm.username = userData.username;
         this.loginForm.password = userData.password;
-        await this.api.postItem('login', this.loginForm, this.store.post_name).then(res => {
+        await this.api.postItem('login', this.loginForm, this.store.path).then(res => {
             this.status = res;
             if (this.status.errors != undefined) {
                 this.errors = this.status.errors;
@@ -212,11 +214,18 @@ export class CartPage {
     }
     async inValidUsername() {
         const alert = await this.alertCtrl.create({
-          header: 'Warning',
-          message: 'Invalid Username or Password',
+          header: 'Aviso',
+          message: 'Usuario o contraseña invalido',
           buttons: ['OK']
         });
         await alert.present();
+    }
+    IhaveCouponClick() {
+        if (this.IhaveCouponChecked == false) {
+            this.IhaveCouponChecked = true;
+        } else {
+            this.IhaveCouponChecked = false;
+        }
     }
     async presentToast(message) {
         const toast = await this.toastController.create({

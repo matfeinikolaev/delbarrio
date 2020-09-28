@@ -11,11 +11,11 @@
 </ion-header>
 
 <ion-content> 
-  <a href="https://delbarrio.ec/crear-tienda/">
-    <ion-button *ngIf="settings.administrator || settings.vendor" color="danger" mode="ios" class="ion-activatable" style="position:fixed; height:40px; z-index: 100; --border-radius:50px 50px 50px 50px; right: 0; bottom: 0;">
+  <!-- <a href="https://delbarrio.ec/crear-tienda/"> -->
+    <ion-button *ngIf="settings.administrator || settings.vendor" (click)="addStore()" color="danger" mode="ios" class="ion-activatable" style="position:fixed; height:40px; z-index: 100; --border-radius:50px 50px 50px 50px; right: 0; bottom: 0;">
         <ion-icon style="color: white;" class="icon-start" name="add-circle"></ion-icon>
     </ion-button>
-  </a>
+  <!-- </a> -->
   <div class="spinner" *ngIf="loader"><ion-spinner> </ion-spinner></div>
 
   <div class="spinner" *ngIf="!loader && stores?.length == 0">{{"No hay resultados" | translate}}</div>

@@ -15,6 +15,7 @@ import { OneSignal } from '@ionic-native/onesignal/ngx';
 import { ForgottenPage } from './forgotten/forgotten.page';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook/ngx';
+import { AccountApi } from '../account.api';
 @Component({
     selector: 'app-account',
     templateUrl: 'account.page.html',
@@ -42,7 +43,7 @@ export class AccountPage {
     userInfo: any;
     phoneVerificationError: any;
     loading: any;
-    constructor(public data: Data, public loadingController: LoadingController, public oneSignal: OneSignal, public modalController: ModalController, private statusBar: StatusBar, private config: Config, public api: ApiService, public navCtrl: NavController, public settings: Settings, public platform: Platform, private appRate: AppRate, private emailComposer: EmailComposer, private socialSharing: SocialSharing, public routerOutlet: IonRouterOutlet, public storeData: Store, private googlePlus: GooglePlus, private facebook: Facebook) {}
+    constructor(public data: Data, public loadingController: LoadingController, public oneSignal: OneSignal, public modalController: ModalController, private statusBar: StatusBar, private config: Config, public api: ApiService, public navCtrl: NavController, public settings: Settings, public platform: Platform, private appRate: AppRate, private emailComposer: EmailComposer, private socialSharing: SocialSharing, public routerOutlet: IonRouterOutlet, public storeData: Store, private googlePlus: GooglePlus, private facebook: Facebook, private account: AccountApi) {}
     goTo(path) {
         this.navCtrl.navigateForward(path);
 
@@ -53,6 +54,22 @@ export class AccountPage {
         this.settings.vendor = false;
         this.settings.administrator = false;
         this.settings.wishlist = [];
+        if (window.localStorage.user_id != null) {
+            window.localStorage.removeItem ("user_id");
+            window.localStorage.removeItem ("user_deleted");
+            window.localStorage.removeItem ("user_display_name");
+            window.localStorage.removeItem ("user_spam");
+            window.localStorage.removeItem ("user_activation_key");
+            window.localStorage.removeItem ("user_email");
+            window.localStorage.removeItem ("user_login");
+            window.localStorage.removeItem ("user_nicename");
+            window.localStorage.removeItem ("user_pass");
+            window.localStorage.removeItem ("user_registered");
+            window.localStorage.removeItem ("user_status");
+            window.localStorage.removeItem ("user_url");
+            window.localStorage.removeItem ("user_admin");
+            window.localStorage.removeItem ("user_vendor");
+        }
         await this.api.postItem('logout').then(res => {}, err => {
             console.log(err);
         });
@@ -96,6 +113,40 @@ export class AccountPage {
     }
     ngOnInit() {
         console.log(this);
+        this.platform.ready().then(() => {
+            // if (window.localStorage.googleLogin == '1') {
+            //     this.account.googleLogin();
+            // }
+            // if (window.localStorage.facebookLogin == '1') {
+            //     this.account.facebookLogin();
+            // }
+            // if (window.localStorage.user_id != null) {
+            //     // this.account.login({'username': window.localStorage.username, 'password': window.localStorage.password});
+            //     console.log(window.localStorage);
+            //     this.settings.customer.id = window.localStorage.user_id;
+            //     this.settings.user = {};
+            //     this.settings.user.ID = window.localStorage.user_id;
+            //     this.settings.user.deleted = window.localStorage.user_deleted;
+            //     this.settings.user.display_name = window.localStorage.user_display_name;
+            //     this.settings.user.spam = window.localStorage.user_spam;
+            //     this.settings.user.user_activation_key = window.localStorage.user_activation_key;
+            //     this.settings.user.user_email = window.localStorage.user_email;
+            //     this.settings.user.user_login = window.localStorage.user_login;
+            //     this.settings.user.user_nicename = window.localStorage.user_nicename;
+            //     this.settings.user.user_pass = window.localStorage.user_pass;
+            //     this.settings.user.user_registered = window.localStorage.user_registered;
+            //     this.settings.user.user_status = window.localStorage.user_status;
+            //     this.settings.user.user_url = window.localStorage.user_url;
+            //     if (window.localStorage.user_admin == '1') {
+            //         this.settings.administrator = true;
+            //     }
+            //     if (window.localStorage.user_vendor == '1') {
+            //         this.settings.vendor = true;
+            //     }
+            // }
+        }, err=> {
+            console.log(err);
+        });
         if( this.settings.user || this.settings.customer.id) {
           this.toggle = document.querySelector('#themeToggle');
           if( this.toggle !== null ) {
@@ -183,15 +234,30 @@ export class AccountPage {
                    }
                   if(this.status.allcaps.shop_manager || this.status.allcaps.wc_product_vendors_admin_vendor || this.status.allcaps.dc_vendor || this.status.allcaps.seller || this.status.allcaps.wcfm_vendor){
                       this.settings.vendor = true;
+                      window.localStorage.setItem ("user_vendor", '1');
                   }
                   if(this.status.allcaps.administrator) {
                       this.settings.administrator = true;
+                      window.localStorage.setItem ("user_admin", '1');
                   }
                   this.close(true);
               }
               this.googleLogingInn = false;
               this.dismissLoading();
               this.redirectToHomePage();
+              window.localStorage.setItem ("googleLogin", '1');
+              window.localStorage.setItem ("user_id", this.settings.user.ID);
+              window.localStorage.setItem ("user_deleted", this.settings.user.deleted);
+              window.localStorage.setItem ("user_display_name", this.settings.user.display_name);
+              window.localStorage.setItem ("user_spam", this.settings.user.spam);
+              window.localStorage.setItem ("user_activation_key", this.settings.user.user_activation_key);
+              window.localStorage.setItem ("user_email", this.settings.user.user_email);
+              window.localStorage.setItem ("user_login", this.settings.user.user_login);
+              window.localStorage.setItem ("user_nicename", this.settings.user.user_nicename);
+              window.localStorage.setItem ("user_pass", this.settings.user.user_pass);
+              window.localStorage.setItem ("user_registered", this.settings.user.user_registered);
+              window.localStorage.setItem ("user_status", this.settings.user.user_status);
+              window.localStorage.setItem ("user_url", this.settings.user.user_url);
           }, err => {
               this.googleLogingInn = false;
               this.dismissLoading();
@@ -229,14 +295,29 @@ export class AccountPage {
                    }
                   if(this.status.allcaps.shop_manager || this.status.allcaps.wc_product_vendors_admin_vendor || this.status.allcaps.dc_vendor || this.status.allcaps.seller || this.status.allcaps.wcfm_vendor){
                       this.settings.vendor = true;
+                      window.localStorage.setItem ("user_vendor", '1');
                   }
                   if(this.status.allcaps.administrator) {
                       this.settings.administrator = true;
+                      window.localStorage.setItem ("user_admin", '1');
                   }
                   this.close(true);
               }
               this.facebookLogingInn = false;
               this.dismissLoading();
+              window.localStorage.setItem ("facebookLogin", '1');
+              window.localStorage.setItem ("user_id", this.settings.user.ID);
+              window.localStorage.setItem ("user_deleted", this.settings.user.deleted);
+              window.localStorage.setItem ("user_display_name", this.settings.user.display_name);
+              window.localStorage.setItem ("user_spam", this.settings.user.spam);
+              window.localStorage.setItem ("user_activation_key", this.settings.user.user_activation_key);
+              window.localStorage.setItem ("user_email", this.settings.user.user_email);
+              window.localStorage.setItem ("user_login", this.settings.user.user_login);
+              window.localStorage.setItem ("user_nicename", this.settings.user.user_nicename);
+              window.localStorage.setItem ("user_pass", this.settings.user.user_pass);
+              window.localStorage.setItem ("user_registered", this.settings.user.user_registered);
+              window.localStorage.setItem ("user_status", this.settings.user.user_status);
+              window.localStorage.setItem ("user_url", this.settings.user.user_url);
               this.redirectToHomePage();
           }, err => {
               this.facebookLogingInn = false;

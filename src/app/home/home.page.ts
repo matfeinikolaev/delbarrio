@@ -21,6 +21,8 @@ import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
 import { ChatApi } from './../chat/chat.api';
+import { AccountApi } from '../account.api';
+import { format, formatDistance, formatRelative, subDays } from 'date-fns';
 @Component({
     selector: 'app-home',
     templateUrl: 'home.page.html',
@@ -37,15 +39,50 @@ export class HomePage {
     variationId: any;
     loading: any = false;
     stores: any;
-    constructor(public routerOutlet: IonRouterOutlet, public modalCtrl: ModalController, private nativeGeocoder: NativeGeocoder, private geolocation: Geolocation, private locationAccuracy: LocationAccuracy, private storage: Storage, public translate: TranslateService, public alertController: AlertController, private config: Config, public api: ApiService, private splashScreen: SplashScreen, public platform: Platform, public translateService: TranslateService, public data: Data, public settings: Settings, public product: Product, public store: Store, public loadingController: LoadingController, public router: Router, public navCtrl: NavController, public route: ActivatedRoute, private oneSignal: OneSignal, private nativeStorage: NativeStorage, private chatapi: ChatApi) {
+    errors: any;
+    errorsRegister: any;
+    status: any = {};
+    disableSubmit: boolean = false;
+    currDate: any = new Date();
+    constructor(public routerOutlet: IonRouterOutlet, public modalCtrl: ModalController, private locationAccuracy: LocationAccuracy, private storage: Storage, public translate: TranslateService, public alertController: AlertController, private config: Config, public api: ApiService, private splashScreen: SplashScreen, public platform: Platform, public translateService: TranslateService, public data: Data, public settings: Settings, public product: Product, public store: Store, public loadingController: LoadingController, public router: Router, public navCtrl: NavController, public route: ActivatedRoute, private oneSignal: OneSignal, private nativeStorage: NativeStorage, private chatapi: ChatApi, private account: AccountApi) {
         this.filter.page = 1;
         this.filter.status = 'publish';
         this.screenWidth = this.platform.width();
     }
     ngOnInit() {
         this.platform.ready().then(() => {
-
-             this.locationAccuracy.canRequest().then((canRequest: boolean) => {
+            // if (window.localStorage.googleLogin != null) {
+            //     this.settings.customer.id = window.localStorage.googleLogin.user.ID;
+            //     this.settings.user = window.localStorage.googleLogin.user;
+            // }
+            // if (window.localStorage.facebookLogin != null) {
+            //     this.settings.customer.id = window.localStorage.googleLogin.user.ID;
+            //     this.settings.user = window.localStorage.googleLogin.user;
+            // }
+            // if (window.localStorage.user_id != null) {
+            //     // this.account.login({'username': window.localStorage.username, 'password': window.localStorage.password});
+            //     this.settings.customer.id = window.localStorage.user_id;
+            //     this.settings.user = {};
+            //     this.settings.user.ID = window.localStorage.user_id;
+            //     this.settings.user.deleted = window.localStorage.user_deleted;
+            //     this.settings.user.display_name = window.localStorage.user_display_name;
+            //     this.settings.user.spam = window.localStorage.user_spam;
+            //     this.settings.user.user_activation_key = window.localStorage.user_activation_key;
+            //     this.settings.user.user_email = window.localStorage.user_email;
+            //     this.settings.user.user_login = window.localStorage.user_login;
+            //     this.settings.user.user_nicename = window.localStorage.user_nicename;
+            //     this.settings.user.user_pass = window.localStorage.user_pass;
+            //     this.settings.user.user_registered = window.localStorage.user_registered;
+            //     this.settings.user.user_status = window.localStorage.user_status;
+            //     this.settings.user.user_url = window.localStorage.user_url;
+            //     if (window.localStorage.user_admin == '1') {
+            //         this.settings.administrator = true;
+            //     }
+            //     if (window.localStorage.user_vendor == '1') {
+            //         this.settings.vendor = true;
+            //     }
+            // }
+            this.locationAccuracy.canRequest().then((canRequest: boolean) => {
               if(canRequest) {
                 // the accuracy option will be ignored by iOS
                 this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
@@ -267,6 +304,8 @@ export class HomePage {
     getStoreCategory(storeCat) {
         this.data.storeCategory = storeCat;
         this.data.storeCategory.displayName = storeCat.name.toUpperCase();
+        window.localStorage.setItem('store-category-id', this.data.storeCategory.term_id);
+        window.localStorage.setItem('store-category-name', this.data.storeCategory.displayName);
         this.navCtrl.navigateForward('tabs/home/stores-by-cat');
     }
     getStore(store) {
@@ -338,6 +377,7 @@ export class HomePage {
             this.data.messages = this.chatapi.snapshotToArray(resp);
         });
     }
+    
     setVariations(product) {
         if(product.variationId){
             this.options.variation_id = product.variationId;

@@ -272,3 +272,14 @@ ion-item {
     white-space: normal;
     overflow: unset;
 }
+.text-input::-moz-placeholder {
+    color: red;
+}
+
+.text-input:-ms-input-placeholder {
+    color: red;
+}
+
+.text-input::-webkit-input-placeholder {
+    color: red;
+}

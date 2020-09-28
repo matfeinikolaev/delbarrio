@@ -13,6 +13,7 @@ import { Data } from '../../data';
 export class SettingPage implements OnInit{
   form: any;
   editmode: any = false;
+  storage: any = {};
   constructor(public settings: Settings, public navCtrl: NavController, private fb: FormBuilder, public api: ApiService, public alert: AlertController, public data: Data,/*public home: HomePage, public ionicConfig: IonicConfig, public router: Router, public translateService: TranslateService, public nativeStorage: NativeStorage, public config: Config*/) { 
     this.form = this.fb.group({
       ID: this.settings.user.ID,
@@ -41,7 +42,9 @@ export class SettingPage implements OnInit{
     //   this.home.getBlocks();
     //   this.navCtrl.pop();
     // }
-    ngOnInit(){}
+    ngOnInit(){
+      this.storage = window.localStorage;
+    }
 
     editMode() {
       this.editmode = true;
