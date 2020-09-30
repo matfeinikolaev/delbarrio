@@ -6,6 +6,7 @@ import { Settings } from './../../data/settings';
 import { Data } from './../../data';
 import { ChatApi } from './../../chat/chat.api';
 import { OneSignal } from '@ionic-native/onesignal/ngx';
+// import { Map } from './../../googleMap/googleMap';
 import {
     GoogleMaps,
     GoogleMap,
@@ -28,7 +29,7 @@ export class OrderSummaryPage implements OnInit {
     filter: any = {};
     storePath: any = '';
     @ViewChild ("map", {static: true}) map: ElementRef;
-    constructor(public onesignal: OneSignal , public chatapi: ChatApi,public data: Data, public api: ApiService, public settings: Settings, public router: Router, public loadingController: LoadingController, public navCtrl: NavController, public route: ActivatedRoute) {}
+    constructor(/*public gMap: Map, */public onesignal: OneSignal , public chatapi: ChatApi,public data: Data, public api: ApiService, public settings: Settings, public router: Router, public loadingController: LoadingController, public navCtrl: NavController, public route: ActivatedRoute) {}
     async getOrder() {
         console.log(this);
         const loading = await this.loadingController.create({
@@ -63,7 +64,7 @@ export class OrderSummaryPage implements OnInit {
         });
     }
     ngOnInit() {
-        // this.filter.onesignal_user_id = this.data.onesignal_ids.userId;
+        this.filter.onesignal_user_id = this.data.onesignal_ids.userId;
         this.filter.id = this.route.snapshot.paramMap.get('id');
         this.filter.store_id = this.data.store.ID;
         this.storePath = this.route.snapshot.paramMap.get('storeID');
@@ -71,6 +72,7 @@ export class OrderSummaryPage implements OnInit {
         this.getOrder();
     }
     ngAfterViewInit() {
+        // this.gMap.loadMap(this.map, "order-summary");
         this.loadMap();
     }
     loadMap() {
@@ -95,8 +97,18 @@ export class OrderSummaryPage implements OnInit {
         mapElementCont.setAttribute("style", "width: 100%; height:100%; ");
 
         var map = new google.maps.Map(mapElementCont, mapOptions);
+        google.maps.event.trigger(map, "resize");
 
         var marker = new google.maps.Marker({position: coords, map: map});
+
+        var link = document.createElement("ion-button");
+        var mapRedirect = document.createElement("ion-item");
+        mapRedirect.appendChild(link);
+        link.setAttribute("href", "http://maps.google.com/maps?daddr=" + this.data.store.wordpress_store_locator_lat + ", " + this.data.store.wordpress_store_locator_lng);
+        link.innerHTML = "Abrir tienda en google maps";
+        link.target = "_blank";
+        
+        this.map.nativeElement.before(mapRedirect);
     }
     checkMetaType(val) {
         if (typeof(val) == 'object') {
@@ -109,6 +121,6 @@ export class OrderSummaryPage implements OnInit {
     continue () {
         //Clear Cart
         this.api.postItem('emptyCart', {}, this.data.store.path).then(res => {}, err => {});
-        this.navCtrl.navigateRoot('/tabs/home');
+        this.navCtrl.navigateRoot('/tabs/successfull-order');
     }
 }

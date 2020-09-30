@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { LoadingController, NavController, ModalController, ToastController } from '@ionic/angular';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../api.service';
@@ -18,6 +18,7 @@ import { HttpParams } from "@angular/common/http";
 import { Config } from '../config';
 import { ChatApi } from './../chat/chat.api';
 import { FormBuilder, FormArray, Validators } from '@angular/forms';
+import {IonSlides} from '@ionic/angular';
 @Component({
     selector: 'app-store',
     templateUrl: 'store.page.html',
@@ -25,6 +26,7 @@ import { FormBuilder, FormArray, Validators } from '@angular/forms';
 })
 export class StorePage {
     product: any = {};
+    product_ids: any;
     store: any;
     filter: any = {};
     usedVariationAttributes: any = [];
@@ -58,6 +60,7 @@ export class StorePage {
     openFeedbackForm: any = false;
     errorMessage:any;
     unavailableProduct:any;
+    @ViewChild("slider", { static: true }) ionSlides: IonSlides;
     constructor(private chatapi: ChatApi, private config: Config, public translate: TranslateService, public toastController: ToastController, private socialSharing: SocialSharing, public modalCtrl: ModalController, public api: ApiService, public data: Data, public productData: Product, public storeData: Store, public settings: Settings, public router: Router, public loadingController: LoadingController, public navCtrl: NavController, public alertController: AlertController, public route: ActivatedRoute, public vendor: Vendor, public iab: InAppBrowser, private fb: FormBuilder) {
         this.filter.page = 1;
         this.quantity = "1";        
@@ -67,6 +70,29 @@ export class StorePage {
             email: this.settings.user?this.settings.user.user_email:'',
         });
     }
+    
+    ngOnInit() {
+        this.highlightCart();
+        this.translate.get(['Oops!', 'Por favor seleccione', 'Por favor espera', 'Opciones', 'Opción', 'Seleccione', 'Artículo agregado al carrito', 'Mensaje', 'Cantidad solicitada no disponible'  ]).subscribe(translations => {
+            this.lan.oops = translations['Oops!'];
+            this.lan.PleaseSelect = translations['Por favor seleccione'];
+            this.lan.Pleasewait = translations['Por favor espera'];
+            this.lan.options = translations['Opciones'];
+            this.lan.option = translations['Opción'];
+            this.lan.select = translations['Seleccione'];
+            this.lan.addToCart = translations['Artículo agregado al carrito'];
+            this.lan.message = translations['Mensaje'];
+            this.lan.lowQuantity = translations['Cantidad solicitada no disponible'];
+        });
+        this.store = this.storeData.store;
+        this.id = this.route.snapshot.paramMap.get('id');
+        // if (this.store.ID) this.handleProduct();
+        //  else
+        //  this.getProducts();
+        this.getStore();
+        console.log(this);
+    }    
+
     getReviewsPage() {
         this.navCtrl.navigateForward(this.router.url + '/review/' + this.product.id);
     }
@@ -81,6 +107,29 @@ export class StorePage {
             this.path =  this.store.wordpress_store_locator_website.split('/');
             this.path = this.path[this.path.length -1];
         }, err=>{
+            console.error(err);
+        }).then(() => {
+            this.api.postItem('get_product_ids', {}, this.path).then(res => {
+                this.data.store.product_ids = res;
+                this.store.product_ids = res;
+                this.store.chosenChunk = 0;
+            }, err => {
+                console.error(err);
+            }).then(() => {
+                this.loadingProducts = true;
+                this.api.postItem('products', {include: JSON.stringify(this.store.product_ids[this.store.chosenChunk])}, this.path).then(res => {
+                    console.log(this.store.product_ids[this.store.chosenChunk]);
+                    console.log(res);
+                    this.loadingProducts = false;
+                    this.data.store.products = res;
+                    this.store.products = res;
+                }, err => {
+                    console.error(err);
+                });
+            }, err => {
+                console.error(err);
+            });
+        }, err => {
             console.error(err);
         }).then(() => {
             this.api.postItem('categories_json', {}, this.path).then(res => {
@@ -99,19 +148,6 @@ export class StorePage {
                 console.error(err);
             });
         }, err => {
-            console.error(err);
-        }
-        ).then(()=>{
-            this.loadingProducts = true;
-            this.api.postItem('products', {}, this.path).then(res => {
-                this.data.store.products = res;
-                this.store.products = res;
-                this.loadingProducts = false;
-            }, err => {
-                console.error(err);
-                this.loadingProducts = false;
-            });
-        }, err=>{
             console.error(err);
         }).then(() => {
             this.api.postItem('cart', {}, this.path).then(res => {
@@ -153,6 +189,52 @@ export class StorePage {
         //     this.loading = false;
         // }
     }
+    ionSlideDidChange() {
+        this.ionSlides.getActiveIndex().then(res => { 
+            console.log(res);
+            console.log(this.store.product_ids[res]);
+            this.filter.include = JSON.stringify(this.store.product_ids[res]);
+            this.store.products = [];
+            this.data.store.products = [];
+            this.getProducts();
+        }, err => {
+            console.error(err);
+        });
+    }
+    changeSlide(dir) {
+        switch (dir) {
+            case "back": 
+                this.ionSlides.slidePrev().then(res => {
+                    console.log(res);
+                    this.ionSlides.getActiveIndex().then(res => { 
+                        console.log(res);
+                        console.log(this.store.product_ids[res]);
+                        this.filter.include = JSON.stringify(this.store.product_ids[res]);
+                        this.store.products = [];
+                        this.data.store.products = [];
+                        this.getProducts();
+                    }, err => {
+                        console.error(err);
+                    });
+                });
+                break;
+            case "forward":
+                this.ionSlides.slideNext().then(res => {
+                    console.log(res);
+                    this.ionSlides.getActiveIndex().then(res => { 
+                        console.log(res);
+                        console.log(this.store.product_ids[res]);
+                        this.filter.include = JSON.stringify(this.store.product_ids[res]);
+                        this.store.products = [];
+                        this.data.store.products = [];
+                        this.getProducts();
+                    }, err => {
+                        console.error(err);
+                    });
+                });
+                break
+        }
+    }
     async getProducts(id=null) {
         this.filter.catalog_ordering = this.chosenOrder;
         this.loadingProducts = true;
@@ -177,7 +259,8 @@ export class StorePage {
         else {
             this.filter.id = this.chosenSubcategory ? this.chosenSubcategory : this.chosenCategory;
             this.api.postItem('products', this.filter, this.path).then(res => {
-                this.data.store.products = result;
+                console.log(res);
+                this.data.store.products = res;
                 this.store.products = res;
                 this.loadingProducts = false;
             }, err => {
@@ -191,10 +274,16 @@ export class StorePage {
     }
     getCategory() {
         this.chosenSubcategory = null;
+        this.ionSlides.slideTo(0);
+        if (this.chosenCategory != 0)
+            this.filter.include = null;
+        else this.filter.include = JSON.stringify(this.store.product_ids[0]);
         this.getProducts();
     }
     getSubcategory(id) {
         this.chosenSubcategory = id;
+        this.ionSlides.slideTo(0);
+        this.filter.include = null;
         this.getProducts();
     }
     getCart() {
@@ -278,27 +367,6 @@ export class StorePage {
             }
         }, 8000);
     }
-    ngOnInit() {
-        this.highlightCart();
-        this.translate.get(['Oops!', 'Por favor seleccione', 'Por favor espera', 'Opciones', 'Opción', 'Seleccione', 'Artículo agregado al carrito', 'Mensaje', 'Cantidad solicitada no disponible'  ]).subscribe(translations => {
-            this.lan.oops = translations['Oops!'];
-            this.lan.PleaseSelect = translations['Por favor seleccione'];
-            this.lan.Pleasewait = translations['Por favor espera'];
-            this.lan.options = translations['Opciones'];
-            this.lan.option = translations['Opción'];
-            this.lan.select = translations['Seleccione'];
-            this.lan.addToCart = translations['Artículo agregado al carrito'];
-            this.lan.message = translations['Mensaje'];
-            this.lan.lowQuantity = translations['Cantidad solicitada no disponible'];
-        });
-        this.store = this.storeData.store;
-        this.id = this.route.snapshot.paramMap.get('id');
-        // if (this.store.ID) this.handleProduct();
-        //  else
-        //  this.getProducts();
-        this.getStore();
-        console.log(this);
-    }    
     getIncomeMessages() {
         var msgs = this.data.messages[this.store.ID];
         for (let i in msgs) {

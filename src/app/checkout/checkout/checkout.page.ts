@@ -7,6 +7,7 @@ import { Data } from '../../data';
 import { Settings } from './../../data/settings';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { OneSignal } from '@ionic-native/onesignal/ngx';
+// import { Map } from '../../googleMap/googleMap';
 import {
     GoogleMaps,
     GoogleMap,
@@ -44,45 +45,56 @@ export class CheckoutPage implements OnInit {
     cardResponse: any = {};
     stripeForm: any = {};
     storePath: any;
-    @ViewChild ("map", {static: true}) map: ElementRef;
-    constructor(public data: Data, private oneSignal: OneSignal, public toastController: ToastController, public platform: Platform, public api: ApiService, public checkoutData: CheckoutData, public settings: Settings, public router: Router, public iab: InAppBrowser, public loadingController: LoadingController, public navCtrl: NavController, public route: ActivatedRoute/*, private braintree: Braintree*/) {}
+    map: any;
+    // @ViewChild ("map", {static: true}) mapEl: ElementRef;
+    constructor(/*public gMap: Map, */public data: Data, private oneSignal: OneSignal, public toastController: ToastController, public platform: Platform, public api: ApiService, public checkoutData: CheckoutData, public settings: Settings, public router: Router, public iab: InAppBrowser, public loadingController: LoadingController, public navCtrl: NavController, public route: ActivatedRoute/*, private braintree: Braintree*/) {}
     ngOnInit() {
         this.storePath = this.route.snapshot.paramMap.get('storePath');
         console.log(this);
         this.updateOrder();
     }
     ngAfterViewInit() {
-        this.loadMap();
+        // this.loadMap();
+        // this.gMap.loadMap(this.mapEl, "checkout");
     }
     loadMap() {
-        let coords = new google.maps.LatLng(this.data.store.wordpress_store_locator_lat, this.data.store.wordpress_store_locator_lng);
-        let mapOptions/*: google.maps.MapOptions*/ = {
-            center: coords,
-            zoom: 18,
-            mapTypeId: google.maps.MapTypeId.ROADMAP,
-            fullscreenControl: false,
-            streetViewControl: false,
-            mapTypeControl: false,
-        };
+        // let coords = new google.maps.LatLng(this.data.store.wordpress_store_locator_lat, this.data.store.wordpress_store_locator_lng);
+        // let mapOptions/*: google.maps.MapOptions*/ = {
+        //     center: coords,
+        //     zoom: 18,
+        //     mapTypeId: google.maps.MapTypeId.ROADMAP,
+        //     fullscreenControl: false,
+        //     streetViewControl: false,
+        //     mapTypeControl: false,
+        //     clickableIcons: false,
+        // };
 
-        var mapElement = document.createElement("ion-card");
-        var mapElementCont = document.createElement("ion-card-content");
+        // var mapElement = document.createElement("ion-card");
+        // var mapElementCont = document.createElement("ion-card-content");
 
-        mapElement.setAttribute("id", "map");
-        mapElementCont.setAttribute("id", "mapCont")
-        this.map.nativeElement.appendChild(mapElement);
-        mapElement.appendChild(mapElementCont);
-        mapElement.setAttribute("style", "width: 94%; height:100%;");
-        mapElementCont.setAttribute("style", "width: 100%; height:100%; ");
+        // mapElement.setAttribute("id", "map");
+        // mapElementCont.setAttribute("id", "mapCont")
+        // this.mapEl.nativeElement.appendChild(mapElement);
+        // mapElement.appendChild(mapElementCont);
+        // mapElement.setAttribute("style", "width: 94%; height:100%; overflow: visible");
+        // mapElementCont.setAttribute("style", "width: 100%; height:100%;");
 
-        var map = new google.maps.Map(mapElementCont, mapOptions);
+        // this.map = new google.maps.Map(mapElementCont, mapOptions);
 
-        var marker = new google.maps.Marker({position: coords, map: map});
+        // var marker = new google.maps.Marker({position: coords, map: this.map});
+
+        // var link = document.createElement("ion-button");
+        // var mapRedirect = document.getElementById("mapRedirect");
+        // mapRedirect.appendChild(link);
+        // link.setAttribute("href", "http://maps.google.com/maps?q=" + this.data.store.wordpress_store_locator_lat + ", " + this.data.store.wordpress_store_locator_lng);
+        // link.innerHTML = "Abrir tienda en google maps";
+        // link.target = "_blank";
     }
     async updateOrder() {
         this.checkoutData.form.security = this.checkoutData.form.nonce.update_order_review_nonce;
         this.checkoutData.form['woocommerce-process-checkout-nonce'] = this.checkoutData.form._wpnonce;
         this.checkoutData.form['wc-ajax'] = 'update_order_review';
+        this.checkoutData.form['store'] = this.data.store.post_title;
         this.setOldWooCommerceVersionData();
         await this.api.updateOrderReview('update_order_review', this.checkoutData.form, this.storePath).subscribe(res => {
             this.orderReview = res;

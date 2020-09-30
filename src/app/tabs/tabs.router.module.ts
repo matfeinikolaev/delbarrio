@@ -15,8 +15,12 @@ import { PostPage } from './../post/post.page';
 //import { ContactPage } from './../contact/contact.page';
 import { AccountPage } from './../account/account.page';
 import { CheckoutAddressPage } from './../checkout/address/address.page';
+import { DeliveryPage } from './../checkout/delivery/delivery.page';
+import { ContactsPage } from './../checkout/contacts/contacts.page';
+import { PersonalInfoPage } from './../checkout/personal-info/personal-info.page';
 import { CheckoutPage } from './../checkout/checkout/checkout.page';
 import { OrderSummaryPage } from './../checkout/order-summary/order-summary.page';
+import { SuccessfullOrderPage } from './../checkout/successfull-order/successfull-order.page';
 
 import { AddressPage } from './../account/address/address.page';
 import { BlogPage } from './../account/blog/blog.page';
@@ -275,6 +279,18 @@ const routes: Routes = [
           {
             path: 'address/:storePath/',
             component: CheckoutAddressPage,
+          },
+          {
+            path: 'delivery/:storePath/',
+            component: DeliveryPage,
+          },
+          {
+            path: 'contacts/:storePath/',
+            component: ContactsPage,
+          },
+          {
+            path: 'personal-info/:storePath/',
+            component: PersonalInfoPage,
           },
           {
             path: 'checkout/:storePath/',
@@ -639,6 +655,10 @@ const routes: Routes = [
       {
         path: 'order-summary/:storeID/:id',
         component: OrderSummaryPage,
+      },
+      {
+        path: 'successfull-order',
+        component: SuccessfullOrderPage,
       },
       {
         path: 'help',

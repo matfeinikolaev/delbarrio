@@ -1,0 +1,42 @@
+<ion-header mode='ios'>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-back-button text="{{'' | translate}}" style="--color:black; margin-left: 20px;" size="small"></ion-back-button>
+        </ion-buttons>
+        <ion-title>{{"Día y Hora de Entrega" | translate}}</ion-title>
+      </ion-toolbar>
+</ion-header>
+<ion-content>
+    <div class="spinner" *ngIf="loader"><ion-spinner> </ion-spinner></div>
+    <div #form style="height: 100%">
+        <ion-list>
+            <form> 
+                <!-- <ion-list-header style="margin-top: 10px;">
+                    <ion-label style="font-size: larger; color:grey">{{"Entrega" | translate}}</ion-label>
+                </ion-list-header> -->
+    
+                <ion-item lines="none">
+                    <p style="font-size:x-small; margin-top:-30px; margin-bottom:-10px;color: grey; font-style: italic;">{{"* Fecha y hora en que estará disponible para recibir el pedido." | translate}}</p>
+                </ion-item>
+    
+                <ion-item lines="full">
+                    <ion-label position="stacked" color="medium" style="font-size: small;">{{"DÍA DE ENTREGA" | translate}}</ion-label>
+                    <ion-datetime max="2120" displayFormat="DD/MM/YYYY" required [(ngModel)]="settings.user.delivery_date" id="delivery_date" (click)="delivDateLoaded()" name="delivery_date"> </ion-datetime>
+                    <!-- <ion-input required type="date" id="delivery_date" (click)="delivDateLoaded()" [(ngModel)]="checkoutData.form.delivery_date" name="delivery_date"> </ion-input>  -->
+                </ion-item>
+    
+                <ion-item lines="full">
+                    <ion-label position="stacked" color="medium" style="font-size: small;">{{"HORA DE ENTREGA" | translate}}</ion-label>
+                    <ion-datetime displayFormat="H:mm" required [(ngModel)]="settings.user.delivery_time" [disabled]="!settings.user.delivery_date" id="delivery_time" (click)="delivTimeLoaded()" name="delivery_time"> </ion-datetime>
+                    <!-- <ion-input required type="time" id="delivery_time" (click)="delivTimeLoaded()" [disabled]="!checkoutData.form.delivery_date" [(ngModel)]="checkoutData.form.delivery_time" name="delivery_time"> </ion-input> -->
+                </ion-item>
+            </form>
+        </ion-list>
+        <div *ngIf="errorMessage">
+            <h2 [innerHTML]="errorMessage" style="font-size: 14px;  color: red;margin: 16px; text-align: center;"></h2>
+        </div>
+        <div class="submit-button">
+            <ion-button color="danger" expand="block" fill="solid" (click)="continueCheckout()">{{"Continuar" | translate}}</ion-button>
+        </div>
+    </div>
+</ion-content>

@@ -47,6 +47,7 @@ import { FilterPage } from '../app/filter/filter.page';
 import { OrderSummaryPage } from './checkout/order-summary/order-summary.page';
 import { LocationPage } from '../app/location/location.page';
 import { AccountPage } from '../app/account/account.page';
+// import { Map } from './googleMap/googleMap';
 
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 //Geolocation
@@ -54,7 +55,7 @@ import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
-
+import { IonSlides } from '@ionic/angular';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -114,6 +115,7 @@ export function createTranslateLoader(http: HttpClient) {
     HTTP,
     AndroidPermissions,
     Geolocation, LocationAccuracy, NativeGeocoder,
+    // Map,
     // OrderSummaryPage,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],

@@ -24,8 +24,12 @@ import { PostPage } from './../post/post.page';
 import { ContactPage } from './../contact/contact.page';
 import { AccountPage } from './../account/account.page';
 import { CheckoutAddressPage } from './../checkout/address/address.page';
+import { DeliveryPage } from './../checkout/delivery/delivery.page';
+import { ContactsPage } from './../checkout/contacts/contacts.page';
+import { PersonalInfoPage } from './../checkout/personal-info/personal-info.page';
 import { CheckoutPage } from './../checkout/checkout/checkout.page';
 import { OrderSummaryPage } from './../checkout/order-summary/order-summary.page';
+import { SuccessfullOrderPage } from './../checkout/successfull-order/successfull-order.page';
 
 import { AddressPage } from './../account/address/address.page';
 import { BlogPage } from './../account/blog/blog.page';
@@ -65,6 +69,8 @@ import { StorePhotosPage } from './../vendor/store-add/photos/photos.page';
 import { StoreSubcategoryPage } from './../vendor/store-add/subcategory/subcategory.page';
 import { EditSettingsPage } from './../account/edit-settings/edit-settings.page';
 import { HelpPage } from './../help/help.page';
+
+import { IonSlides } from '@ionic/angular';
 @NgModule({
   imports: [
     IonicModule,
@@ -91,9 +97,13 @@ import { HelpPage } from './../help/help.page';
   ContactPage,
   AccountPage,
   CheckoutAddressPage,
+  DeliveryPage,
+  ContactsPage,
+  PersonalInfoPage,
   CheckoutPage,
   AddressPage,
   OrderSummaryPage,
+  SuccessfullOrderPage,
   BlogPage,
   BlogsPage,
   EditAddressPage,
@@ -130,7 +140,7 @@ import { HelpPage } from './../help/help.page';
   StorePhotosPage,
   StoreSubcategoryPage,
   EditSettingsPage,
-  HelpPage
+  HelpPage,
   ]
 })
 export class TabsPageModule {}

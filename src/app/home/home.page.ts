@@ -142,7 +142,7 @@ export class HomePage {
             }, error => console.error(error));
             this.oneSignal.getIds().then(res => {
                 this.data.onesignal_ids = res;
-                console.log(res);
+                console.log(this.data.onesignal_ids.userId);
             }, err => {
                 console.error(err);
             });

@@ -10,6 +10,7 @@ import { Geolocation, GeolocationOptions, Geoposition, PositionError } from '@io
 import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
 import { mainModule } from 'process';
 import { format, formatDistance, formatRelative, subDays } from 'date-fns';
+// import { Map } from './../../googleMap/googleMap';
 import {
     GoogleMaps,
     GoogleMap,
@@ -55,10 +56,12 @@ export class CheckoutAddressPage implements OnInit {
     store: any;
     form: any;
     marker: any;
-    // map: any;
-    @ViewChild('map', {static: true}) map: ElementRef ;
+
+    map: any;
+    @ViewChild('mapEl', {static: true}) mapEl: ElementRef ;
     @ViewChild("form", {static: true, read: ElementRef}) formEl: ElementRef;
     constructor(
+        // public gMap: Map,
         public data: Data,
         public api: ApiService, 
         public checkoutData: CheckoutData, 
@@ -135,15 +138,31 @@ export class CheckoutAddressPage implements OnInit {
     ngOnInit() {
         this.storePath = this.route.snapshot.paramMap.get('storePath');
         console.log(this);
+        this.api.postItem("user_meta", {id: this.settings.user.ID}, this.storePath).then(res => {
+            var results: any = res;
+            console.log(results);
+            if (results["billing_company_type"] != null)
+                this.settings.user.billing_company_type = results["billing_company_type"][0];
+            if (results["billing_document_type"] != null)
+                this.settings.user.billing_document_type = results["billing_document_type"][0];
+            if (results["billing_document"] != null)
+                this.settings.user.billing_document = results["billing_document"][0];
+            if (results["delivery_date"] != null)
+                this.settings.user.delivery_date = results["delivery_date"][0];
+            if (results["delivery_time"] != null)
+                this.settings.user.delivery_time = results["delivery_time"][0];
+        }, err => {
+            console.error(err);
+        });
         this.getCheckoutForm();
         //this.getCountries();
     }
     ngAfterViewInit() {
-        console.log(this.map.nativeElement);
+        // this.gMap.loadMap(this.mapEl, "address");
         this.loadMap();
     }
     loadMap() {
-        let coords = new google.maps.LatLng(this.api.userLocation.latitude, this.api.userLocation.longitude);
+        let coords = this.api.userLocation.latitude == 0 && this.api.userLocation.longitude == 0 ? new google.maps.LatLng(-0.1720125, -78.480687) : new google.maps.LatLng(this.api.userLocation.latitude, this.api.userLocation.longitude);
         let mapOptions/*: google.maps.MapOptions*/ = {
             center: coords,
             zoom: 15,
@@ -151,40 +170,115 @@ export class CheckoutAddressPage implements OnInit {
             fullscreenControl: false,
             streetViewControl: false,
             mapTypeControl: false,
+            clickableIcons: false
         };
 
         var mapElement = document.createElement("ion-card");
         var mapElementCont = document.createElement("ion-card-content");
 
         mapElement.setAttribute("id", "map");
-        mapElementCont.setAttribute("id", "mapCont")
-        this.map.nativeElement.appendChild(mapElement);
-        mapElement.appendChild(mapElementCont);
-        mapElement.setAttribute("style", "width: 94%; height:100%;");
-        mapElementCont.setAttribute("style", "width: 100%; height:100%; ");
+        this.mapEl.nativeElement.appendChild(mapElement);
+        mapElement.setAttribute("style", "width: 94%; height:70%;");
+        
+        
+        let markers = [];
+        var that = this;
 
-        var map = new google.maps.Map(mapElementCont, mapOptions);
-        map.addListener("click", function (p) {
-            console.log(p.latLng.lat());
-            console.log(p.latLng.lng());
+        if (this.map == null) {
+            mapElementCont.setAttribute("id", "mapCont");
+            mapElement.appendChild(mapElementCont);
+            mapElementCont.setAttribute("style", "width: 100%; height:100%; ");
+            this.map = new google.maps.Map(mapElementCont, mapOptions);
+        }
+        else {
+            this.map.setOptions(mapOptions);
+            var mapNode = this.map.getDiv();
+            console.log(mapNode);
+            mapElement.append(mapNode);
+        }
+
+        // let marker = new google.maps.Marker({position: coords});
+        // if (markers.length > 0) {
+        //     markers.forEach((m) => {
+        //         m.setMap(null);
+        //     });
+        // }
+        // markers.push(marker);
+        // marker.setMap(this.map);
+
+        var myLocation = document.querySelector("#myLocation");
+        console.log(myLocation);
+        myLocation.addEventListener("click", function() {
+            let marker = new google.maps.Marker({position: coords});
+            if (markers.length > 0) {
+                markers.forEach((m) => {
+                    m.setMap(null);
+                });
+            }
+            markers.push(marker);
+            marker.setMap(that.map);
+            that.map.setOptions(mapOptions);
+        });
+
+        this.map.addListener("click", function (p) {
             let coords = new google.maps.LatLng(p.latLng.lat(), p.latLng.lng());
-            this.marker = null;
-            this.marker = new google.maps.Marker({position: coords, map: map});
+
+            // Place a marker
+            let marker = new google.maps.Marker({position: coords});
+            if (markers.length > 0) {
+                markers.forEach((m) => {
+                    m.setMap(null);
+                });
+            }
+            markers.push(marker);
+            marker.setMap(this);
+
+            // Reverse geocoding
+            const latlng = {
+                lat: parseFloat(p.latLng.lat()),
+                lng: parseFloat(p.latLng.lng()),
+              };
+            const geocoder = new google.maps.Geocoder();
+            geocoder.geocode({ location: latlng }, (results, status) => {
+                if( status == "OK" ) {
+                    results.forEach(place => {
+                        place.address_components.forEach(element => {
+                            if (element.types.includes("route")) {
+                                that.checkoutData.form.billing_address_1 = place.formatted_address;
+                            }
+                            else if (element.types.includes("locality", "political")) {
+                                that.checkoutData.form.billing_city = element.long_name;
+                            }
+                            else if (element.types.includes("administrative_area_level_1", "political")) {
+                                that.checkoutData.form.billing_state = element.long_name;
+                            }
+                            else if (element.types.includes("postal_code")) {
+                                that.checkoutData.form.billing_postcode = element.long_name;
+                            }
+                            else if (element.types.includes("country")) {
+                                that.checkoutData.form.billing_country = element.short_name;
+                            }
+                        });
+                    });
+                }
+                console.log(results);
+                console.log(status);
+            });
         });
 
         const input = document.getElementById("pac-input") as HTMLInputElement;
         const searchBox = new google.maps.places.SearchBox(input);
-        map.controls[google.maps.ControlPosition.TOP].push(input);
+        this.map.controls[google.maps.ControlPosition.TOP].push(input);
 
         // Bias the SearchBox results towards current map's viewport.
-        map.addListener("bounds_changed", () => {
-            searchBox.setBounds(map.getBounds());
+        this.map.addListener("bounds_changed", () => {
+            searchBox.setBounds(this.map.getBounds());
         });
 
-        let markers = [];
         // Listen for the event fired when the user selects a prediction and retrieve
         // more details for that place.
         searchBox.addListener("places_changed", () => {
+            console.log(that);
             const places = searchBox.getPlaces();
 
             if (places.length == 0) {
@@ -215,8 +309,8 @@ export class CheckoutAddressPage implements OnInit {
                 // Create a marker for each place.
                 markers.push(
                     new google.maps.Marker({
-                        map,
-                        icon,
+                        map: that.map,
+                        // icon,
                         title: place.name,
                         position: place.geometry.location,
                     })
@@ -228,26 +322,29 @@ export class CheckoutAddressPage implements OnInit {
                 } else {
                     bounds.extend(place.geometry.location);
                 }
+                place.address_components.forEach(element => {
+                    if (element.types.includes("route")) {
+                        that.checkoutData.form.billing_address_1 = place.formatted_address;
+                    }
+                    else if (!element.types.includes("route")) {
+                        that.checkoutData.form.billing_address_1 = place.name + ", " + place.formatted_address;
+                    }
+                    else if (element.types.includes("locality", "political")) {
+                        that.checkoutData.form.billing_city = element.long_name;
+                    }
+                    else if (element.types.includes("administrative_area_level_1", "political")) {
+                        that.checkoutData.form.billing_state = element.long_name;
+                    }
+                    else if (element.types.includes("postal_code")) {
+                        that.checkoutData.form.billing_postcode = element.long_name;
+                    }
+                    else if (element.types.includes("country")) {
+                        that.checkoutData.form.billing_country = element.short_name;
+                    }
+                });
             });
-            console.log(places[0]);
-            places[0].address_components.forEach(element => {
-                if (element.types.includes("route")) {
-                    this.checkoutData.form.billing_address_1 = element.long_name;
-                }
-                else if (element.types.includes("locality", "political")) {
-                    this.checkoutData.form.billing_city = element.long_name;
-                }
-                else if (element.types.includes("administrative_area_level_1", "political")) {
-                    this.checkoutData.form.billing_state = element.long_name;
-                }
-                else if (element.types.includes("postal_code")) {
-                    this.checkoutData.form.billing_postcode = element.long_name;
-                }
-                else if (element.types.includes("country")) {
-                    this.checkoutData.form.billing_country = element.short_name;
-                }
-            });
-            map.fitBounds(bounds);
+            console.log(places);
+            that.map.fitBounds(bounds);
         });
     }
 
@@ -373,43 +470,16 @@ export class CheckoutAddressPage implements OnInit {
 
         if(this.validateForm()){
             if(!this.checkoutData.form.ship_to_different_address)
-            this.assgnShippingAddress();
+                this.assgnShippingAddress();
             // this.navCtrl.navigateForward('/tabs/order-summary/' + this.storePath + '/' + 10996);
-            this.navCtrl.navigateForward('/tabs/cart/checkout/' + this.storePath + '/');
+            if(this.data.store.delivery)
+                this.navCtrl.navigateForward('/tabs/cart/delivery/' + this.storePath + '/');
+            else 
+                this.navCtrl.navigateForward('/tabs/cart/checkout/' + this.storePath + '/');
         }
     }
 
     validateForm(){
-        if(this.checkoutData.form.billing_company_type == '' || this.checkoutData.form.billing_company_type == undefined){
-            this.errorMessage = 'El tipo de empresa es un campo obligatorio';
-            return false;
-        }
-
-        if(this.checkoutData.form.billing_document_type == '' || this.checkoutData.form.billing_document_type == undefined){
-            this.errorMessage = 'El tipo de documento es un campo obligatorio';
-            return false;
-        }
-
-        if(this.checkoutData.form.billing_document == '' || this.checkoutData.form.billing_document == undefined){
-            this.errorMessage = 'La identificación es un campo obligatorio';
-            return false;
-        }
-
-        if(this.checkoutData.form.billing_first_name == '' || this.checkoutData.form.billing_first_name == undefined){
-            this.errorMessage = 'El nombre de facturación es un campo obligatorio';
-            return false;
-        }
-
-        if(this.checkoutData.form.billing_last_name == '' || this.checkoutData.form.billing_last_name == undefined){
-            this.errorMessage = 'El apellido de facturación es un campo obligatorio';
-            return false;
-        }
-
-        if(this.checkoutData.form.billing_phone == '' || this.checkoutData.form.billing_phone == undefined){
-            this.errorMessage = 'El teléfono de facturación es un campo obligatorio';
-            return false;
-        }
-
         if(this.checkoutData.form.billing_address_1 == '' || this.checkoutData.form.billing_address_1 == undefined){
             this.errorMessage = 'La dirección de facturación es un campo obligatorio';
             return false;
@@ -476,27 +546,6 @@ export class CheckoutAddressPage implements OnInit {
         else return true;
     }
 
-    delivDateLoaded() {
-        var currDate = format(new Date(), 'yyyy-MM-dd');
-        var deliv_date = document.getElementById("delivery_date");
-        deliv_date.setAttribute('min', currDate);
-    }
-    delivTimeLoaded() {
-        var deliv_date = document.getElementById("delivery_date");
-        var deliv_time = document.getElementById("delivery_time");
-        var dateValue = deliv_date.getAttribute('ng-reflect-model');
-        var chosenWeekDay = format(new Date(dateValue), 'iii');
-        var openHour = this.data.store[chosenWeekDay + '_o'];
-        var closeHour = this.data.store[chosenWeekDay + '_c'];
-        if (openHour != null) {
-            if(dateValue != format(new Date(), 'yyyy-MM-dd')) {
-                deliv_time.setAttribute('min', openHour);
-            }
-        }
-        if (closeHour != null) {
-            deliv_time.setAttribute('max', closeHour);
-        }
-    }
     shipToDifferentAddress() {
         if(this.checkoutData.form.ship_to_different_address == false) {
             this.checkoutData.form.ship_to_different_address = true;
