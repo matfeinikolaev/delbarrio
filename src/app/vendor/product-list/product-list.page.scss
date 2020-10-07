@@ -13,3 +13,189 @@ ion-icon {
     font-size: smaller;
     color: rgba(var(--ion-text-color-rgb,0,0,0),.4);
 }
+
+.product-description {
+    p {
+        font-size: 4vw;
+    }
+}
+
+ion-searchbar {
+    height: 100px;
+    margin-top: 20px;
+    width: 100%;
+}
+
+::ng-deep {
+    ion-searchbar {
+        height: 100px;
+        margin-top: 20px;
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 415px) {
+    ion-content {
+        #image {
+            width: 100px; 
+            height: 100px;
+        }
+    }
+}
+
+
+@media screen and (min-width: 540px) {
+    ::ng-deep ion-alert{
+        .sc-ion-alert-ios.ion-overlay-wrapper.alert-wrapper  {
+            --height: 33%;
+            --max-height: 33%;
+            --min-height: 33%;
+            
+            --max-width: 70%;
+            --min-width: 70%;
+            --width: 70%;
+        }
+        .alert-button-group.sc-ion-alert-ios {
+            position: absolute;
+            bottom: 0;
+            font-size: 3vw;
+        }
+        .alert-button .ion-focusable .ion-activatable .alert-button-role-cancel .sc-ion-alert-ios{
+            font-size: 3vw;
+        }
+    }
+    ::ng-deep {
+        ion-searchbar {
+            height: 70px;
+            margin-top: 20px;
+            width: 100%;
+        }
+        .searchbar-input-container.sc-ion-searchbar-ios {
+            height: 100%;
+            .searchbar-input.sc-ion-searchbar-ios {
+                font-size: 3vw;
+            }
+            .searchbar-input.sc-ion-searchbar-md {
+                font-size: 3vw;
+            }
+            .searchbar-search-icon.sc-ion-searchbar-ios.ios.hydrated {
+                margin-right: 5%;
+            }
+        }
+        .searchbar-input-container.sc-ion-searchbar-md {
+            height: 100%;
+            .searchbar-input.sc-ion-searchbar-ios {
+                font-size: 3vw;
+            }
+            .searchbar-input.sc-ion-searchbar-md {
+                font-size: 3vw;
+            }
+            .searchbar-search-icon.sc-ion-searchbar-ios.ios.hydrated {
+                margin-right: 5%;
+            }
+        }
+    }
+    ion-content {
+        #image {
+            width: 200px; 
+            height: 100px;
+        }
+    }
+}
+
+@media screen and (min-width: 768px) {
+    ::ng-deep ion-alert{
+        .sc-ion-alert-ios.ion-overlay-wrapper.alert-wrapper  {
+            --height: 33%;
+            --max-height: 33%;
+            --min-height: 33%;
+            
+            --max-width: 70%;
+            --min-width: 70%;
+            --width: 70%;
+        }
+        .alert-button-group.sc-ion-alert-ios {
+            position: absolute;
+            bottom: 0;
+            font-size: 3vw;
+        }
+        .alert-button .ion-focusable .ion-activatable .alert-button-role-cancel .sc-ion-alert-ios{
+            font-size: 3vw;
+        }
+    }
+    ::ng-deep {
+        ion-searchbar {
+            height: 100px;
+            margin-top: 20px;
+            width: 100%;
+        }
+        .searchbar-input-container.sc-ion-searchbar-ios {
+            height: 100%;
+            .searchbar-input.sc-ion-searchbar-ios {
+                font-size: 3vw;
+            }
+            .searchbar-input.sc-ion-searchbar-md {
+                font-size: 3vw;
+            }
+            .searchbar-search-icon.sc-ion-searchbar-ios.ios.hydrated {
+                margin-right: 5%;
+            }
+        }
+        .searchbar-input-container.sc-ion-searchbar-md {
+            height: 100%;
+            .searchbar-input.sc-ion-searchbar-ios {
+                font-size: 3vw;
+            }
+            .searchbar-input.sc-ion-searchbar-md {
+                font-size: 3vw;
+            }
+            .searchbar-search-icon.sc-ion-searchbar-ios.ios.hydrated {
+                margin-right: 5%;
+            }
+        }
+    }
+    ion-content {
+        #image {
+            width: 300px; 
+            height: 200px;
+        }
+    }
+}
+
+ion-content {
+    ion-label {
+        @media screen and (min-width: 540px) {
+            font-size: 3vw;
+        }
+    }
+    h4 {
+        @media screen and (min-width: 540px) {
+            font-size: 3vw;
+        }
+    }
+    p {
+        @media screen and (min-width: 540px) {
+            font-size: 3vw;
+        }
+    }
+    span {
+        @media screen and (min-width: 540px) {
+            font-size: 3vw;
+        }
+    }
+    ion-icon {
+        @media screen and (min-width: 540px) {
+            font-size: 5vw;
+        }
+    }
+    div {
+        @media screen and (min-width: 540px) {
+            font-size: 3vw;
+        }
+    }
+    ion-button {
+        @media screen and (min-width: 540px) {
+            font-size: 3vw;
+        }
+    }
+}

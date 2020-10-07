@@ -1,9 +1,9 @@
 <ion-header mode="ios" mode='ios'>
   <ion-toolbar>
   	<ion-buttons slot="start">
-      <ion-back-button text="{{'Atrás' | translate}}" (click)="backToStore()" defaultHref=""></ion-back-button>
+      <ion-back-button style="font-size: 4vw" text="{{'Atrás' | translate}}" (click)="backToStore()" defaultHref=""></ion-back-button>
     </ion-buttons>
-    <ion-title>{{"Mensajes" | translate}}</ion-title>
+    <ion-title style="font-size: 4vw">{{"Mensajes" | translate}}</ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content class="messaging">
@@ -19,7 +19,7 @@
   </ion-list>
 </ion-content>
 
-<ion-footer no-border class="chatPageFooter">
+<ion-footer no-border class="chatPageFooter" id="footer">
   <ion-toolbar>
     <ion-item>
         <ion-input [(ngModel)]="msgdata.message" type="text" name="send_message" placeholder="Enviar un mensaje a la tienda">

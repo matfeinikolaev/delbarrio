@@ -1,11 +1,14 @@
-<ion-header mode="ios" mode='ios'>
+<ion-header mode='ios'>
   <ion-toolbar>
-  	<ion-buttons slot="start">
-      <ion-back-button text="{{'Atrás' | translate}}" defaultHref="/tabs/account"></ion-back-button>
-    </ion-buttons>
-    <ion-title>{{"Pedidos" | translate}}</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button style="font-size: 4vw;" text="{{'Atrás' | translate}}" defaultHref="/tabs/account"></ion-back-button> <!--defaultHref="/tabs/home/store/{{store.id}}"-->
+   </ion-buttons>
+    <ion-title style="font-size: 4vw;">
+      {{"Pedidos" | translate}}
+    </ion-title>
   </ion-toolbar>
 </ion-header>
+
 
 <ion-content class="orders">
 
@@ -13,18 +16,18 @@
 
 <div *ngIf="orders">
 <div *ngIf="orders.length == 0" text-center class="empty">
-  <ion-icon name="document"></ion-icon>
+  <ion-icon  style="font-size: 20vw" name="document"></ion-icon>
 </div>
 
   <ion-card *ngFor="let item of orders" (click)="getDetail(item)" class="ion-activatable ion-focusable hydrated" mode="md">
     <ion-card-header>
-      <ion-card-subtitle>{{item.number}} - <span style="text-transform: uppercase;">{{item.status}}</span></ion-card-subtitle>
-      <ion-card-title>{{item.total | currency:settings.currency:'symbol':'1.2-2'}}</ion-card-title>
+      <ion-card-subtitle style="font-size: 3vw">{{item.number}} - <span style="text-transform: uppercase; font-size: 3vw;">{{item.status}}</span></ion-card-subtitle>
+      <ion-card-title style="font-size: 4vw">{{item.total | currency:settings.currency:'symbol':'1.2-2'}}</ion-card-title>
     </ion-card-header>
 
     <ion-card-content>
-      <p>{{item.date_created | date:'MMM d, y hh:mm a'}}</p>
-      <p [innerHTML]="item.payment_method_title"></p>
+      <p style="font-size: 3vw">{{item.date_created | date:'MMM d, y hh:mm a'}}</p>
+      <p style="font-size: 3vw" [innerHTML]="item.payment_method_title"></p>
     </ion-card-content>
   </ion-card>
 

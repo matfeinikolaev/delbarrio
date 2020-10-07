@@ -75,3 +75,88 @@ ion-segment {
         }
     }
 }
+ion-content {
+    ion-label {
+        @media screen and (min-width: 540px) {
+            font-size: 3vw;
+        }
+        color:black;
+    }
+    ion-input {
+        @media screen and (min-width: 540px) {
+            font-size: 3vw;
+        }
+    }
+    ion-select {
+        @media screen and (min-width: 540px) {
+            font-size: 3vw;
+        }
+    }
+    ion-select-option {
+        @media screen and (min-width: 540px) {
+            font-size: 3vw;
+        }
+    }
+    ion-textarea {
+        @media screen and (min-width: 540px) {
+            font-size: 3vw;
+        }
+    }
+    ion-datetime {
+        @media screen and (min-width: 540px) {
+            font-size: 3vw;
+        }
+    }
+    ion-toggle {
+        @media screen and (min-width: 540px) {
+            font-size: 3vw;
+        }
+    }
+    ion-card-subtitle {
+        @media screen and (min-width: 540px) {
+            font-size: 3vw;
+        }
+    }
+    ion-item {
+        @media screen and (min-width: 540px) {
+            font-size: 3vw;
+        }
+    }
+    span {
+        @media screen and (min-width: 540px) {
+            font-size: 3vw;
+        }
+    }
+    div {
+        @media screen and (min-width: 540px) {
+            font-size: 3vw;
+        }
+    }
+    p {
+        @media screen and (min-width: 540px) {
+            font-size: 3vw;
+        }
+    }
+    ion-button {
+        @media screen and (min-width: 540px) {
+            font-size: 3vw;
+        }
+    }
+}
+
+::ng-deep {
+    ion-modal {
+        .modal-wrapper.ion-overlay-wrapper.sc-ion-modal-ios {
+            @media screen and (min-width: 540px) {
+                width: 80%;
+                height: 80%;
+            }
+        }
+        .modal-wrapper.ion-overlay-wrapper.sc-ion-modal-md {
+            @media screen and (min-width: 540px) {
+                width: 80%;
+                height: 80%;
+            }
+        }
+    }
+}

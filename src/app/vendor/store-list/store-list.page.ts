@@ -91,6 +91,8 @@ export class StoreListPage {
         this.getStores();
         // this.getAttributes();
     }
+    ngAfterViewInit() {
+    }
     getStore(store) {
         this.store.store = store;
         this.navCtrl.navigateForward(this.router.url + '/view-store/' + store.ID);

@@ -45,6 +45,7 @@ export class StoresPage {
     loadingStoresNearby: any = true;
     loadingAllStores: any = false;
     errorMessage: any;
+    pageHeight: any;
     constructor(public routerOutlet: IonRouterOutlet, public modalCtrl: ModalController, private nativeGeocoder: NativeGeocoder, private geolocation: Geolocation, private locationAccuracy: LocationAccuracy, private storage: Storage, public translate: TranslateService, public alertController: AlertController, private config: Config, public api: ApiService, private splashScreen: SplashScreen, public platform: Platform, public translateService: TranslateService, public data: Data, public settings: Settings, public product: Product, public store: Store, public loadingController: LoadingController, public router: Router, public navCtrl: NavController, public route: ActivatedRoute, private oneSignal: OneSignal, private nativeStorage: NativeStorage, private chatapi: ChatApi, private fb: FormBuilder) {
         this.filter.page = 1;
         this.filter.status = 'publish';
@@ -277,6 +278,8 @@ export class StoresPage {
                             this.data.allStores.push(result[i]);
                         }
                     }
+                    this.pageHeight = this.data.allStores.length * 420 + "px";
+                    this.establishPageHeight();
                     this.loadingAllStores = false;
                 },err=>{
                     console.error(err);
@@ -313,6 +316,10 @@ export class StoresPage {
         }, err => {
             console.log(err);
         }); 
+    }
+    establishPageHeight() {
+        var div = document.getElementById("basic-wrapper");
+        div.style.height = this.pageHeight;
     }
     getStore(store) {
         this.store.store = store;

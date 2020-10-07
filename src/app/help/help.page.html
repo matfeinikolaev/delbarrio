@@ -1,24 +1,30 @@
-<ion-header>
+<ion-header mode='ios'>
     <ion-toolbar>
-        <ion-buttons slot="start">
-            <ion-back-button text="{{'' | translate}}" style="--color:black; margin-left: 20px;" size="small" defaultHref="{{settings.currentPath}}"></ion-back-button>
-        </ion-buttons>
-        <ion-title>{{"¿Con qué necesitas ayuda?" | translate}}</ion-title>
+      <ion-buttons slot="start">
+        <ion-back-button style="font-size: 4vw;" text="{{'Atrás' | translate}}" defaultHref="{{settings.currentPath}}"></ion-back-button> <!--defaultHref="/tabs/home/store/{{store.id}}"-->
+     </ion-buttons>
+      <ion-title style="font-size: 4vw;">
+        {{"¿Con qué nececitas ayuda?" | translate}}
+      </ion-title>
     </ion-toolbar>
-</ion-header>
+  </ion-header>
+  
 <ion-content>
     <ion-list *ngIf="settings.faq">
         <ion-item *ngFor="let q of settings.faq | keys" lines="full">
-            <ion-label position="stacked" color="medium" style="font-size: large;" [innerHtml]="q.key"></ion-label>
-            <ion-note color="dark" [innerHtml]="q.value" style="margin: 20px 0 20px 0;"></ion-note>
+            <ion-label position="stacked" color="medium" style="font-size: 4vw;" [innerHtml]="q.key"></ion-label>
+            <ion-note color="dark" [innerHtml]="q.value" style="margin: 20px 0 20px 0; font-size: 3vw;"></ion-note>
         </ion-item>
     </ion-list>
     <div style="text-align:center" [hidden]="sendMessageClick">
-        <p style="color:#2a3d5d">{{"¿No encontraste tu problema?"}} <span style="height: 48dp; color:#78ddcd" (click)="openMessage()">{{"Escribenos"}}</span> </p>
+        <p style="color:#2a3d5d; font-size: 3vw;">{{"¿No encontraste tu problema?"}} <span style="height: 48dp; color:#78ddcd; font-size: 3vw;" (click)="openMessage()">{{"Escribenos"}}</span> </p>
     </div>
     <ion-item [hidden]="!sendMessageClick">
-        <ion-label position="stacked">Envíe un mensaje</ion-label>
-        <ion-input type="text" [(ngModel)]="messageText"></ion-input>
-        <ion-button (click)="sendMessage()">Enviar</ion-button>
+        <ion-label position="stacked" style="font-size: 4vw;" >Envíe un mensaje</ion-label>
+        <ion-input type="text" [(ngModel)]="messageText" style="font-size: 4vw;" ></ion-input>
+        <ion-button (click)="sendMessage()" style="font-size: 4vw; height: 50px" >Enviar</ion-button>
     </ion-item>
+    <div [hidden]="!messageSent">
+      <p id="response-message" style="margin-top: 10%">Gracias por su solicitud, nuestro equipo de asistencia técnica revisará su pregunta.</p>
+    </div>
 </ion-content>

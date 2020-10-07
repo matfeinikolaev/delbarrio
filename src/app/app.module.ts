@@ -56,6 +56,9 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 import { IonSlides } from '@ionic/angular';
+// import {IonicImageCacheModule} from 'ionic-img-cache';
+import { LocalNotifications} from '@ionic-native/local-notifications/ngx'
+
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -76,6 +79,7 @@ export function createTranslateLoader(http: HttpClient) {
   //HomePage
   ],
   imports: [BrowserModule, 
+  // IonicImageCacheModule.forRoot(),
   FormsModule, 
   HttpClientModule,
    KeysPipeModule,
@@ -88,7 +92,7 @@ export function createTranslateLoader(http: HttpClient) {
           useFactory: (createTranslateLoader),
           deps: [HttpClient]
         }
-      })
+      }),
      ],
 
   providers: [
@@ -115,6 +119,7 @@ export function createTranslateLoader(http: HttpClient) {
     HTTP,
     AndroidPermissions,
     Geolocation, LocationAccuracy, NativeGeocoder,
+    LocalNotifications,
     // Map,
     // OrderSummaryPage,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }

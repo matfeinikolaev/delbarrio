@@ -475,7 +475,7 @@ export class CheckoutAddressPage implements OnInit {
             if(this.data.store.delivery)
                 this.navCtrl.navigateForward('/tabs/cart/delivery/' + this.storePath + '/');
             else 
-                this.navCtrl.navigateForward('/tabs/cart/checkout/' + this.storePath + '/');
+                this.navCtrl.navigateForward('/tabs/cart/contacts/' + this.storePath + '/');
         }
     }
 

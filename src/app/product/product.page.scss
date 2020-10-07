@@ -8,6 +8,159 @@
         font-size: 30px;
     }
 }
+
+
+@media screen and (max-width: 360px) {
+    .add-to-cart-button {
+        ion-button{
+            height: 30px;
+            font-size: 5vw;
+        }
+    }
+    .product-row {
+        font-size: 5vw;
+    }
+    .price {
+        font-size: 4vw;
+    }
+    .special-price {
+        font-size: 3vw;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    ::ng-deep ion-alert{
+        .sc-ion-alert-ios.ion-overlay-wrapper.alert-wrapper  {
+            --height: 33%;
+            --max-height: 33%;
+            --min-height: 33%;
+            
+            --max-width: 70%;
+            --min-width: 70%;
+            --width: 70%;
+        }
+        .alert-button-group.sc-ion-alert-ios {
+            position: absolute;
+            bottom: 0;
+            font-size: 3vw;
+        }
+        .alert-button .ion-focusable .ion-activatable .alert-button-role-cancel .sc-ion-alert-ios{
+            font-size: 3vw;
+        }
+    }
+    ion-searchbar {
+        height: 100px;
+        --placeholder-color: #5a6b7d;
+        margin-top: 20px;
+    }
+    ::ng-deep {
+        ion-searchbar {
+            height: 100px;
+            margin-top: 20px;
+        }
+        .searchbar-input-container.sc-ion-searchbar-ios {
+            height: 100%;
+            .searchbar-input.sc-ion-searchbar-ios {
+                font-size: 3vw;
+                padding-left: calc(50% - 80px);
+            }
+            .searchbar-search-icon.sc-ion-searchbar-ios.ios.hydrated {
+                font-size: 3vw;
+                margin-left: calc(50% - 150px); 
+                width: 30px;
+            }
+        }
+    }
+    .add-to-cart-button {
+        ion-button {
+            height: 60px;
+            font-size: 4vw;
+        }
+    }
+    .product-row {
+        font-size: 4vw;
+    }
+    .price {
+        font-size: 4vw;
+    }
+    .special-price {
+        font-size: 3vw;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    ::ng-deep ion-alert {
+        .sc-ion-alert-ios.ion-overlay-wrapper.alert-wrapper  {
+            --height: 25%;
+            --max-height: 25%;
+            --min-height: 25%;
+            
+            --max-width: 70%;
+            --min-width: 70%;
+            --width: 70%;
+        }
+        .alert-button-group.sc-ion-alert-ios {
+            position: absolute;
+            bottom: 0;
+            font-size: 3vw;
+        }
+        .alert-button .ion-focusable .ion-activatable .alert-button-role-cancel .sc-ion-alert-ios{
+            font-size: 3vw;
+        }
+    }
+    ion-searchbar {
+        height: 100px;
+        --placeholder-color: #5a6b7d;
+        margin-top: 20px;
+    }
+    ::ng-deep {
+        ion-searchbar {
+            height: 100px;
+            margin-top: 20px;
+        }
+        .searchbar-input-container.sc-ion-searchbar-ios{
+            height: 100%;
+            margin-top: 20px;
+            .searchbar-input.sc-ion-searchbar-ios {
+                font-size: 3vw;
+                padding-left: calc(50% - 80px);
+            }
+            .searchbar-search-icon.sc-ion-searchbar-ios.ios.hydrated {
+                font-size: 3vw;
+                margin-left: calc(50% - 150px); 
+                width: 30px;
+            }
+            .alert-button-group.sc-ion-alert-ios {
+                .alert-button-inner.sc-ion-alert-ios {
+                    font-size: 3vw;
+                }
+            }
+        }
+    }
+    .add-to-cart-button {
+        ion-button{
+            height: 60px;
+            font-size: 4vw;
+        }
+    }
+    .product-row {
+        font-size: 4vw;
+    }
+    .price {
+        font-size: 4vw;
+    }
+    .special-price {
+        font-size: 3vw;
+    }
+}
+
+::ng-deep {
+    .ios.toast-pop-up.hydrated{
+        font-size: 3vw;
+    }
+}
+
+
 ion-card-title {
     font-size: 40px;
 }
@@ -282,4 +435,155 @@ ion-item {
 
 .text-input::-webkit-input-placeholder {
     color: red;
+}
+
+ion-content {
+    @media screen and (min-width: 540px) {
+        ion-slides {
+            width: 100%;
+        }
+        img {
+            width: 70%;
+        }
+        ion-label {
+            font-size: 3vw;
+            p {
+                font-size: 3vw;
+            }
+        }
+        ::ng-deep {
+            p {
+                font-size: 3vw;
+            }
+        }
+    }
+    ion-label {
+        @media screen and (max-width: 415px) {
+            font-size: 4vw;
+        }
+        @media screen and (min-width: 540px) {
+            font-size: 3vw;
+        }
+    }
+    ion-item {
+        @media screen and (max-width: 415px) {
+            font-size: 4vw;
+        }
+        @media screen and (min-width: 540px) {
+            font-size: 3vw;
+        }
+    }
+    ion-select {
+        @media screen and (max-width: 415px) {
+            font-size: 4vw;
+        }
+        @media screen and (min-width: 540px) {
+            font-size: 3vw;
+        }
+    }
+    ion-select-option {
+        @media screen and (max-width: 415px) {
+            font-size: 4vw;
+        }
+        @media screen and (min-width: 540px) {
+            font-size: 3vw;
+        }
+    }
+    textarea {
+        @media screen and (max-width: 415px) {
+            font-size: 4vw;
+        }
+        @media screen and (min-width: 540px) {
+            font-size: 3vw;
+        }
+    }
+    ion-textarea {
+        @media screen and (max-width: 415px) {
+            font-size: 4vw;
+        }
+        @media screen and (min-width: 540px) {
+            font-size: 3vw;
+        }
+    }
+    ion-input {
+        @media screen and (max-width: 415px) {
+            font-size: 4vw;
+        }
+        @media screen and (min-width: 540px) {
+            font-size: 3vw;
+        }
+    }
+    ion-button {
+        @media screen and (max-width: 415px) {
+            font-size: 4vw;
+        }
+        @media screen and (min-width: 540px) {
+            font-size: 3vw;
+        }
+    }
+    button {
+        @media screen and (max-width: 415px) {
+            font-size: 4vw;
+        }
+        @media screen and (min-width: 540px) {
+            font-size: 3vw;
+        }
+    }
+    h6 {
+        @media screen and (max-width: 415px) {
+            font-size: 4vw;
+        }
+        @media screen and (min-width: 540px) {
+            font-size: 3vw;
+        }
+    }
+    input {
+        @media screen and (max-width: 415px) {
+            font-size: 4vw;
+        }
+        @media screen and (min-width: 540px) {
+            font-size: 3vw;
+        }
+    }
+    ion-card-subtitle {
+        @media screen and (max-width: 415px) {
+            font-size: 4vw;
+        }
+        @media screen and (min-width: 540px) {
+            font-size: 3vw;
+        }
+    }
+    ion-icon {
+        @media screen and (max-width: 415px) {
+            font-size: 4vw;
+        }
+        @media screen and (min-width: 540px) {
+            font-size: 3vw;
+        }
+    }
+    p {
+        @media screen and (max-width: 415px) {
+            font-size: 4vw;
+        }
+        @media screen and (min-width: 540px) {
+            font-size: 3vw;
+        }
+    }
+    span {
+        @media screen and (max-width: 415px) {
+            font-size: 4vw;
+        }
+        @media screen and (min-width: 540px) {
+            font-size: 3vw;
+        }
+    }
+    .contact-form {
+        ion-button {
+            font-size: 3vw;
+            height: 60px;
+        }
+        ion-item {
+            margin-bottom: 50px;
+        }
+    }
 }

@@ -31,6 +31,16 @@ ion-searchbar {
     width:80%; 
     margin:auto;
 }
+
+// ::ng-deep {
+//     .ios .toast-pop-up .hydrated{
+//         --height: 10%;
+//         --max-height: 10%;
+//         --min-height: 10%;
+//         font-size: 3vw;
+//     }
+// }
+
 .totals-amount{
     float: right;
 }
@@ -49,6 +59,22 @@ html[dir="rtl"]{
     text-align: center;
     margin: 30px auto;
 }
+
+.alert-radio-label.sc-ion-alert-md,
+.alert-radio-label.sc-ion-alert-ios {
+   white-space: normal;
+}
+.alert-tappable.alert-radio {
+   height: auto;
+   contain: content;
+}
+.alert-radio-group.sc-ion-alert-ios {
+    font-size: 3vw;
+}
+.alert-radio-inner.sc-ion-alert-ios {
+    font-size: 3vw;
+}
+
 .borderline-card {
   //border: 1px solid var(--ion-color-danger, #eb445a);
 }
@@ -103,7 +129,7 @@ html[dir="rtl"]{
         }
         ion-card {
             width: 100%;
-            height: 100%;
+            // height: 100%;
             margin: 0;
         }
         .border {

@@ -1,28 +1,30 @@
 <ion-header mode='ios'>
     <ion-toolbar>
-        <ion-buttons slot="start">
-          <ion-back-button text="{{'' | translate}}" style="--color:black; margin-left: 20px;" size="small"></ion-back-button>
-        </ion-buttons>
-        <ion-title>{{"Informacion personal" | translate}}</ion-title>
-      </ion-toolbar>
-</ion-header>
-<ion-content>
-    <div class="spinner" *ngIf="loader"><ion-spinner> </ion-spinner></div>
+      <ion-buttons slot="start">
+        <ion-back-button style="font-size: 4vw;" text="{{'Atrás' | translate}}" defaultHref="/tabs/cart"></ion-back-button> <!--defaultHref="/tabs/home/store/{{store.id}}"-->
+     </ion-buttons>
+      <ion-title style="font-size: 4vw;">
+        {{"Información personal" | translate}}
+      </ion-title>
+    </ion-toolbar>
+  </ion-header>
+<ion-content id="ionContent">
+    <div class="spinner" ><ion-spinner> </ion-spinner></div>
     <div #form style="height: 100%">
         <ion-list>
             <form> 
-                <ion-item lines="full" *ngIf="!loader">
-                    <ion-label position="stacked" color="medium" style="font-size: small;">{{"TIPO DE CLIENTE" | translate}}</ion-label>
+                <ion-item lines="full" >
+                    <ion-label position="stacked" color="medium">{{"TIPO DE CLIENTE" | translate}}</ion-label>
                     <ion-select required type="text" [(ngModel)]="settings.user.billing_company_type" name="company_type"> 
                         <ion-select-option value="" selected="selected">Seleccione</ion-select-option>
-                        <ion-select-option value="Persona Natural">Persona Natural</ion-select-option>
-                        <ion-select-option value="Empresa">Empresa</ion-select-option>
+                        <ion-select-option value="Persona Natural" >Persona Natural</ion-select-option>
+                        <ion-select-option value="Empresa" >Empresa</ion-select-option>
                     </ion-select>
                 </ion-item>
-                <ion-item lines="full" *ngIf="!loader">
-                    <ion-label position="stacked" color="medium" style="font-size: small;">{{"TIPO DE IDENTIFICACIÓN" | translate}}</ion-label>
+                <ion-item lines="full" >
+                    <ion-label position="stacked" color="medium">{{"TIPO DE IDENTIFICACIÓN" | translate}}</ion-label>
                     <!-- <ion-input required type="text" [(ngModel)]="checkoutData.form.billing_document_type" name="document_type"> </ion-input> -->
-                    <ion-select required [(ngModel)]="settings.user.billing_document_type" name="billing_document_type" id="billing_document_type" class="select " data-allow_clear="true" data-placeholder="Seleccione">
+                    <ion-select required  [(ngModel)]="settings.user.billing_document_type" name="billing_document_type" id="billing_document_type" class="select " data-allow_clear="true" data-placeholder="Seleccione">
                         <ion-select-option value="" selected="selected">Seleccione</ion-select-option>
                         <ion-select-option value="01">Cédula de identidad</ion-select-option>
                         <ion-select-option value="02">RUC</ion-select-option>
@@ -31,23 +33,23 @@
                     </ion-select>
                 </ion-item>
         
-                <ion-item lines="full" *ngIf="!loader">
-                    <ion-label position="stacked" color="medium" style="font-size: small;">{{"NÚMERO DE IDENTIFICACIÓN" | translate}}</ion-label>
+                <ion-item lines="full" >
+                    <ion-label position="stacked" color="medium">{{"NÚMERO DE IDENTIFICACIÓN" | translate}}</ion-label>
                     <ion-input required type="text" [(ngModel)]="settings.user.billing_document" name="document"> </ion-input>
                 </ion-item>
         
-                <ion-item lines="full" *ngIf="!loader">
-                    <ion-label position="stacked" color="medium" style="font-size: small;">{{"NOMBRE" | translate}}</ion-label>
+                <ion-item lines="full" >
+                    <ion-label position="stacked" color="medium">{{"NOMBRE" | translate}}</ion-label>
                     <ion-input required type="text" [(ngModel)]="checkoutData.form.billing_first_name" name="firstname"> </ion-input>
                 </ion-item>
-                <ion-item lines="full" *ngIf="!loader">
-                    <ion-label position="stacked" color="medium" style="font-size: small;">{{"APELLIDOS" | translate}}</ion-label>
+                <ion-item lines="full" >
+                    <ion-label position="stacked" color="medium">{{"APELLIDOS" | translate}}</ion-label>
                     <ion-input required type="text" [(ngModel)]="checkoutData.form.billing_last_name" name="lastname"> </ion-input>
                 </ion-item>
 
                 
                 <ion-list-header style="margin-top: 20px;">
-                    <ion-label style="font-size: larger; color:grey">{{"Notas del pedido (opcional)" | translate}}</ion-label>
+                    <ion-label style="color:grey">{{"Notas del pedido (opcional)" | translate}}</ion-label>
                 </ion-list-header>
                 <ion-item lines="full">
                     <ion-textarea [(ngModel)]="checkoutData.form.order_comments" name="order_comments" class="input-text " id="order_comments" placeholder="Notas sobre tu pedido, por ejemplo, notas especiales para la entrega." rows="2" cols="5"></ion-textarea>
@@ -56,7 +58,7 @@
             </form>
         </ion-list>
     <div *ngIf="errorMessage">
-        <h2 [innerHTML]="errorMessage" style="font-size: 14px;  color: red;margin: 16px; text-align: center;"></h2>
+        <h2 [innerHTML]="errorMessage" style="font-size: 3vw;  color: red;margin: 16px; text-align: center;"></h2>
     </div>
     <div class="submit-button">
         <ion-button color="danger" expand="block" fill="solid" (click)="continueCheckout()">{{"Continuar" | translate}}</ion-button>

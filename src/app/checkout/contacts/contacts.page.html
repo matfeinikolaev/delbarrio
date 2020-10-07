@@ -1,21 +1,24 @@
 <ion-header mode='ios'>
     <ion-toolbar>
-        <ion-buttons slot="start">
-          <ion-back-button text="{{'' | translate}}" style="--color:black; margin-left: 20px;" size="small"></ion-back-button>
-        </ion-buttons>
-        <ion-title>{{"Contactos" | translate}}</ion-title>
-      </ion-toolbar>
-</ion-header>
-<ion-content>
-    <div class="spinner" *ngIf="loader"><ion-spinner> </ion-spinner></div>
+      <ion-buttons slot="start">
+        <ion-back-button style="font-size: 4vw;" text="{{'Atrás' | translate}}" defaultHref="/tabs/cart"></ion-back-button> <!--defaultHref="/tabs/home/store/{{store.id}}"-->
+     </ion-buttons>
+      <ion-title style="font-size: 4vw;">
+        {{"Contactos" | translate}}
+      </ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+<ion-content id="ionContent">
+    <!-- <div class="spinner"><ion-spinner> </ion-spinner></div> -->
     <div #form style="height: 100%">
         <ion-list>
             <form> 
                 <ion-item lines="none">
-                    <p style="font-size:x-small; margin-top:-30px; margin-bottom:-10px;color: grey; font-style: italic;">{{"* ¿Cómo nos ponemos en contacto contigo para darte el pedido?" | translate}}</p>
+                    <p style="font-size:3vw; color: grey; font-style: italic;">{{"* ¿Cómo nos ponemos en contacto contigo para darte el pedido?" | translate}}</p>
                 </ion-item>
-                <ion-item lines="full" *ngIf="!loader">
-                    <ion-label position="stacked" color="medium" style="font-size: small;">{{"TELEFONO" | translate}}</ion-label>
+                <ion-item lines="full">
+                    <ion-label position="stacked" color="medium">{{"TELEFONO" | translate}}</ion-label>
                     <ion-input required type="text" [(ngModel)]="checkoutData.form.billing_phone" name="telephone"> </ion-input>
                 </ion-item>
                 <!-- <ion-item lines="full">
@@ -23,14 +26,14 @@
                     <ion-input type="text" [(ngModel)]="checkoutData.form.billing_company" name="company"> </ion-input>
                 </ion-item> -->
                 
-                <ion-item lines="full" *ngIf="!loader">
-                    <ion-label position="stacked" color="medium" style="font-size: small;">{{"EMAIL" | translate}}</ion-label>
+                <ion-item lines="full">
+                    <ion-label position="stacked" color="medium">{{"EMAIL" | translate}}</ion-label>
                     <ion-input required type="email" [(ngModel)]="checkoutData.form.billing_email" name="email"> </ion-input>
                 </ion-item>
             </form>
         </ion-list>
     <div *ngIf="errorMessage">
-        <h2 [innerHTML]="errorMessage" style="font-size: 14px;  color: red;margin: 16px; text-align: center;"></h2>
+        <h2 [innerHTML]="errorMessage" style="font-size: 4vw;  color: red;margin: 16px; text-align: center;"></h2>
     </div>
     <div class="submit-button">
         <ion-button color="danger" expand="block" fill="solid" (click)="continueCheckout()">{{"Continuar" | translate}}</ion-button>

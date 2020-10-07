@@ -1,30 +1,30 @@
 <ion-header mode='ios' class="product-header">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button text="{{'Atrás' | translate}}" defaultHref="/tabs/account/vendor-stores"></ion-back-button>
+      <ion-back-button style="font-size: 4vw;" text="{{'Atrás' | translate}}" defaultHref="/tabs/account/vendor-stores"></ion-back-button>
     </ion-buttons>
-    <ion-title>
+    <ion-title style="font-size: 4vw;">
       {{store?.post_title}}
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="product">
+<ion-content class="store">
 
-  <ion-button *ngIf="settings.administrator || settings.vendor" color="danger" mode="ios" (click)="saveStore()" class="ion-activatable" style="position:fixed; height:40px; z-index: 100; --border-radius:50px 50px 50px 50px; right: 0;">
-    <ion-icon style="color: white;" class="icon-start" name="save"></ion-icon>
+  <ion-button *ngIf="settings.administrator || settings.vendor" color="danger" mode="ios" (click)="saveStore()" class="ion-activatable" style="position:fixed; height:7%; width: 13%; z-index: 100; --border-radius:50px 50px 50px 50px; right: 0;">
+    <ion-icon style="color: white;" class="icon-start" name="save" ></ion-icon>
   </ion-button>
 
   <div *ngIf="store" class="margin">
 
   <ion-list>
   <ion-list-header>
-    <ion-label>{{"ID de la tienda" | translate}} - {{store.ID}}</ion-label>
+    <ion-label >{{"ID de la tienda" | translate}} - {{store.ID}}</ion-label>
   </ion-list-header>
   <div *ngFor="let item of store | keys">
     <ion-item *ngIf="item.key!='ID'">
-      <ion-label position="floating">{{item.key}}</ion-label>
-      <ion-input required type="text" [(ngModel)]="store[item.key]" name="name"></ion-input>
+      <ion-label position="floating" >{{item.key}}</ion-label>
+      <ion-input required type="text"  [(ngModel)]="store[item.key]" name="name"></ion-input>
     </ion-item>
   </div>
 
@@ -161,22 +161,22 @@
                 </div>
              </div>
               <ion-card-header (click)="editProduct(item)">
-                  <ion-card-subtitle mode="md" style="text-align: center;">{{item.id}}</ion-card-subtitle>
+                  <ion-card-subtitle mode="md" style="text-align: center;" >{{item.id}}</ion-card-subtitle>
               </ion-card-header>
               <ion-card-content (click)="editProduct(item)">
                   <p class="price">
-                    <span class="regular-price" *ngIf="!item.sale_price">{{item.price | currency:settings.currency:'symbol':'1.2-2'}}</span>
-                      <span class="regular-price" *ngIf="item.sale_price">{{item.sale_price | currency:settings.currency:'symbol':'1.2-2'}}<span class="special-price"><del>{{item.regular_price | currency:settings.currency:'symbol':'1.2-2'}}</del></span></span>
+                    <span class="regular-price" *ngIf="!item.sale_price" >{{item.price | currency:settings.currency:'symbol':'1.2-2'}}</span>
+                      <span class="regular-price" *ngIf="item.sale_price" >{{item.sale_price | currency:settings.currency:'symbol':'1.2-2'}}<span class="special-price" ><del>{{item.regular_price | currency:settings.currency:'symbol':'1.2-2'}}</del></span></span>
                   </p>
                 </ion-card-content>
             </ion-card>
         </div>
     </div>
-    <ion-button fill='clear' (click)="seeAllProducts()">{{"Ver todos productos"}}</ion-button>
+    <ion-button fill='clear' (click)="seeAllProducts()" >{{"Ver todos productos"}}</ion-button>
   </div>
 
     <div padding>
-    <ion-button class="add-to-cart-button" color="{{settings.theme.button}}" expand="block" fill="solid" (click)="saveStore()">{{"GUARDAR CAMBIOS" | translate}}</ion-button>
+    <ion-button class="add-to-cart-button"  color="{{settings.theme.button}}" expand="block" fill="solid" (click)="saveStore()">{{"GUARDAR CAMBIOS" | translate}}</ion-button>
     </div> 
 
   </ion-list>

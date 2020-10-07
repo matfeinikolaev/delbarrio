@@ -1,9 +1,9 @@
 <ion-header mode='ios'>
  <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button text="{{'Atrás' | translate}}" defaultHref="/tabs/account/category/{{vendor.product.categories[0]}}/details"></ion-back-button>
+      <ion-back-button style="font-size: 4vw;" text="{{'Atrás' | translate}}" defaultHref="/tabs/account/category/{{vendor.product.categories[0]}}/details"></ion-back-button>
     </ion-buttons>
-    <ion-title>
+    <ion-title style="font-size: 4vw;">
       {{"Fotos" | translate}}
     </ion-title>
   </ion-toolbar>
@@ -12,11 +12,11 @@
 <ion-content>
 
 	<div class="camera">
-	  <ion-button fill="clear" color="{{settings.theme.button}}"  (click)="picker()"><ion-icon name="camera"></ion-icon></ion-button>
+	  <ion-button fill="clear" color="{{settings.theme.button}}"  (click)="picker()"><ion-icon name="camera" style="font-size: 4vw;"></ion-icon></ion-button>
 	</div>
 
 	<div style="text-align: center; margin: 20px 0;">
-	    <ion-spinner *ngIf="uploadingImageSpinner"></ion-spinner>
+	    <ion-spinner style="font-size: 4vw;" *ngIf="uploadingImageSpinner"></ion-spinner>
 	</div>
 
   <div class="images" *ngIf="imageArray.length">
@@ -33,10 +33,10 @@
     <ion-toolbar>
       <ion-row>
         <ion-col>
-          <ion-button size="full" (click)="publish()" color="{{settings.theme.button}}">{{"Publicar" | translate}}</ion-button>
+          <ion-button size="full" (click)="publish()" color="{{settings.theme.button}}" style="font-size: 4vw;">{{"Publicar" | translate}}</ion-button>
         </ion-col>
         <ion-col>
-          <ion-button size="full" (click)="draft()" color="{{settings.theme.button}}">{{"Borrador" | translate}}</ion-button>
+          <ion-button size="full" (click)="draft()" color="{{settings.theme.button}}" style="font-size: 4vw;">{{"Borrador" | translate}}</ion-button>
         </ion-col>
       </ion-row>
     </ion-toolbar>

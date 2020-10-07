@@ -1,13 +1,13 @@
-<ion-header mode='ios' class="product-header" >
+<ion-header mode='ios' class="product-header">
    <ion-toolbar>
       <ion-buttons slot="start">
-         <ion-back-button text="{{'Atrás' | translate}}" (click)="backToStore()"></ion-back-button>
+         <ion-back-button style="font-size: 4vw;" text="{{'Atrás' | translate}}" (click)="backToStore()"></ion-back-button>
       </ion-buttons>
-      <ion-title class="delbarrio-header">
-         {{"DELBARRIO" | translate}}
+      <ion-title style="font-size: 4vw;" class="delbarrio-header">
+         {{"DEL BARRIO" | translate}}
       </ion-title>
       <ion-buttons slot="end" (click)="share()">
-         <ion-icon name="share-social" style="margin-right: 8px;font-size: 23px"></ion-icon>
+         <ion-icon name="share-social" style="margin-right: 8px;font-size: 4vw;"></ion-icon>
       </ion-buttons>
    </ion-toolbar>
 </ion-header>
@@ -16,53 +16,53 @@
       <ion-spinner> </ion-spinner>
    </div>   
    
-   <ion-row style="position: fixed; z-index: 1000; width: 100%; padding: 10px 0;" [hidden]="!openFeedbackForm">
-      <ion-list style="border: #2b3f5a 1px solid; width: 80%; margin:auto; text-align:center; border-radius: 15px;">
+   <ion-row style="position: fixed; z-index: 1000; width: 100%; height: 100%; padding: 10px 0;" [hidden]="!openFeedbackForm" class="contact-form">
+      <ion-list style="border: #2b3f5a 1px solid; width: 80%; height: 70%; margin:auto; text-align:center; border-radius: 15px;">
         <div style="width: 100%; padding: 20px; clear:both;">
-           <div style="width: 250px; color:#687e95; font-size:larger; font-weight: light; margin-bottom: 20px;">
+           <div style="width: 100%; margin: auto;color:#687e95;  font-weight: light; margin-bottom: 60px; margin-top: 60px">
               <ion-label>{{"Déjanos tus contactos, te avisaremos, cuando aparezca este producto" | translate}}</ion-label>
            </div>
            <form [formGroup]="form"> 
-           <ion-label for="name" mode="ios" color="medium" style="font-size: small;">NOMBRE</ion-label>
-           <ion-item style="margin: 0 0 15px 0;   
+           <ion-item style="   
            --border-color: var(--ion-color-medium-shade);
            --border-radius: 50px;
            --border-width: 1px;
            --highlight-height: 0;
            --background: #f8f9fa;">
+           <ion-label for="name" mode="ios" color="medium" >NOMBRE</ion-label>
            <ion-input type="text" formControlName="name" clearInput="true"></ion-input>
            </ion-item>
-           <ion-label for="phone" mode="ios" color="medium" style="font-size: small;">TELEFONO</ion-label>
-           <ion-item style="margin: 0 0 15px 0;   
+           <ion-item style="   
            --border-color: var(--ion-color-medium-shade);
            --border-radius: 50px;
            --border-width: 1px;
            --highlight-height: 0;
            --background: #f8f9fa;">
+           <ion-label for="phone" mode="ios" color="medium" >TELEFONO</ion-label>
            <ion-input type="number" formControlName="phone" clearInput="true"></ion-input>
            </ion-item>
-           <ion-label for="email" mode="ios" color="medium" style="font-size: small;">EMAIL</ion-label>
-           <ion-item style="margin: 0 0 15px 0;   
+           <ion-item style="   
            --border-color: var(--ion-color-medium-shade);
            --border-radius: 50px;
            --border-width: 1px;
            --highlight-height: 0;
            --background: #f8f9fa;">
+           <ion-label for="email" mode="ios" color="medium" >EMAIL</ion-label>
            <ion-input type="email" formControlName="email" clearInput="true"></ion-input>
            </ion-item>        
            </form>
            <ion-item lines="none" *ngIf="errorMessage" style="width: 250px;">
            <span style="color: red;">{{errorMessage}}</span>
            </ion-item>
-           <ion-button color="tertiary" style="--border-radius:50px 50px 50px 50px; height:40px; margin-top:40px;" expand="block" fill="solid" (click)="onSubmit()">{{"Enviar" | translate}}</ion-button>
-           <ion-button color="danger" (click)="closeForm()" style="--border-radius:50px 50px 50px 50px; height:40px;" expand="block" fill="solid">
+           <ion-button color="tertiary" style="--border-radius:50px 50px 50px 50px; margin-top:60px;" expand="block" fill="solid" (click)="onSubmit()">{{"Enviar" | translate}}</ion-button>
+           <ion-button color="danger" (click)="closeForm()" style="--border-radius:50px 50px 50px 50px; margin-top: 30px;" expand="block" fill="solid">
               <ion-icon name="close"></ion-icon>{{"Cerrar" | translate}}
            </ion-button>
         </div>
      </ion-list>
      </ion-row>
 
-   <div style="height:100px; background-color: #2b3f5a; color:white; text-align: center;">
+   <div style="height:17%; background-color: #2b3f5a; color:white; text-align: center;">
       <ion-title style="margin-top: auto;">
          <p *ngIf="store">{{store?.post_title}}</p>
          <p *ngIf="store">{{store?.wordpress_store_locator_city + ", " + store?.wordpress_store_locator_zip}}</p>
@@ -70,14 +70,14 @@
          <p *ngIf="!store && data.store">{{data.store.wordpress_store_locator_city + ', ' + data.store.wordpress_store_locator_zip}}</p>
       </ion-title>   
    </div>  
-   <ion-button id="chatIcon" mode="ios" (click)="openChat()" color="danger" style="height:40px; float: right; z-index: 100; margin: -30px 0 0 0;--border-radius:50px 0px 0px 50px">
-      <ion-icon name="chatbubbles-outline" mode="ios" style="color:white"></ion-icon>
-      <ion-badge color="{{settings.theme.button}}" *ngIf="incomeMessages?.length"><span class="count">{{incomeMessages.length}}</span></ion-badge>
+   <ion-button id="chatIcon" mode="ios" (click)="openChat()" color="danger" style="height:7%; width:20%; position:fixed; right:0; z-index: 100; margin: -30px 0 0 0;--border-radius:50px 0px 0px 50px">
+      <ion-icon style="font-size: 5vw;" name="chatbubbles-outline" mode="ios"></ion-icon>
+      <ion-badge style="font-size: 4vw;" color="{{settings.theme.button}}" *ngIf="incomeMessages?.length"><span class="count">{{incomeMessages.length}}</span></ion-badge>
       <!-- <ion-badge color="{{settings.theme.button}}" *ngIf="data.count == 0"><span class="count">0</span></ion-badge> -->
    </ion-button>
-   <ion-button id="cartIcon" *ngIf="data?.cart" mode="ios" (click)="openCart()" color="danger" style="height:40px; float: left; z-index: 100; margin: -30px 0 0 0;--border-radius:0px 50px 50px 0px">
-      <ion-icon name="cart-outline" mode="ios"></ion-icon>
-      <ion-badge color="{{settings.theme.button}}" *ngIf="data.count != 0"><span class="count">{{data.count}}</span></ion-badge>
+   <ion-button id="cartIcon" *ngIf="data.store?.cart || store?.cart" mode="ios" (click)="openCart()" color="danger" style="height:7%; width:20%; position:fixed; z-index: 100; margin: -30px 0 0 0;--border-radius:0px 50px 50px 0px">
+      <ion-icon style="font-size: 5vw;" name="cart-outline" mode="ios"></ion-icon>
+      <ion-badge style="font-size: 4vw;" id="cartBadge" color="{{settings.theme.button}}" *ngIf="data.count != 0"><span class="count">{{data.count}}</span></ion-badge>
       <!-- <ion-badge color="{{settings.theme.button}}" *ngIf="data.count == 0"><span class="count">0</span></ion-badge> -->
    </ion-button>
    <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="settings.settings?.enable_product_chat">
@@ -90,26 +90,37 @@
    <div *ngIf="product.id">
       <div style="display: flex;">
       <ion-slides pager="true" *ngIf="!product.image" dir="{{settings.dir}}">
-      <ion-slide *ngFor="let item of product.images">
-         <img src="{{item.src}}"/>
-      </ion-slide>
+         <ion-slide *ngFor="let item of product.images">
+            <img src="{{item.src}}"/>
+         </ion-slide>
       </ion-slides>
       <div *ngIf="product.image">
          <ion-img src="{{product.image}}"></ion-img>
       </div>
       <!-- <ion-button color="danger" class="stock" *ngIf="product.stock_status == 'outofstock'">{{"Agotado" | translate}}</ion-button> -->
       <div *ngIf="product.sale_price">
-         <ion-button color="success" *ngIf="((product.regular_price - product.price) /product.regular_price*100) >= 1" class="offer">{{(product.regular_price - product.price) /product.regular_price*100 | number : '1.0-0'}}% Descuenta</ion-button>
+         <ion-button color="success" *ngIf="((product.regular_price - product.price) /product.regular_price*100) >= 1" style="width: 25%; height: 5%; font-size: 3vw" class="offer">{{(product.regular_price - product.price) /product.regular_price*100 | number : '1.0-0'}}% Descuenta</ion-button>
       </div>
       </div>
       <div class="product-details">
          <ion-item lines="none">
-            <ion-label text-wrap>
+            <ion-label text-wrap style="font-size: 4vw">
                {{product.name}}
             </ion-label>
             <ion-icon name="heart-outline" class="heartempty onpress" slot="end" (click)="settings.addToWishlist(product.id, product.path)" *ngIf="!settings.wishlist[product.id]"></ion-icon>
             <ion-icon name="heart" class="heartempty onpress" slot="end" color="{{settings.theme.button}}" (click)="settings.removeFromWishlist(product.id, product.path)" *ngIf="settings.wishlist[product.id]"></ion-icon>
          </ion-item>
+
+         <ion-item lines="none" *ngIf="product.short_description; else noShortDesc" class="description">
+            <ion-label text-justify text-wrap [innerHTML]="product.short_description">
+            </ion-label>
+         </ion-item>
+         <ng-template #noShortDesc>
+            <ion-item lines="none" *ngIf="product.description" class="description">
+               <ion-label text-justify text-wrap [innerHTML]="product.description">
+               </ion-label>
+            </ion-item>
+         </ng-template>
 
          <!--WCMP-->
          <ion-chip color="primary" (click)='getDetail(product.vendor)' *ngIf="product.vendor?.id">
@@ -119,18 +130,18 @@
 
          <ion-item lines="none">
             <ion-label *ngIf="product.sale_price">
-               <span class="price" [innerHTML]="product.formated_sales_price"></span><del><span class="special-price" [innerHTML]="product.formated_price"></span></del>
+               <span class="price" style="font-size: 4vw" [innerHTML]="product.formated_sales_price"></span><del><span class="special-price"  style="font-size: 3vw" [innerHTML]="product.formated_price"></span></del>
             </ion-label>
             <ion-label *ngIf="!product.sale_price">
-               <span class="price" [innerHTML]="product.formated_price"></span>
+               <span class="price" style="font-size: 4vw" [innerHTML]="product.formated_price"></span>
             </ion-label>
          </ion-item>
 
          <div class="variation-block" *ngIf="product.variationOptions && product.variationOptions.length">
             <div *ngFor="let attribute of product.variationOptions; let i = index" class="variation-product">
-               <h6 style="margin-left: 16px;font-size: 14px;">{{"Seleccionar" | translate}} {{attribute.name}}</h6>
+               <h6 style="margin-left: 16px;">{{"Seleccionar" | translate}} {{attribute.name}}</h6>
                <div *ngIf="attribute.options.length" class="option-box">
-                  <ion-button class="option-button" fill="outline" color="{{settings.theme.button}}" *ngFor="let option of attribute.options" (click)="chooseVariation2(i, option)" [ngClass]="{'selected-option': attribute.selected == option}">{{option}}</ion-button>
+                  <ion-button style="font-size: 4vw" class="option-button" fill="outline" color="{{settings.theme.button}}" *ngFor="let option of attribute.options" (click)="chooseVariation2(i, option)" [ngClass]="{'selected-option': attribute.selected == option}">{{option}}</ion-button>
                </div>
             </div>
          </div>
@@ -148,7 +159,7 @@
          <div class="grouped-block" *ngIf="groupedProducts.length">
             <div *ngFor="let item of groupedProducts" class="variation-product">
                <ion-input style="margin-left: 16px;margin-right: 16px;" type="number" [(ngModel)]="item.selected" value="0" placeholder="Quantity"></ion-input>
-               <h6 style="margin-left: 16px;font-size: 14px;">{{item.name}}</h6>
+               <h6 style="margin-left: 16px;">{{item.name}}</h6>
             </div>
          </div>
 
@@ -189,53 +200,14 @@
             <div *ngFor="let item of addonsList; let i = index">
                   <div *ngFor="let option of item.options; let j = index">
                      <ion-item *ngIf="item.type == 'text'" lines="full" [hidden]="checkTextValue()">
-                        <ion-label  position="stacked" color="dark" style="font-size:large;" [innerHTML]="item.label"></ion-label>
+                        <ion-label  position="stacked" color="dark" [innerHTML]="item.label"></ion-label>
                         <ion-input [(ngModel)]="item.input" required="{{item.required == 1 ? true : false}}" type ="text" ></ion-input> 
                      </ion-item>
-                     <p style="font-size:x-small;color: grey; font-style: italic; margin:6px 0 0 20px">{{item.options[j].description}}</p>
+                     <p style="color: grey; font-style: italic; margin:6px 0 0 20px">{{item.options[j].description}}</p>
                   </div>
             </div>
 
          </div>
-
-         <!-- <div *ngIf="addonsList.length">
-            <div *ngFor="let item of addonsList; let i = index">
-               <ion-item lines="none" *ngIf="item.description !== ''"><ion-label>{{item.description}}</ion-label></ion-item>
-               <ion-item *ngIf="item.type == 'checkbox' || item.type == 'multiple_choice' || item.type == 'radiobutton'  || item.type == 'select'" class="addons" lines="none">
-                  <ion-label>{{item.name}}</ion-label>
-                  <ion-select [(ngModel)]="item.selected" multiple="true" *ngIf="(item.type == 'checkbox' || item.type == 'multiple_choice') && item.options.length">
-                  <ion-select-option *ngFor="let option of item.options" value="{{option.label}}">{{option.label}}<span *ngIf="option.price"> + {{option.price | currency:settings.currency:true:'1.2-2'}}</span></ion-select-option>
-                  </ion-select>
-                  <ion-select [(ngModel)]="item.selected" *ngIf="item.type == 'radiobutton' && item.options.length">
-                  <ion-select-option *ngFor="let option of item.options" value="{{option.label}}">{{option.label}}<span *ngIf="option.price"> + {{option.price | currency:settings.currency:true:'1.2-2'}}</span></ion-select-option>
-                  </ion-select>
-                  <ion-select [(ngModel)]="item.selected" *ngIf="item.type == 'select' && item.options.length">
-                  <ion-select-option *ngFor="let option of item.options" value="{{option.label}}">{{option.label}}<span *ngIf="option.price"> + {{option.price | currency:settings.currency:true:'1.2-2'}}</span></ion-select-option>
-                  </ion-select>
-               </ion-item>
-               <div style="padding: 0 16px;" *ngFor="let option of item.options; let j = index">
-                  <div *ngIf="item.type == 'custom_textarea'">
-                  <textarea [(ngModel)]="item.options[j].input" placeholder="{{item.name}}" type ="text" style="width: 100%; height: 80px;"></textarea>
-                  </div>
-               </div>
-            </div>
-            <div *ngFor="let item of addonsList; let i = index">
-               <div *ngFor="let option of item.options; let j = index">
-                  <ion-item *ngIf="item.type == 'custom' && item.options.length" class="addon-options">
-                     <ion-label floating>{{option.label}} {{option.price}}</ion-label>
-                     <ion-input required type="text" name="data" [(ngModel)]="item.options[j].input">
-                     </ion-input>
-                  </ion-item>
-               </div>
-            </div>
-            <div *ngFor="let item of addonsList; let i = index">
-               <ion-item *ngIf="item.type == 'custom_text'" class="addon-options">
-                  <ion-label floating>{{item.name}} {{item.price}}</ion-label>
-                  <ion-input required type="text" name="data" [(ngModel)]="item.input">
-                  </ion-input>
-               </ion-item>
-            </div>
-         </div> -->
 
          <ion-item lines="none" *ngIf="product.showPoints">
             <ion-label>Gane {{product.showPoints}} puntos de regalías</ion-label>
@@ -254,11 +226,11 @@
          <div *ngIf="product.type != 'external'" class="add-to-cart-button" style="margin-top: 50px; margin-bottom: 50px;">
             <ion-row class="ion-align-items-center ion-justify-content-center" *ngIf="product.type == 'variable'">
             <ion-col *ngIf="data.cart[product.variation_id] == undefined || data.cart[product.id] == 0">
-               <ion-button *ngIf="product.price != 0 && product.stock_status == 'instock'" style="--border-radius: 64px 64px 64px 64px; height: 30px;" mode="ios" expand="block" color="{{settings.theme.button}}"  (click)="addToCart(product)">
+               <ion-button *ngIf="product.price != 0 && product.stock_status == 'instock'" style="--border-radius: 64px 64px 64px 64px;" mode="ios" expand="block" color="{{settings.theme.button}}"  (click)="addToCart(product)">
                   <!-- [disabled]="product.price == 0 && product.regular_price == 0 && product.sale_price == 0" -->
                   {{"Añadir"  | translate}}
                </ion-button>
-               <ion-button *ngIf="product.price == 0 || product.stock_status=='outofstock'" style="height: 30px;" mode="ios" expand="block" color="primary"  (click)="notifyClient(product)">
+               <ion-button *ngIf="product.price == 0 || product.stock_status=='outofstock'" mode="ios" expand="block" color="primary"  (click)="notifyClient(product)">
                   <!-- [disabled]="product.price == 0 && product.regular_price == 0 && product.sale_price == 0" -->
                   {{ "Avisar, cuando llega" | translate}}
                </ion-button>
@@ -284,11 +256,11 @@
             </ion-row>
             <ion-row class="ion-align-items-center ion-justify-content-center" *ngIf="product.type != 'variable'">
             <ion-col *ngIf="data.cart[product.id] == undefined || data.cart[product.id] == 0">
-               <ion-button *ngIf="product.price != 0 && product.stock_status == 'instock'" style="--border-radius: 64px 64px 64px 64px; height: 30px;" mode="ios" expand="block" color="{{settings.theme.button}}"  (click)="addToCart(product)">
+               <ion-button *ngIf="product.price != 0 && product.stock_status == 'instock'" style="--border-radius: 64px 64px 64px 64px;" mode="ios" expand="block" color="{{settings.theme.button}}"  (click)="addToCart(product)">
                   <!-- [disabled]="product.price == 0 && product.regular_price == 0 && product.sale_price == 0" -->
                   {{"Añadir"  | translate}}
                </ion-button>
-               <ion-button *ngIf="product.price == 0 || product.stock_status=='outofstock'" style="height: 30px;" mode="ios" expand="block" color="primary"  (click)="notifyClient(product)">
+               <ion-button *ngIf="product.price == 0 || product.stock_status=='outofstock'"  mode="ios" expand="block" color="primary"  (click)="notifyClient(product)">
                   <!-- [disabled]="product.price == 0 && product.regular_price == 0 && product.sale_price == 0" -->
                   {{ "Avisar, cuando llega" | translate}}
                </ion-button>
@@ -315,20 +287,10 @@
          </div>
 
          <ion-button style="--border-radius: 64px 64px 64px 64px;" mode="ios" *ngIf="product.type == 'external'" class="add-to-cart-button" color="{{settings.theme.button}}" expand="block" fill="solid" [disabled]="disableButton || product.stock_status == 'outofstock'" (click)="buyExternalProduct(product.id)">{{"COMPRA AHORA" | translate}}</ion-button>
-         <!-- <ion-item lines="none" *ngIf="product.short_description; else noShortDesc" class="description">
-            <ion-label text-justify text-wrap [innerHTML]="product.short_description">
-            </ion-label>
-         </ion-item>
-         <ng-template #noShortDesc>
-            <ion-item lines="none" *ngIf="product.description" class="description">
-               <ion-label text-justify text-wrap [innerHTML]="product.description">
-               </ion-label>
-            </ion-item>
-         </ng-template> -->
       </div>
       <div *ngIf="relatedProducts?.relatedProducts?.length" class="related-products">
          <ion-list-header>
-            <ion-label>{{"Mas así" | translate}}</ion-label>
+            <ion-label style="font-size: 3vw">{{"Mas así" | translate}}</ion-label>
          </ion-list-header>
          <div class="scroll-related-products">
             <div class="product" *ngFor="let item of relatedProducts.relatedProducts" [style.width.px]="settings.dimensions.productSliderWidth">

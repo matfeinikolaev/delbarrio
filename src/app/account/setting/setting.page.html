@@ -1,11 +1,13 @@
-<ion-header mode="ios" mode='ios'>
+<ion-header mode='ios'>
    <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button text="{{'Atrás' | translate}}" defaultHref="/tabs/account"></ion-back-button>
+     <ion-buttons slot="start">
+       <ion-back-button style="font-size: 4vw;" text="{{'Atrás' | translate}}" defaultHref="/tabs/account"></ion-back-button> <!--defaultHref="/tabs/home/store/{{store.id}}"-->
     </ion-buttons>
-      <ion-title>{{"Ajustes de cuenta" | translate}}</ion-title>
+     <ion-title style="font-size: 4vw;">
+       {{"Ajustes" | translate}}
+     </ion-title>
    </ion-toolbar>
-</ion-header>
+ </ion-header>
 <ion-content class="settings">
    <div class="form">
       <ion-list>
@@ -15,44 +17,44 @@
          </ion-item>
          <ion-item>
             <div>
-               <ion-input formControlName="display_name" [disabled]="!editmode"></ion-input>
+               <ion-input formControlName="display_name" style="font-size:3vw" [disabled]="!editmode"></ion-input>
             </div>
          </ion-item>
          <ion-item>
             <div>
-               <ion-label color="medium">E-mail</ion-label>
-               <ion-input formControlName="user_email" [disabled]="!editmode"></ion-input>
+               <ion-label color="medium" style="font-size:4vw" >E-mail</ion-label>
+               <ion-input formControlName="user_email" [disabled]="!editmode" style="font-size:3vw"></ion-input>
             </div>
          </ion-item>
          <ion-item>
             <div>
-               <ion-label color="medium">Login</ion-label>
-               <ion-input formControlName="user_login" [disabled]="!editmode"></ion-input>
+               <ion-label color="medium" style="font-size:4vw" >Login</ion-label>
+               <ion-input formControlName="user_login" [disabled]="!editmode" style="font-size:3vw"></ion-input>
             </div>
          </ion-item>
          <ion-item>
             <div>
-               <ion-label color="medium">Nicename</ion-label>
-               <ion-input formControlName="user_nicename" [disabled]="!editmode"></ion-input>
+               <ion-label color="medium" style="font-size:4vw" >Nicename</ion-label>
+               <ion-input formControlName="user_nicename" [disabled]="!editmode" style="font-size:3vw"></ion-input>
             </div>
          </ion-item>
          <ion-item *ngIf="storage.googleLogin == null && storage.facebookLogin == null">
             <div>
-               <ion-label color="medium">Contraseña</ion-label>
-               <ion-input formControlName="user_pass" type="password" [disabled]="!editmode"></ion-input>
+               <ion-label color="medium" style="font-size:4vw" >Contraseña</ion-label>
+               <ion-input formControlName="user_pass" type="password" autocomplete="false" [disabled]="!editmode" style="font-size:3vw"></ion-input>
             </div>
          </ion-item>
          <ion-item>
             <div>
-               <ion-label color="medium">Su url</ion-label>
-               <ion-input formControlName="user_url" [disabled]="!editmode"></ion-input>
+               <ion-label color="medium" style="font-size:4vw" >Su url</ion-label>
+               <ion-input formControlName="user_url" [disabled]="!editmode" style="font-size:3vw"></ion-input>
             </div>
          </ion-item>
          <ion-input type="hidden" formControlName="ID"></ion-input>
          </form>
       </ion-list>
-      <ion-button slot="end" fill="solid" expand="full" (click)="editMode()" [hidden]="editmode" *ngIf="storage.googleLogin == null && storage.facebookLogin == null">{{"Editar" | translate}}</ion-button>
-      <ion-button slot="end" fill="solid" expand="full" (click)="onSubmit()" [hidden]="!editmode" *ngIf="storage.googleLogin == null && storage.facebookLogin == null">{{"Guardar" | translate}}</ion-button>
+      <ion-button slot="end" fill="solid" expand="full" (click)="editMode()" [hidden]="editmode" *ngIf="storage.googleLogin == null && storage.facebookLogin == null" style="font-size:3vw" >{{"Editar" | translate}}</ion-button>
+      <ion-button slot="end" fill="solid" expand="full" (click)="onSubmit()" [hidden]="!editmode" *ngIf="storage.googleLogin == null && storage.facebookLogin == null" style="font-size:3vw" >{{"Guardar" | translate}}</ion-button>
    </div>
 </ion-content>
 

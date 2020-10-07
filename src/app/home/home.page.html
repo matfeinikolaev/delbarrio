@@ -13,14 +13,16 @@
   <!-- </ion-toolbar> -->
 </ion-header>
 <ion-content> 
-  <ion-title style="font-family: Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;"  *ngIf="settings.settings.location_filter == undefined || settings.settings.location_filter == 0" style="margin-top: 25px;" class="logo-title delbarrio-header">
+  <ion-title style="height: 10%;margin-top: 10%; font-size:5vw;font-family: Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;"  *ngIf="settings.settings.location_filter == undefined || settings.settings.location_filter == 0" class="logo-title delbarrio-header">
     {{"DEL BARRIO" | translate}}
   </ion-title>
   <!-- <ion-searchbar mode="ios" animated searchIcon="undefined" style="width:80%; margin:auto;--placeholder-color: #5a6b7d;" [(ngModel)]="searchInput" (ionChange)="onInput()" placeholder="{{'¿Qué necesitas?' | translate}}"></ion-searchbar> -->
-  <div style="margin-top:60px; text-align:center;">
-    <ion-label style="font-family: Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-size: large; color:#687e93;">{{"¿Qué necesitas?" | translate}}</ion-label>
-    <div *ngFor="let storeCat of stores" (click)="getStoreCategory(storeCat)" style="margin-top:40px; text-align: center;">
-      <img src="{{storeCat.icon.url}}" alt="{{storeCat.name}}" style="height: 50%;">
+  <div style="text-align:center; height: 80%;" class="main-wrapper">
+    <div style="height:10%; margin-bottom:5%; text-align: center;">
+      <ion-label style="height:100%;width:100%; font-size:4.5vw; font-family: Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; color:#687e93;">{{"¿Qué necesitas?" | translate}}</ion-label>
+    </div>
+    <div *ngFor="let storeCat of stores" (click)="getStoreCategory(storeCat)" style="text-align: center;height: 30%;">
+      <img src="{{storeCat.icon.url}}" alt="{{storeCat.name}}" style="height: 70%;">
     </div>
   </div>
 </ion-content>

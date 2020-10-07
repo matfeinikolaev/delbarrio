@@ -159,6 +159,7 @@ export class CartPage {
 
         await this.api.postItem('update-cart-item-qty', params, this.store.path).then(res => {
             this.cart = res;
+            console.log(this.cart);
             this.data.updateCart(this.cart.cart_contents);
         }, err => {
             console.log(err);

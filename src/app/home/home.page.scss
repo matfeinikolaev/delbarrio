@@ -1,0 +1,10 @@
+ion-content {
+    .main-wrapper {
+        @media screen and (min-width: 540px) {
+            margin-top: 50px;
+        }
+        @media screen and (max-width: 415px) {
+            margin-top: 40px;
+        }
+    }
+}

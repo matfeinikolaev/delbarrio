@@ -1,9 +1,9 @@
 <ion-header mode='ios'>
  <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button text="{{'Atrás' | translate}}" defaultHref="/tabs/account/category"></ion-back-button>
+      <ion-back-button style="font-size: 4vw;" text="{{'Atrás' | translate}}" defaultHref="/tabs/account/category"></ion-back-button>
     </ion-buttons>
-    <ion-title>
+    <ion-title style="font-size: 4vw;">
       {{"Seleccionar subcategoría" | translate}}
     </ion-title>
   </ion-toolbar>
@@ -16,7 +16,7 @@
     <ion-card class="category-card" class="ion-activatable ion-focusable hydrated" mode="md">
       <ion-img alt="" src="{{category.image?.src}}"></ion-img>
       <ion-card-header>
-        <ion-card-subtitle><span [innerHTML]="category.name"></span></ion-card-subtitle>
+        <ion-card-subtitle><span style="font-size: 4vw;" [innerHTML]="category.name"></span></ion-card-subtitle>
       </ion-card-header>
     </ion-card>
     </ion-col>

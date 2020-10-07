@@ -1,0 +1,42 @@
+#ionContent {
+    ion-label {
+        @media screen and (max-width: 415px) {
+            font-size: 4vw;
+        }
+        @media screen and (min-width: 540px) {
+            font-size: 3vw;
+        }
+    }
+    ion-input {
+        @media screen and (max-width: 415px) {
+            font-size: 4vw;
+        }
+        @media screen and (min-width: 540px) {
+            font-size: 3vw;
+        }
+    }
+    ion-button {
+        @media screen and (max-width: 415px) {
+            font-size: 4vw;
+        }
+        @media screen and (min-width: 540px) {
+            font-size: 3vw;
+        }
+    }
+    input {
+        @media screen and (max-width: 415px) {
+            font-size: 4vw;
+        }
+        @media screen and (min-width: 540px) {
+            font-size: 3vw;
+        }
+    }
+    ion-datetime {
+        @media screen and (max-width: 415px) {
+            font-size: 4vw;
+        }
+        @media screen and (min-width: 540px) {
+            font-size: 3vw;
+        }
+    }
+}

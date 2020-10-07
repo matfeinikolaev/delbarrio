@@ -1,13 +1,13 @@
 <ion-header mode='ios' class="product-header">
    <ion-toolbar>
       <ion-buttons slot="start">
-         <ion-back-button text="{{'Atrás' | translate}}" defaultHref="/tabs/home/stores-by-cat"></ion-back-button>
+         <ion-back-button style="font-size: 4vw;" text="{{'Atrás' | translate}}" defaultHref="/tabs/home/stores-by-cat"></ion-back-button>
       </ion-buttons>
-      <ion-title class="delbarrio-header">
+      <ion-title style="font-size: 4vw;" class="delbarrio-header">
          {{"DEL BARRIO" | translate}}
       </ion-title>
       <ion-buttons slot="end" (click)="share()">
-         <ion-icon name="share-social" style="margin-right: 8px;font-size: 23px"></ion-icon>
+         <ion-icon name="share-social" style="margin-right: 8px;font-size: 4vw;"></ion-icon>
       </ion-buttons>
    </ion-toolbar>
 </ion-header>
@@ -16,135 +16,93 @@
       <ion-spinner> </ion-spinner>
    </div>
 
-   <ion-row style="position: fixed; z-index: 1000; width: 100%; padding: 10px 0;" [hidden]="!openFeedbackForm">
-    <ion-list style="border: #2b3f5a 1px solid; width: 80%; margin:auto; text-align:center; border-radius: 15px;">
-      <div style="width: 100%; padding: 20px; clear:both;">
-         <div style="width: 250px; color:#687e95; font-size:larger; font-weight: light; margin-bottom: 20px;">
+   <ion-row style="position: fixed; z-index: 1000; padding: 10px 0;" [hidden]="!openFeedbackForm" class="contact-form">
+    <ion-list style="border: #2b3f5a 1px solid; text-align:center; border-radius: 15px;">
+      <div style="padding: 20px; clear:both;">
+         <div style="color:#687e95;  font-weight: light; margin-bottom: 20px;">
             <ion-label>{{"Déjanos tus contactos, te avisaremos, cuando aparezca este producto" | translate}}</ion-label>
          </div>
          <form [formGroup]="form"> 
-         <ion-label for="name" mode="ios" color="medium" style="font-size: small;">NOMBRE</ion-label>
-         <ion-item style="margin: 0 0 15px 0;   
+         <ion-item style="   
          --border-color: var(--ion-color-medium-shade);
          --border-radius: 50px;
          --border-width: 1px;
          --highlight-height: 0;
          --background: #f8f9fa;">
+         <ion-label for="name" mode="ios" color="medium" >NOMBRE</ion-label>
          <ion-input type="text" formControlName="name" clearInput="true"></ion-input>
          </ion-item>
-         <ion-label for="phone" mode="ios" color="medium" style="font-size: small;">TELEFONO</ion-label>
-         <ion-item style="margin: 0 0 15px 0;   
+         <ion-item style="   
          --border-color: var(--ion-color-medium-shade);
          --border-radius: 50px;
          --border-width: 1px;
          --highlight-height: 0;
          --background: #f8f9fa;">
+         <ion-label for="phone" mode="ios" color="medium" >TELEFONO</ion-label>
          <ion-input type="number" formControlName="phone" clearInput="true"></ion-input>
          </ion-item>
-         <ion-label for="email" mode="ios" color="medium" style="font-size: small;">EMAIL</ion-label>
-         <ion-item style="margin: 0 0 15px 0;   
+         <ion-item style="   
          --border-color: var(--ion-color-medium-shade);
          --border-radius: 50px;
          --border-width: 1px;
          --highlight-height: 0;
          --background: #f8f9fa;">
+         <ion-label for="email" mode="ios" color="medium" >EMAIL</ion-label>
          <ion-input type="email" formControlName="email" clearInput="true"></ion-input>
          </ion-item>        
          </form>
          <ion-item lines="none" *ngIf="errorMessage" style="width: 250px;">
          <span style="color: red;">{{errorMessage}}</span>
          </ion-item>
-         <ion-button color="tertiary" style="--border-radius:50px 50px 50px 50px; height:40px; margin-top:40px;" expand="block" fill="solid" (click)="onSubmit()">{{"Enviar" | translate}}</ion-button>
-         <ion-button color="danger" (click)="closeForm()" style="--border-radius:50px 50px 50px 50px; height:40px;" expand="block" fill="solid">
+         <ion-button color="tertiary" style="--border-radius:50px 50px 50px 50px; margin-top:60px;" expand="block" fill="solid" (click)="onSubmit()">{{"Enviar" | translate}}</ion-button>
+         <ion-button color="danger" (click)="closeForm()" style="--border-radius:50px 50px 50px 50px; margin-top: 30px;" expand="block" fill="solid">
             <ion-icon name="close"></ion-icon>{{"Cerrar" | translate}}
          </ion-button>
       </div>
    </ion-list>
    </ion-row>
 
-   <div *ngIf="store || data.store" style="height:100px; background-color: #2b3f5a; color:white; text-align: center;" id="pageHeader">
+   <div *ngIf="store || data.store" style="height:17%; background-color: #2b3f5a; color:white; text-align: center;" id="pageHeader">
       <ion-title style="margin-top: auto;">
-         <p *ngIf="store.post_title">{{store?.post_title}}</p>
-         <p *ngIf="store.wordpress_store_locator_city && store.wordpress_store_locator_zip" style="font-size:small; font-weight: 100;">{{store?.wordpress_store_locator_city + ", " + store?.wordpress_store_locator_zip}}</p>
-         <p *ngIf="!store && data.store">{{data.store.na}}</p>
-         <p *ngIf="!store && data.store" style="font-size:small; font-weight: 100;">{{data.store.ct + ', ' + data.store.zp}}</p>
+         <p *ngIf="store.post_title" >{{store?.post_title}}</p>
+         <p *ngIf="store.wordpress_store_locator_city && store.wordpress_store_locator_zip" style=" font-weight: 100;">{{store?.wordpress_store_locator_city + ", " + store?.wordpress_store_locator_zip}}</p>
+         <p *ngIf="!store && data.store" >{{data.store.na}}</p>
+         <p *ngIf="!store && data.store" style=" font-weight: 100;">{{data.store.ct + ', ' + data.store.zp}}</p>
       </ion-title>
-   </div>   
-   <ion-button id="chatIcon" mode="ios" (click)="openChat()" color="danger" style="height:40px; position:fixed; right:0; z-index: 100; margin: -30px 0 0 0;--border-radius:50px 0px 0px 50px">
-      <ion-icon name="chatbubbles-outline" mode="ios" style="color:white"></ion-icon>
-      <ion-badge color="{{settings.theme.button}}" *ngIf="incomeMessages?.length"><span class="count">{{incomeMessages.length}}</span></ion-badge>
-      <!-- <ion-badge color="{{settings.theme.button}}" *ngIf="data.count == 0"><span class="count">0</span></ion-badge> -->
+   </div>
+
+   <ion-button id="chatIcon" mode="ios" (click)="openChat()" color="danger" style="height:7%; width:20%; position:fixed; right:0; z-index: 100; margin: -30px 0 0 0;--border-radius:50px 0px 0px 50px">
+      <ion-icon name="chatbubbles-outline" mode="ios"></ion-icon>
+      <ion-badge  color="{{settings.theme.button}}" *ngIf="incomeMessages?.length"><span class="count">{{incomeMessages.length}}</span></ion-badge>
    </ion-button>
-   <ion-button id="cartIcon" *ngIf="store?.cart" mode="ios" (click)="openCart()" color="danger" style="height:40px; position:fixed; z-index: 100; margin: -30px 0 0 0;--border-radius:0px 50px 50px 0px">
+   <ion-button id="cartIcon" *ngIf="store?.cart" mode="ios" (click)="openCart()" color="danger" style="height:7%; width:20%; position:fixed; z-index: 100; margin: -30px 0 0 0;--border-radius:0px 50px 50px 0px">
       <ion-icon name="cart-outline" mode="ios"></ion-icon>
-      <ion-badge id="cartBadge" color="{{settings.theme.button}}" *ngIf="data.count != 0"><span class="count">{{data.count}}</span></ion-badge>
-      <!-- <ion-badge color="{{settings.theme.button}}" *ngIf="data.count == 0"><span class="count">0</span></ion-badge> -->
+      <ion-badge  id="cartBadge" color="{{settings.theme.button}}" *ngIf="data.count != 0"><span class="count">{{data.count}}</span></ion-badge>
    </ion-button>
-   <ion-searchbar mode="ios" animated [(ngModel)]="searchInput" (ionChange)="onInput()" style="--border-radius:50px 50px 50px 50px; clear:both" placeholder="{{'Buscar productos' | translate}}"></ion-searchbar>
+
+   <ion-searchbar mode="ios" animated [(ngModel)]="searchInput" (ionChange)="onInput()" placeholder="{{'Buscar productos' | translate}}"></ion-searchbar>
 
    <div class="product-details">
 
-      <!-- <ion-item lines="none">
-         <ion-label text-wrap>
-            {{store.post_title}}
-         </ion-label>
-      </ion-item> -->
-      <!-- <ion-item lines="none"><p style="font-size: small; color: gray;">{{store.wordpress_store_locator_address1}}</p></ion-item> -->
-      <!-- <ion-item lines="none"><a href="{{store.wordpress_store_locator_website}}" style="text-decoration: none;font-size: small;color: gray;">{{"Visitar el sitio" | translate}}</a></ion-item> -->
    </div>
    <ion-row>
       <ion-col *ngIf="store.categories?.length > 0">
-         <ion-select multiple="false" placeholder="Categorías" [(ngModel)]="chosenCategory" (ionChange)="getCategory()" style="color: #687e95; float:left; clear: both;--placeholder-opacity: 1">
-            <ion-select-option value='0'>Todos</ion-select-option>
-            <ion-select-option *ngFor="let main of store.categories; let i = index" text-wrap value="{{main.id}}">{{main.name}}</ion-select-option>
+         <ion-select multiple="false" placeholder="Categorías" [(ngModel)]="chosenCategory" (ionChange)="getCategory()" style="color: #687e95; float:left; clear: both;--placeholder-opacity: 1; width: 100%; max-width: 100%;">
+            <ion-select-option value='0' style=" width:100%;">Todos</ion-select-option>
+            <ion-select-option style=" width:100%;" *ngFor="let main of store.categories; let i = index" text-wrap value="{{main.id}}">{{main.name}}</ion-select-option>
          </ion-select>
       </ion-col>
       <ion-col *ngIf="store.ordering">
-         <ion-select multiple="false" placeholder="Ordenar por" [(ngModel)]="chosenOrder" (ionChange)="getProducts()" style="color: #687e95; float:right; clear: both;--placeholder-opacity: 1">
-            <!-- <ion-select-option value=''>Ordenar por</ion-select-option> -->
-            <ion-select-option *ngFor="let order of store.ordering | keys" text-wrap value="{{order.key}}">{{order.value}}</ion-select-option>
+         <ion-select multiple="false" placeholder="Ordenar por" [(ngModel)]="chosenOrder" (ionChange)="getProducts()" style="color: #687e95; float:right; clear: both;--placeholder-opacity: 1; ; width: 100%">
+            <ion-select-option style=" width:100%;" *ngFor="let order of store.ordering | keys" text-wrap value="{{order.key}}">{{order.value}}</ion-select-option>
          </ion-select>
       </ion-col>
    </ion-row>
    <ion-row *ngIf="store.chosenCategory" style="margin-bottom: 50px;">
       <ion-col size="6" *ngFor="let subcat of store.chosenCategory.subcategories | keys" (click)=getSubcategory(subcat.value.term_id) style="height: 45px;">
-         <p style="font-size: small; height: 40px ;border: #687e95 1px solid; border-radius: 10px 10px 10px 10px; text-align: center; color: #687e95;"><span>{{subcat.value.name}} ({{subcat.value.availability_count}})</span></p>
+         <p style=" height: 40px ;border: #687e95 1px solid; border-radius: 10px 10px 10px 10px; text-align: center; color: #687e95;"><span>{{subcat.value.name}} ({{subcat.value.availability_count}})</span></p>
       </ion-col>
    </ion-row>
-   <!-- <div *ngFor="let main of store.categories; let i = index" class="category-container">
-      <ion-grid class="categories-card5" no-padding>
-      <ion-row><ion-col class="ion-text-center">
-      <ion-item lines="none" button="true" (click)="getProducts(main.id)" detail="false">
-        <ion-thumbnail slot="start">
-          <img *ngIf="main.image?.src" src="{{main.image.src}}">
-        </ion-thumbnail>
-        <ion-label>
-          <h2 [innerHTML]="main.name"></h2>
-          <p [innerHTML]="main.description"></p>
-        </ion-label>
-        <ion-icon *ngIf="main.show" name="chevron-up-outline" mode="ios" color="medium"></ion-icon>
-        <ion-icon *ngIf="!main.show" name="chevron-down-outline" mode="ios" color="medium"></ion-icon>
-      </ion-item>
-    </ion-col>
-    </ion-row>
-      <ion-row *ngIf="main.show" class="sub-category-items">
-        <ion-col size="6" size-sm="4" size-md="3" *ngFor="let item of subCategories(main.id)" fixed>
-        <ion-card button="true" (click)="getProducts(item.id)"  class="item-card" class="ion-activatable ion-focusable hydrated" mode="md">
-          <ion-card-content>
-            <img alt="" src="{{item.image?.src}}">
-          </ion-card-content>
-          <ion-card-header>
-            <ion-card-title [innerHTML]="item.name"></ion-card-title>
-          </ion-card-header>
-        </ion-card>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-    </div>   -->
-
-   <!-- <ion-title>
-      {{"Productos: " | translate}}
-   </ion-title> -->
    <ion-item lines="none" [hidden]="chosenCategory != 0 && chosenCategory != null">
       <div *ngIf="data.store.product_ids">
          <ion-button fill="clear" (click)="changeSlide('back')" [disabled]="data.store.product_ids.length == 1">
@@ -152,7 +110,7 @@
          </ion-button>  
       </div>
       <ion-slides #slider id="chunk-slider" (ionSlideDidChange)="ionSlideDidChange()">
-         <ion-slide style="color:#687e95; font-size:larger; font-weight: lighter;" class="chunk-slide" *ngFor="let chunk of store.product_ids; let i = index">{{i}}</ion-slide>
+         <ion-slide style="color:#687e95;  font-weight: lighter;" class="chunk-slide" *ngFor="let chunk of store.product_ids; let i = index">{{i}}</ion-slide>
       </ion-slides>
       <div *ngIf="data.store.product_ids">
          <ion-button fill="clear" (click)="changeSlide('forward')" [disabled]="data.store.product_ids.length == 1">
@@ -162,11 +120,11 @@
    </ion-item>
 
    <div class="spinner" *ngIf="loadingProducts">
-      <div style="margin-bottom:25px; text-align:center; color:#687e95; font-size:larger; font-weight: lighter;">{{"CARGANDO LOS PRODUCTOS" | translate}}</div>
+      <div style="margin-bottom:25px; text-align:center; color:#687e95;  font-weight: lighter;">{{"CARGANDO LOS PRODUCTOS" | translate}}</div>
       <ion-spinner></ion-spinner>
     </div>
 
-   <ion-row style="height: 100%">
+   <ion-row class="product-row" style="height: 100%">
       <ion-col *ngFor="let product of store.products" size="6">
          <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="settings.settings?.enable_product_chat">
             <a href="https://wa.me/{{settings.settings?.whatsapp_number}}">
@@ -175,7 +133,6 @@
                </ion-fab-button>
             </a>
          </ion-fab>
-         <!-- *ngIf="(product.id || product.ID) && product.stock_quantity>0 && product.status=='publish'" -->
             <div style="display: flex; height:150px;">
                <ion-slides pager="true" *ngIf="!product.image" dir="{{settings.dir}}">
                   <ion-slide *ngFor="let item of product.images">
@@ -186,13 +143,14 @@
                   <ion-img src="{{product.image}}"></ion-img>
                </div>
             </div>
-            <ion-label *ngIf="product.sale_price && ((product.regular_price - product.price) /product.regular_price*100) >= 1" style="background-color:rgb(1, 211, 1); padding: 3px; border-radius: 10px; width: 5%; top: 10px;" color="white">- {{(product.regular_price - product.price) /product.regular_price*100 | number : '1.0-0'}}%</ion-label>
+
+            <!-- <ion-label *ngIf="product.sale_price && ((product.regular_price - product.price) /product.regular_price*100) >= 1" style="background-color:rgb(1, 211, 1); padding: 3px; border-radius: 10px; width: 1%; top: 10px;" color="white">- {{(product.regular_price - product.price) /product.regular_price*100 | number : '1.0-0'}}%</ion-label> -->
+            
             <div class="product-details">
                <ion-item lines="none">
-                  <ion-label text-wrap style="font-size: 10pt; width: 50px; overflow: hidden; text-overflow: ellipsis;">
+                  <ion-label text-wrap style=" width: 50px; overflow: hidden; text-overflow: ellipsis;">
                      {{product.name}}
                   </ion-label>
-                  <!-- <ion-label style="background-color:red" color="white" *ngIf="product.stock_status == 'outofstock'">{{"Agotado" | translate}}</ion-label> -->
                   <ion-icon name="heart-outline" class="heartempty onpress" slot="end" (click)="settings.addToWishlist(product.id, product.path)" *ngIf="!settings.wishlist[product.id]"></ion-icon>
                   <ion-icon name="heart" class="heartempty onpress" slot="end" color="{{settings.theme.button}}" (click)="settings.removeFromWishlist(product.id, product.path)" *ngIf="settings.wishlist[product.id]"></ion-icon>
                </ion-item>
@@ -215,94 +173,41 @@
 
             <ion-item text-wrap lines="none" *ngIf="product.sale_price && product.sale_price < product.regular_price">
                <ion-label>
-                  <del><span style="font-size: smaller; margin-right: 10px;" class="special-price" [innerHTML]="product.formated_price"></span></del>
+                  <del><span style="margin-right: 10px;" class="special-price" [innerHTML]="product.formated_price"></span></del>
                   <span class="price" [innerHTML]="product.formated_sales_price"></span>
                </ion-label>
             </ion-item>
 
-            <div class="variation-block" *ngIf="product.variationOptions && product.variationOptions.length">
+            <!-- <div class="variation-block" *ngIf="product.variationOptions && product.variationOptions.length">
                <div *ngFor="let attribute of product.variationOptions; let i = index" class="variation-product">
-                  <h6 style="margin-left: 16px;font-size: 14px;">{{"Seleccionar" | translate}} {{attribute.name}}</h6>
+                  <h6 style="margin-left: 16px;">{{"Seleccionar" | translate}} {{attribute.name}}</h6>
                   <div *ngIf="attribute.options.length" class="option-box">
                      <ion-button class="option-button" fill="outline" color="{{settings.theme.button}}" *ngFor="let option of attribute.options" (click)="chooseVariation2(i, option)" [ngClass]="{'selected-option': attribute.selected == option}">{{option}}</ion-button>
                   </div>
                </div>
-            </div> 
+            </div>  -->
             <!-- USE WHEN ABOVE ONE NOT WORKING PROPERLY -->
-            <div class="variation-block" *ngIf="variations.length">
+            <!-- <div class="variation-block" *ngIf="variations.length">
                <div *ngFor="let attribute of usedVariationAttributes" class="variation-product">
-                  <h6 style="margin-left: 16px;font-size: 14px;">{{"Seleccionar" | translate}} {{attribute.name}}</h6>
+                  <h6 style="margin-left: 16px;">{{"Seleccionar" | translate}} {{attribute.name}}</h6>
                   <div *ngIf="attribute.options.length" class="option-box">
                      <ion-button class="option-button" fill="outline" color="{{settings.theme.button}}" *ngFor="let option of attribute.options" (click)="chooseVariation(attribute, option)" [ngClass]="{'selected-option': attribute.selected == option}">{{option}}</ion-button>
                   </div>
                </div>
-            </div>
+            </div> -->
 
             <div class="grouped-block" *ngIf="groupedProducts.length">
                <div *ngFor="let item of groupedProducts" class="variation-product">
                   <ion-input style="margin-left: 16px;margin-right: 16px;" type="number" [(ngModel)]="item.selected" value="0" placeholder="Quantity"></ion-input>
-                  <h6 style="margin-left: 16px;font-size: 14px;">{{item.name}}</h6>
+                  <h6 style="margin-left: 16px;">{{item.name}}</h6>
                </div>
             </div>
             <!-- Product Addons -->
-            <!-- <div *ngIf="addonsList.length">
-               <div *ngFor="let item of addonsList; let i = index">
-                  <ion-item lines="none" *ngIf="item.description !== ''"><ion-label>{{item.description}}</ion-label></ion-item>
-                  <ion-item *ngIf="item.type == 'checkbox' || item.type == 'multiple_choice' || item.type == 'radiobutton'  || item.type == 'select'" class="addons" lines="none">
-                     <ion-label>{{item.name}}</ion-label>
-                     <ion-select [(ngModel)]="item.selected" multiple="true" *ngIf="(item.type == 'checkbox' || item.type == 'multiple_choice') && item.options.length">
-                     <ion-select-option *ngFor="let option of item.options" value="{{option.label}}">{{option.label}}<span *ngIf="option.price"> + {{option.price | currency:settings.currency:true:'1.2-2'}}</span></ion-select-option>
-                     </ion-select>
-                     <ion-select [(ngModel)]="item.selected" *ngIf="item.type == 'radiobutton' && item.options.length">
-                     <ion-select-option *ngFor="let option of item.options" value="{{option.label}}">{{option.label}}<span *ngIf="option.price"> + {{option.price | currency:settings.currency:true:'1.2-2'}}</span></ion-select-option>
-                     </ion-select>
-                     <ion-select [(ngModel)]="item.selected" *ngIf="item.type == 'select' && item.options.length">
-                     <ion-select-option *ngFor="let option of item.options" value="{{option.label}}">{{option.label}}<span *ngIf="option.price"> + {{option.price | currency:settings.currency:true:'1.2-2'}}</span></ion-select-option>
-                     </ion-select>
-                  </ion-item>
-                  <div style="padding: 0 16px;" *ngFor="let option of item.options; let j = index">
-                     <div *ngIf="item.type == 'custom_textarea'">
-                     <textarea [(ngModel)]="item.options[j].input" placeholder="{{item.name}}" type ="text" style="width: 100%; height: 80px;"></textarea>
-                     </div>
-                  </div>
-               </div>
-               <div *ngFor="let item of addonsList; let i = index">
-                  <div *ngFor="let option of item.options; let j = index">
-                     <ion-item *ngIf="item.type == 'custom' && item.options.length" class="addon-options">
-                        <ion-label floating>{{option.label}} {{option.price}}</ion-label>
-                        <ion-input required type="text" name="data" [(ngModel)]="item.options[j].input">
-                        </ion-input>
-                     </ion-item>
-                  </div>
-               </div>
-               <div *ngFor="let item of addonsList; let i = index">
-                  <ion-item *ngIf="item.type == 'custom_text'" class="addon-options">
-                     <ion-label floating>{{item.name}} {{item.price}}</ion-label>
-                     <ion-input required type="text" name="data" [(ngModel)]="item.input">
-                     </ion-input>
-                  </ion-item>
-               </div>
-            </div>
-
-            <ion-item lines="none" *ngIf="product.showPoints">
-               <ion-label>Earn {{product.showPoints}} Royalty Points</ion-label>
-            </ion-item> -->
-
-            <!--ion-item lines="none">
-            <ion-label position="fixed">{{"Quantity" | translate}}</ion-label>
-            <ion-input [(ngModel)]="quantity" type="number" value="1"></ion-input>
-            </ion-item-->
-
-            <!--div *ngIf="product.type != 'external'">
-               <ion-button  class="add-to-cart-button" expand="block" [disabled]="disableButton || product.stock_status == 'outofstock'" (click)="addToCart()">{{"ADD TO CART" | translate}}</ion-button>
-            </div-->
-
-
          <div *ngIf="product.type != 'external'" class="add-to-cart-button" style="bottom: 0px;">
 
-            <ion-row class="ion-align-items-center ion-justify-content-center" *ngIf="product.add_ons != false">
+            <ion-row class="ion-align-items-center ion-justify-content-center" *ngIf="product.add_ons != false || product.variations?.length != 0">
                <ion-col>
-                  <ion-button style="--border-radius: 64px 64px 64px 64px; height: 30px;" mode="ios" expand="block" color="{{settings.theme.button}}" [disabled]="product.stock_status == 'outofstock'" (click)="getProduct(product)">
+                  <ion-button style="--border-radius: 64px 64px 64px 64px;" mode="ios" expand="block" color="{{settings.theme.button}}" [disabled]="product.stock_status == 'outofstock'" (click)="getProduct(product)">
                   {{"Ver opciones"  | translate}}
                   </ion-button>
                </ion-col>
@@ -310,25 +215,25 @@
 
                <ion-row class="ion-align-items-center ion-justify-content-center" *ngIf="product.type == 'variable' && product.add_ons == false">
                <ion-col *ngIf="data.cart[product.id] == undefined || data.cart[product.id] == 0">
-                  <ion-button *ngIf="product.price != 0 && product.stock_status == 'instock'" style="--border-radius: 64px 64px 64px 64px; height: 30px;" mode="ios" expand="block" color="{{settings.theme.button}}"  (click)="addToCart(product)">
+                  <ion-button *ngIf="product.price != 0 && product.stock_status == 'instock'" style="--border-radius: 64px 64px 64px 64px;" mode="ios" expand="block" color="{{settings.theme.button}}"  (click)="addToCart(product)">
                      <!-- [disabled]="product.price == 0 && product.regular_price == 0 && product.sale_price == 0" -->
                      {{"Añadir"  | translate}}
                   </ion-button>
-                  <ion-button *ngIf="product.price == 0 || product.stock_status=='outofstock'" style="height: 30px;" mode="ios" expand="block" color="primary"  (click)="notifyClient(product)">
+                  <ion-button class="notify-button" *ngIf="product.price == 0 || product.stock_status=='outofstock'" mode="ios" expand="block" color="primary"  (click)="notifyClient(product)">
                      <!-- [disabled]="product.price == 0 && product.regular_price == 0 && product.sale_price == 0" -->
                      {{ "Avisar, cuando llega" | translate}}
                   </ion-button>
                   </ion-col>
                   <ion-col style="text-align: center;" *ngIf="data.cart[product.variation_id] >= 1" align-self-end>
                <ion-row>
-                  <ion-button style="--border-radius: 64px 0 0 64px; height: 30px; width:25%;" mode="ios" expand="block" color="{{settings.theme.button}}" (click)="deleteFromCart(product)">
+                  <ion-button style="--border-radius: 64px 0 0 64px;" mode="ios" expand="block" color="{{settings.theme.button}}" (click)="deleteFromCart(product)">
                   <ion-icon slot="icon-only" name="remove-circle-outline"></ion-icon>
                   </ion-button>
 
-                  <ion-button style="height: 30px;width:25%;" expand="full" mode="ios" fill="outline" color="{{settings.theme.button}}" *ngIf="data.cart[product.variation_id] >= 1">{{data.cart[product.variation_id]}}
+                  <ion-button expand="full" mode="ios" fill="outline" color="{{settings.theme.button}}" *ngIf="data.cart[product.variation_id] >= 1">{{data.cart[product.variation_id]}}
                   </ion-button>
 
-                  <ion-button style="--border-radius: 0 64px 64px 0; height: 30px;width:25%;" mode="ios" expand="block" color="{{settings.theme.button}}"  *ngIf="data.cart[product.variation_id] >= 1" (click)="updateToCart(product)">
+                  <ion-button style="--border-radius: 0 64px 64px 0;" mode="ios" expand="block" color="{{settings.theme.button}}"  *ngIf="data.cart[product.variation_id] >= 1" (click)="updateToCart(product)">
                   <ion-icon slot="icon-only" name="add-circle-outline"></ion-icon>
                   </ion-button>
                </ion-row>
@@ -338,25 +243,25 @@
                <ion-row class="ion-align-items-center ion-justify-content-center" *ngIf="product.type != 'variable' && product.add_ons == false">
                   <ion-col *ngIf="data.cart[product.id] == undefined || data.cart[product.id] == 0">
                      <!-- GET HERE TO THE AÑADIR BUTTON -->
-                     <ion-button *ngIf="product.price != 0 && product.stock_status == 'instock'" style="--border-radius: 64px 64px 64px 64px; height: 30px;" mode="ios" expand="block" color="{{settings.theme.button}}"  (click)="addToCart(product)">
+                     <ion-button *ngIf="product.price != 0 && product.stock_status == 'instock'" style="--border-radius: 64px 64px 64px 64px;" mode="ios" expand="block" color="{{settings.theme.button}}"  (click)="addToCart(product)">
                         <!-- [disabled]="product.price == 0 && product.regular_price == 0 && product.sale_price == 0" -->
                         {{"Añadir"  | translate}}
                      </ion-button>
-                     <ion-button *ngIf="product.price == 0 || product.stock_status=='outofstock'" style="height: 30px;" mode="ios" expand="block" color="primary"  (click)="notifyClient(product)">
+                     <ion-button class="notify-button" *ngIf="product.price == 0 || product.stock_status=='outofstock'" mode="ios" expand="block" color="primary"  (click)="notifyClient(product)">
                         <!-- [disabled]="product.price == 0 && product.regular_price == 0 && product.sale_price == 0" -->
                         {{ "Avisar, cuando llega" | translate}}
                      </ion-button>
                   </ion-col>
                   <ion-col style="text-align: center;" *ngIf="data.cart[product.id] != undefined && data.cart[product.id] >= 1" align-self-end>
                      <ion-row>
-                        <ion-button style="--border-radius: 64px 0 0 64px; height: 30px;width:30%;padding-right: 0px; margin-right:0px;" mode="ios" expand="block" color="{{settings.theme.button}}" (click)="deleteFromCart(product)">
+                        <ion-button style="--border-radius: 64px 0 0 64px; width:30%;padding-right: 0px; margin-right:0px;" mode="ios" expand="block" color="{{settings.theme.button}}" (click)="deleteFromCart(product)">
                         <ion-icon slot="icon-only" name="remove-circle-outline"></ion-icon>
                         </ion-button>
 
-                        <ion-button style="height: 30px;width:27.5%; padding-left: 0px; margin-left:0px;padding-right: 0px; margin-right:0px;" expand="full" mode="ios" fill="outline" color="{{settings.theme.button}}" *ngIf="data.cart[product.id] >= 1">{{data.cart[product.id]}}
+                        <ion-button style="width:27.5%; padding-left: 0px; margin-left:0px;padding-right: 0px; margin-right:0px;" expand="full" mode="ios" fill="outline" color="{{settings.theme.button}}" *ngIf="data.cart[product.id] >= 1">{{data.cart[product.id]}}
                         </ion-button>
 
-                        <ion-button style="--border-radius: 0 64px 64px 0; height: 30px;width:30%; padding-left: 0px; margin-left:0px;" mode="ios" expand="block" color="{{settings.theme.button}}"  *ngIf="data.cart[product.id] >= 1" (click)="updateToCart(product)">
+                        <ion-button style="--border-radius: 0 64px 64px 0; width:30%; padding-left: 0px; margin-left:0px;" mode="ios" expand="block" color="{{settings.theme.button}}"  *ngIf="data.cart[product.id] >= 1" (click)="updateToCart(product)">
                         <ion-icon slot="icon-only" name="add-circle-outline"></ion-icon>
                         </ion-button>
                      </ion-row>
@@ -365,65 +270,59 @@
 
             </div>
 
-   <!-- 
-            <ion-button style="--border-radius: 64px 64px 64px 64px;" mode="ios" *ngIf="product.type == 'external'" class="add-to-cart-button" color="{{settings.theme.button}}" expand="block" fill="solid" [disabled]="disableButton || product.stock_status == 'outofstock'" (click)="buyExternalProduct(product.id)">{{"COMPRAR AHORA" | translate}}</ion-button>
-            <ion-item lines="none" *ngIf="product.short_description" class="description">
-               <ion-label text-justify text-wrap [innerHTML]="product.short_description">
-               </ion-label>
-            </ion-item>
-            <ion-item lines="none" *ngIf="product.description" class="description">
-               <ion-label text-justify text-wrap [innerHTML]="product.description">
-               </ion-label>
-            </ion-item>
-         </div>
+   
+         <ion-button style="--border-radius: 64px 64px 64px 64px;" mode="ios" *ngIf="product.type == 'external'" class="add-to-cart-button" color="{{settings.theme.button}}" expand="block" fill="solid" [disabled]="disableButton || product.stock_status == 'outofstock'" (click)="buyExternalProduct(product.id)">{{"COMPRAR AHORA" | translate}}</ion-button>
+
          <div *ngIf="relatedProducts?.relatedProducts?.length" class="related-products">
             <ion-list-header>
                <ion-label>{{"Mas así" | translate}}</ion-label>
             </ion-list-header>
             <div class="scroll-related-products">
                <div class="product" *ngFor="let item of relatedProducts.relatedProducts" [style.width.px]="settings.dimensions.productSliderWidth">
-               <ion-card mode="md" class="ion-activatable ion-focusable hydrated {{settings.settings.product_shadow}}" [style.border-radius.px]="settings.dimensions.productBorderRadius">
-                  <ion-img (click)="goToProduct(item)" alt="" [style.height.px]="settings.dimensions.homeSliderHeight" src="{{item?.images[0]?.src}}"></ion-img><ion-icon name="heart-outline" mode="md" class="wishlist-button-grid" *ngIf="!settings.wishlist[item.id]" (click)="settings.addToWishlist(item.id)"></ion-icon>
-                  <ion-icon name="heart" color="{{settings.theme.button}}" mode="md" class="wishlist-button-grid" *ngIf="settings.wishlist[item.id]" (click)="settings.removeFromWishlist(item.id)"></ion-icon>
-                  <ion-card-header (click)="goToProduct(item)">
-                     <ion-card-subtitle mode="md">{{item.name}}</ion-card-subtitle>
-                  </ion-card-header>
-                  <ion-card-content>
-                     <p class="price">
-                        <span class="regular-price" *ngIf="!item.sale_price" [innerHTML]="item.formated_price"></span>
-                        <span class="regular-price" *ngIf="item.sale_price" [innerHTML]="item.formated_sales_price"><span class="special-price" [innerHTML]="item.formated_price"><del></del></span></span>
-                     </p>
-                  <ion-row class="ion-align-items-center ion-justify-content-center">
-                  <ion-col *ngIf="data.cart[item.id] == undefined || data.cart[item.id] == 0">
-                           <ion-button expand="block" size="small" color="{{settings.theme.button}}" [disabled]="item.stock_status == 'outofstock'" (click)="addToCart(item, item.indexInCart)">
-                              {{item.stock_status == 'outofstock' ? "Agotado" : "Añadir"  | translate}}
-                           </ion-button>
-                        </ion-col>
-                        <ion-col style="text-align: center;" *ngIf="data.cart[item.id] >= 1" align-self-end>
-                     <ion-row>
-                        <ion-col>
-                              <ion-button expand="block" size="small" color="{{settings.theme.button}}" (click)="deleteFromCart(item, item.indexInCart)">
-                              <ion-icon slot="icon-only" name="remove-circle-outline"></ion-icon>
+                  <ion-card mode="md" class="ion-activatable ion-focusable hydrated {{settings.settings.product_shadow}}" [style.border-radius.px]="settings.dimensions.productBorderRadius">
+                     <ion-img (click)="goToProduct(item)" alt="" [style.height.px]="settings.dimensions.homeSliderHeight" src="{{item?.images[0]?.src}}"></ion-img><ion-icon name="heart-outline" mode="md" class="wishlist-button-grid" *ngIf="!settings.wishlist[item.id]" (click)="settings.addToWishlist(item.id, item.path)"></ion-icon>
+                     <ion-icon name="heart" color="{{settings.theme.button}}" mode="md" class="wishlist-button-grid" *ngIf="settings.wishlist[item.id]" (click)="settings.removeFromWishlist(item.id, item.path)"></ion-icon>
+                     <ion-card-header (click)="goToProduct(item)">
+                        <ion-card-subtitle mode="md">{{item.name}}</ion-card-subtitle>
+                     </ion-card-header>
+                     <ion-card-content>
+                        <p class="price">
+                           <span class="regular-price" *ngIf="!item.sale_price" [innerHTML]="item.formated_price"></span>
+                           <span class="regular-price" *ngIf="item.sale_price" [innerHTML]="item.formated_sales_price"><span class="special-price" [innerHTML]="item.formated_price"><del></del></span></span>
+                        </p>
+                        <ion-row class="ion-align-items-center ion-justify-content-center">
+                           <ion-col *ngIf="data.cart[item.id] == undefined || data.cart[item.id] == 0">
+                              <ion-button expand="block" size="small" color="{{settings.theme.button}}" [disabled]="item.stock_status == 'outofstock'" (click)="addToCart(item)">
+                                 {{item.stock_status == 'outofstock' ? "Agotado" : "Añadir"  | translate}}
                               </ion-button>
-                        </ion-col>
-                        <ion-col>
-                              <ion-button expand="full" fill="outline" color="{{settings.theme.button}}" *ngIf="data.cart[item.id] >= 1">{{data.cart[item.id]}}
-                              </ion-button>
-                        </ion-col>
-                        <ion-col>
-                              <ion-button expand="block"  size="small" color="{{settings.theme.button}}"  *ngIf="data.cart[item.id] >= 1" (click)="updateToCart(item, item.indexInCart)">
-                              <ion-icon slot="icon-only" name="add-circle-outline"></ion-icon>
-                              </ion-button>
-                        </ion-col>
-                     </ion-row>
-                  </ion-col>
-                  </ion-row>
-                  </ion-card-content>
-               </ion-card>
-            </div> -->
+                           </ion-col>
+                           <ion-col style="text-align: center;" *ngIf="data.cart[item.id] >= 1" align-self-end>
+                              <ion-row>
+                                 <ion-col>
+                                       <ion-button expand="block" size="small" color="{{settings.theme.button}}" (click)="deleteFromCart(item)">
+                                       <ion-icon slot="icon-only" name="remove-circle-outline"></ion-icon>
+                                       </ion-button>
+                                 </ion-col>
+                                 <ion-col>
+                                       <ion-button expand="full" fill="outline" color="{{settings.theme.button}}" *ngIf="data.cart[item.id] >= 1">{{data.cart[item.id]}}
+                                       </ion-button>
+                                 </ion-col>
+                                 <ion-col>
+                                       <ion-button expand="block"  size="small" color="{{settings.theme.button}}"  *ngIf="data.cart[item.id] >= 1" (click)="updateToCart(item)">
+                                       <ion-icon slot="icon-only" name="add-circle-outline"></ion-icon>
+                                       </ion-button>
+                                 </ion-col>
+                              </ion-row>
+                           </ion-col>
+                        </ion-row>
+                     </ion-card-content>
+                  </ion-card>
+               </div>
+            </div>
+         </div>
       </ion-col>
    </ion-row>
-   <!--
+   
    <div *ngIf="upsellProducts?.upsellProducts?.length" class="related-products">
       <ion-list-header>
          <ion-label>{{"Te gustará" | translate}}</ion-label>
@@ -432,8 +331,8 @@
          <div class="product" *ngFor="let item of upsellProducts.upsellProducts" [style.width.px]="settings.dimensions.productSliderWidth">
          <ion-card mode="md" class="ion-activatable ion-focusable hydrated {{settings.settings.product_shadow}}" [style.border-radius.px]="settings.dimensions.productBorderRadius">
             <ion-img alt="" [style.height.px]="settings.dimensions.homeSliderHeight" src="{{item?.images[0]?.src}}"></ion-img>
-            <ion-icon name="heart-outline" mode="md" class="wishlist-button-grid" *ngIf="!settings.wishlist[item.id]" (click)="settings.addToWishlist(item.id)"></ion-icon>
-            <ion-icon name="heart" color="{{settings.theme.button}}" mode="md" class="wishlist-button-grid" *ngIf="settings.wishlist[item.id]" (click)="settings.removeFromWishlist(item.id)"></ion-icon> 
+            <ion-icon name="heart-outline" mode="md" class="wishlist-button-grid" *ngIf="!settings.wishlist[item.id]" (click)="settings.addToWishlist(item.id, item.path)"></ion-icon>
+            <ion-icon name="heart" color="{{settings.theme.button}}" mode="md" class="wishlist-button-grid" *ngIf="settings.wishlist[item.id]" (click)="settings.removeFromWishlist(item.id, item.path)"></ion-icon> 
             <ion-card-header (click)="goToProduct(item)">
                <ion-card-subtitle mode="md">{{item.name}}</ion-card-subtitle>
             </ion-card-header>
@@ -444,14 +343,14 @@
                </p>
               <ion-row class="ion-align-items-center ion-justify-content-center">
               <ion-col *ngIf="data.cart[item.id] == undefined || data.cart[item.id] == 0">
-                      <ion-button expand="block" size="small" color="{{settings.theme.button}}" [disabled]="item.stock_status == 'outofstock'" (click)="addToCart(item, item.indexInCart)">
+                      <ion-button expand="block" size="small" color="{{settings.theme.button}}" [disabled]="item.stock_status == 'outofstock'" (click)="addToCart(item)">
                         {{item.stock_status == 'outofstock' ? "Agotado" : "Añadir"  | translate}}
                       </ion-button>
                   </ion-col>
                   <ion-col style="text-align: center;" *ngIf="data.cart[item.id] >= 1" align-self-end>
                 <ion-row>
                   <ion-col>
-                        <ion-button expand="block" size="small" color="{{settings.theme.button}}" (click)="deleteFromCart(item, item.indexInCart)">
+                        <ion-button expand="block" size="small" color="{{settings.theme.button}}" (click)="deleteFromCart(item)">
                         <ion-icon slot="icon-only" name="remove-circle-outline"></ion-icon>
                         </ion-button>
                   </ion-col>
@@ -460,7 +359,7 @@
                         </ion-button>
                   </ion-col>
                   <ion-col>
-                        <ion-button expand="block"  size="small" color="{{settings.theme.button}}"  *ngIf="data.cart[item.id] >= 1" (click)="updateToCart(item, item.indexInCart)">
+                        <ion-button expand="block"  size="small" color="{{settings.theme.button}}"  *ngIf="data.cart[item.id] >= 1" (click)="updateToCart(item)">
                         <ion-icon slot="icon-only" name="add-circle-outline"></ion-icon>
                         </ion-button>
                   </ion-col>
@@ -472,6 +371,7 @@
       </div>
    </div>
    </div>
+
    <div *ngIf="crossSellProducts?.crossSellProducts?.length" class="related-products">
       <ion-list-header>
          <ion-label>{{"Recomendado" | translate}}</ion-label>
@@ -479,8 +379,8 @@
       <div class="scroll-related-products">
          <div class="product" *ngFor="let item of crossSellProducts.crossSellProducts" [style.width.px]="settings.dimensions.productSliderWidth">
          <ion-card mode="md" class="ion-activatable ion-focusable hydrated {{settings.settings.product_shadow}}" [style.border-radius.px]="settings.dimensions.productBorderRadius">
-            <ion-img alt="" (click)="goToProduct(item)" [style.height.px]="settings.dimensions.homeSliderHeight" src="{{item?.images[0]?.src}}"></ion-img><ion-icon name="heart-outline" mode="md" class="wishlist-button-grid" *ngIf="!settings.wishlist[item.id]" (click)="settings.addToWishlist(item.id)"></ion-icon>
-            <ion-icon name="heart" color="{{settings.theme.button}}" mode="md" class="wishlist-button-grid" *ngIf="settings.wishlist[item.id]" (click)="settings.removeFromWishlist(item.id)"></ion-icon>
+            <ion-img alt="" (click)="goToProduct(item)" [style.height.px]="settings.dimensions.homeSliderHeight" src="{{item?.images[0]?.src}}"></ion-img><ion-icon name="heart-outline" mode="md" class="wishlist-button-grid" *ngIf="!settings.wishlist[item.id]" (click)="settings.addToWishlist(item.id, item.path)"></ion-icon>
+            <ion-icon name="heart" color="{{settings.theme.button}}" mode="md" class="wishlist-button-grid" *ngIf="settings.wishlist[item.id]" (click)="settings.removeFromWishlist(item.id, item.path)"></ion-icon>
             <ion-card-header (click)="goToProduct(item)">
                <ion-card-subtitle mode="md">{{item.name}}</ion-card-subtitle>
             </ion-card-header>
@@ -491,14 +391,14 @@
                </p>
               <ion-row class="ion-align-items-center ion-justify-content-center">
               <ion-col *ngIf="data.cart[item.id] == undefined || data.cart[item.id] == 0">
-                      <ion-button expand="block" size="small" color="{{settings.theme.button}}" [disabled]="item.stock_status == 'outofstock'" (click)="addToCart(item, item.indexInCart)">
+                      <ion-button expand="block" size="small" color="{{settings.theme.button}}" [disabled]="item.stock_status == 'outofstock'" (click)="addToCart(item)">
                         {{item.stock_status == 'outofstock' ? "Agotado" : "Añadir"  | translate}}
                       </ion-button>
                   </ion-col>
                   <ion-col style="text-align: center;" *ngIf="data.cart[item.id] >= 1" align-self-end>
                 <ion-row>
                   <ion-col>
-                        <ion-button expand="block" size="small" color="{{settings.theme.button}}" (click)="deleteFromCart(item, item.indexInCart)">
+                        <ion-button expand="block" size="small" color="{{settings.theme.button}}" (click)="deleteFromCart(item)">
                         <ion-icon slot="icon-only" name="remove-circle-outline"></ion-icon>
                         </ion-button>
                   </ion-col>
@@ -507,7 +407,7 @@
                         </ion-button>
                   </ion-col>
                   <ion-col>
-                        <ion-button expand="block"  size="small" color="{{settings.theme.button}}"  *ngIf="data.cart[item.id] >= 1" (click)="updateToCart(item, item.indexInCart)">
+                        <ion-button expand="block"  size="small" color="{{settings.theme.button}}"  *ngIf="data.cart[item.id] >= 1" (click)="updateToCart(item)">
                         <ion-icon slot="icon-only" name="add-circle-outline"></ion-icon>
                         </ion-button>
                   </ion-col>
@@ -519,10 +419,12 @@
       </div>
    </div>
    </div>
-   <ion-item detail="true" (click)="getReviewsPage()" class="review-item ion-activatable">
+
+   <!-- <ion-item detail="true" (click)="getReviewsPage()" *ngIf="reviews?.length" class="review-item ion-activatable">
    <ion-label>{{reviews.length}} {{"Valoración de los clientes" | translate}}</ion-label>
    <ion-icon name="ios-arrow-forward" item-end></ion-icon>
-   </ion-item>
+   </ion-item> -->
+
    <div *ngFor="let item of reviews">
       <ion-item lines="none">
          <ion-avatar slot="start">
@@ -541,6 +443,5 @@
          </ion-label>
       </ion-item>
    </div>
-   </div>
--->
+
 </ion-content> 

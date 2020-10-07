@@ -16,7 +16,7 @@ export class AddressPage implements OnInit {
     }
     async getCustomer() {
         const loading = await this.loadingController.create({
-            message: 'Loading...',
+            message: 'Cargando...',
             translucent: true,
             cssClass: 'custom-class custom-loading'
         });

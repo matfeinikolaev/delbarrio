@@ -17,9 +17,11 @@ export class HelpPage{
     faq: any;
     sendMessageClick: any = false;
     messageText: any = "";
+    messageSent: any = false;
     constructor(public platform: Platform, public modalController: ModalController, public translate: TranslateService, private alertCtrl: AlertController, public toastController: ToastController, public config: Config, public api: ApiService, public data: Data, public router: Router, public settings: Settings, public loadingController: LoadingController, public navCtrl: NavController, public route: ActivatedRoute) {}
     ngOnInit() {
-        console.log(this);    
+        console.log(this);  
+        this.messageSent = false;  
         // this.platform.ready().then(() => {
         //     this.api.postItem("faq", {path: this.settings.currentPath}).then(res => {
         //         this.faq = res;
@@ -32,8 +34,10 @@ export class HelpPage{
     }
     openMessage() {
         this.sendMessageClick = true;
+        this.messageSent = false;
     }
     sendMessage() {
-        console.log(this.messageText);
+        this.messageSent = true;
+        this.sendMessageClick = false;
     }
 }

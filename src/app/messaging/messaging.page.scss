@@ -5,16 +5,38 @@
     .clientMessage {
         margin-left: 300px;
     }
-    .message {
-        font-size: medium;
-        word-wrap: break-word;
-        white-space: pre-wrap;
+
+    @media screen and (max-width: 415px) {
+        .message {
+            font-size: medium;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+        }
     }
 
-    .message-detail {
-    white-space: nowrap;
-    font-size: 12px;
-    padding-top: 5px;
+    @media screen and (min-width: 540px) {
+        .message {
+            font-size: 4vw;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+        }
+    }
+
+    
+    @media screen and (max-width: 415px) {
+        .message-detail {
+            white-space: nowrap;
+            font-size: 12px;
+            padding-top: 5px;
+        }
+    }
+
+    @media screen and (min-width: 540px) {
+        .message-detail {
+            white-space: nowrap;
+            font-size: 2vw;
+            padding-top: 5px;
+        }
     }
 
     .chat-bubble {
@@ -63,5 +85,60 @@
     border-bottom-left-radius: 50%;
     border-top-right-radius: 100%;
     -webkit-transform: rotate(118deg) skew(-5deg);
+    }
+
+}
+
+
+ion-footer {
+    @media screen and (min-width: 540px) {
+        ion-input {
+            font-size: 5vw;
+        }
+        ion-button {
+            width: 100px;
+            height: 60px;
+        }
+        ion-icon {
+            font-size: 4vw;
+        }
+    }
+}
+
+::ng-deep {
+    
+    @media screen and (min-width: 540px) {
+        ion-action-sheet {
+            .action-sheet-wrapper.ion-overlay-wrapper.sc-ion-action-sheet-ios, .action-sheet-wrapper.ion-overlay-wrapper.sc-ion-action-sheet-md {
+                .action-sheet-container.sc-ion-action-sheet-ios, .action-sheet-container.sc-ion-action-sheet-md {
+                    .action-sheet-group.sc-ion-action-sheet-ios, .action-sheet-group.sc-ion-action-sheet-md {
+                        margin-bottom: 60px;
+                        height: 50px;
+                        .action-sheet-button.ion-activatable.ion-focusable.action-sheet-destructive.sc-ion-action-sheet-ios, .action-sheet-button.ion-activatable.ion-focusable.action-sheet-destructive.sc-ion-action-sheet-md {
+                            font-size: 4vw;
+                            height: 50px;
+                            span {
+                                ion-icon {
+                                    font-size: 4vw;
+                                }
+                            }
+                        }
+                    }
+                    .action-sheet-group.action-sheet-group-cancel.sc-ion-action-sheet-ios, .action-sheet-group.action-sheet-group-cancel.sc-ion-action-sheet-md {
+                        height: 50px;
+                        .action-sheet-button.ion-activatable.ion-focusable.action-sheet-cancel.sc-ion-action-sheet-ios, .action-sheet-button.ion-activatable.ion-focusable.action-sheet-cancel.sc-ion-action-sheet-md {
+                            font-size: 4vw;
+                            height: 50px;
+                            span {
+                                ion-icon {
+                                    font-size: 4vw;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+        }
     }
 }

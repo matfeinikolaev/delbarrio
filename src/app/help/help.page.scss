@@ -1,0 +1,9 @@
+ion-content {
+    #response-message {
+        @media screen and (min-width: 540px) {
+            font-size: 4vw; 
+            width: 95%; 
+            margin: auto; 
+        }
+    }
+}

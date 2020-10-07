@@ -266,7 +266,8 @@ export class ProductPage {
         const toast = await this.toastController.create({
           message: message,
           duration: 2000,
-          position: 'top'
+          position: 'top',
+          cssClass: "toast-pop-up",
         });
         toast.present();
     }
@@ -311,7 +312,12 @@ export class ProductPage {
         return doAdd;
     }
     chooseVariation2(index, value) {
-        this.product.variationOptions[index].selected = value;
+        if (this.product.variationOptions[index].selected == value) {
+            this.product.variationOptions[index].selected = null;
+        }
+        else {
+            this.product.variationOptions[index].selected = value;
+        }
         this.product.stock_status = 'instock';
         if (this.product.variationOptions.every((option) => option.selected != null)) {
             var selectedOptions = [];
@@ -477,9 +483,7 @@ export class ProductPage {
         if(valid) {
             this.addonsList.forEach((value, i) => {
                 value.selectedName = value.name ? value.name : value.label;
-                // value.selectedName = value.selectedName.split(' ').join('-');
-                // value.selectedName = value.selectedName.split('.').join('');
-                // value.selectedName = value.selectedName.replace(':','');
+                if (value.options != false) {                    
                     value.options.forEach((option, j) => {
                         option.selectedLabel = option.label;
                         // option.selectedLabel = option.selectedLabel.split(' ').join('-');
@@ -532,14 +536,7 @@ export class ProductPage {
                             this.options['addon-' + this.product.id + '[' + i + ']' + '[' + j + ']' + '[add_on_type]'] = value.type;
                         }
                     });
-                // if(value.type == 'custom_text'){
-                //     let label = value.name ? value.name : value.label;
-                //     label = label.toLowerCase();
-                //     label = label.split(' ').join('-');
-                //     label = label.split('.').join('');
-                //     label = label.replace(':','');
-                //     this.options['addon-' + this.product.id + '-' + label + '-' + i ] = value.input;
-                // }    
+                } 
             });
         }
         return valid;

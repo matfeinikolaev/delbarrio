@@ -13,6 +13,13 @@ ion-header {
         }
     }
 }
+
+ion-title {
+    @media screen and (min-width: 360px) and (max-width: 640px) {
+        font-size: 8000px;
+    }
+}
+
 a.welcome-card ion-img {
     max-height: 35vh;
     overflow: hidden;
@@ -736,4 +743,97 @@ ion-refresher {
         width: 150px;
         margin: auto;
     }
+}
+
+@media screen and (max-width: 415px) {
+    .nearby-stores{
+        height: 50%;
+        #nearby-stores-wrapping-div {
+            height: 200px;
+            margin-top: 2%;
+        }
+        #nearby-stores-card {
+            width:70%; 
+            height: 100%;
+        }
+        #nearby-stores-card-content {
+            width: 100%; 
+            height:70%; 
+        }
+    }
+    .all-stores{
+        height: 50%;
+        #all-stores-wrapping-div {
+            height: 200px;
+            margin-top: 2%;
+        }
+        #all-stores-card {
+            width:70%; 
+            height:100%;
+        }
+        #all-stores-card-content {
+            width: 100%; 
+            height: 70%; 
+        }
+    }    
+}
+@media screen and (min-width: 540px) {
+    .nearby-stores{
+        #nearby-stores-wrapping-div {
+            height: 200px;
+            margin-top: 10%;
+        }
+        #nearby-stores-card {
+            width:70%; 
+            height: 100%;
+        }
+        #nearby-stores-card-content {
+            width: 100%; 
+            height:90%; 
+        }
+    }
+    .all-stores{
+        #all-stores-wrapping-div {
+            height: 200px;
+            margin-top: 10%;
+        }
+        #all-stores-card {
+            width:70%; 
+            height:100%;
+        }
+        #all-stores-card-content {
+            width: 100%; 
+            height: 90%; 
+        }
+    }
+}
+@media screen and (min-width: 1024px) {
+    .nearby-stores{
+        #nearby-stores-wrapping-div {
+            height: 300px;
+            margin-top: 10%;
+        }
+        #nearby-stores-card {
+            width:70%; 
+            height: 100%;
+        }
+        #nearby-stores-card-content {
+            width: 100%; 
+            height:90%; 
+        }
+    }
+    .all-stores{
+        #all-stores-wrapping-div {
+            height: 300px;
+            margin-top: 10%;
+        }
+        #all-stores-card {
+            width:70%; 
+            height:100%;
+        }
+        #all-stores-card-content {
+            width: 100%; 
+            height: 90%; 
+        }
+    }  
 }

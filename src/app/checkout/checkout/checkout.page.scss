@@ -84,3 +84,95 @@
 ion-button {
   margin: 0;
 }
+
+
+#ionContent {
+  ion-label {
+      @media screen and (max-width: 415px) {
+          font-size: 4vw;
+      }
+      @media screen and (min-width: 540px) {
+          font-size: 3vw;
+      }
+  }
+  ion-input {
+      @media screen and (max-width: 415px) {
+          font-size: 4vw;
+      }
+      @media screen and (min-width: 540px) {
+          font-size: 3vw;
+      }
+  }
+  ion-button {
+      @media screen and (max-width: 415px) {
+          font-size: 4vw;
+      }
+      @media screen and (min-width: 540px) {
+          font-size: 3vw;
+      }
+  }
+  input {
+      @media screen and (max-width: 415px) {
+          font-size: 4vw;
+      }
+      @media screen and (min-width: 540px) {
+          font-size: 3vw;
+      }
+  }
+  ion-datetime {
+      @media screen and (max-width: 415px) {
+          font-size: 4vw;
+      }
+      @media screen and (min-width: 540px) {
+          font-size: 3vw;
+      }
+  }
+  ion-select {
+      @media screen and (max-width: 415px) {
+          font-size: 4vw;
+      }
+      @media screen and (min-width: 540px) {
+          font-size: 3vw;
+      }
+  }
+  ion-select-option {
+      @media screen and (max-width: 415px) {
+          font-size: 4vw;
+      }
+      @media screen and (min-width: 540px) {
+          font-size: 3vw;
+      }
+  }
+  ion-textarea {
+      @media screen and (max-width: 415px) {
+          font-size: 4vw;
+      }
+      @media screen and (min-width: 540px) {
+          font-size: 3vw;
+      }
+  }
+  ion-list-header {
+      @media screen and (max-width: 415px) {
+          font-size: 4vw;
+      }
+      @media screen and (min-width: 540px) {
+          font-size: 3vw;
+      }
+  }
+  p {
+    @media screen and (max-width: 415px) {
+      font-size: 4vw;
+    }
+    @media screen and (min-width: 540px) {
+      font-size: 3vw;
+    }
+  }
+  span {
+    @media screen and (max-width: 415px) {
+      font-size: 4vw;
+    }
+    @media screen and (min-width: 540px) {
+      font-size: 3vw;
+    }
+  }
+}
