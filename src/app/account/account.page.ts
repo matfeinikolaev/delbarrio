@@ -16,6 +16,9 @@ import { ForgottenPage } from './forgotten/forgotten.page';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook/ngx';
 import { AccountApi } from '../account.api';
+import {Plugins, LocalNotificationEnabledResult, LocalNotificationActionPerformed, LocalNotification, Device} from '@capacitor/core';
+const {LocalNotifications} = Plugins;
+
 @Component({
     selector: 'app-account',
     templateUrl: 'account.page.html',
@@ -111,7 +114,8 @@ export class AccountPage {
         };
         this.emailComposer.open(email);
     }
-    ngOnInit() {
+    async ngOnInit() {
+        await LocalNotifications.requestPermission();
         console.log(this);
         this.platform.ready().then(() => {
             // if (window.localStorage.googleLogin == '1') {
@@ -144,41 +148,60 @@ export class AccountPage {
             //         this.settings.vendor = true;
             //     }
             // }
-        }, err=> {
+        }, err => {
             console.log(err);
         });
-        if( this.settings.user || this.settings.customer.id) {
-          this.toggle = document.querySelector('#themeToggle');
-          if( this.toggle !== null ) {
-            this.toggle.addEventListener('ionChange', (ev) => {
-              document.body.classList.toggle('dark', ev.detail.checked);
-            
-              if(ev.detail.checked) {
-                this.statusBar.backgroundColorByHexString('#121212');
-                this.statusBar.styleLightContent();
-              } else {
-                this.statusBar.backgroundColorByHexString('#ffffff');
-                this.statusBar.styleDefault();
-              }
-            
+        if (this.settings.user || this.settings.customer.id) {
+            const notifs = await LocalNotifications.schedule({
+                notifications: [
+                    {
+                        title: "Title",
+                        body: "Body",
+                        id: 1,
+                        schedule: { at: new Date(Date.now() + 1000 * 5) },
+                        sound: null,
+                        attachments: null,
+                        actionTypeId: "",
+                        extra: null
+                    }
+                ]
             });
-            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-            prefersDark.addListener((e) => checkToggle(e.matches));
-            function loadApp() {
-              checkToggle(prefersDark.matches);
+            console.log('scheduled notifications', notifs);
+            this.toggle = document.querySelector('#themeToggle');
+            if (this.toggle !== null) {
+                this.toggle.addEventListener('ionChange', (ev) => {
+                    document.body.classList.toggle('dark', ev.detail.checked);
+
+                    if (ev.detail.checked) {
+                        this.statusBar.backgroundColorByHexString('#121212');
+                        this.statusBar.styleLightContent();
+                    } else {
+                        this.statusBar.backgroundColorByHexString('#ffffff');
+                        this.statusBar.styleDefault();
+                    }
+
+                });
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+                prefersDark.addListener((e) => checkToggle(e.matches));
+
+                function loadApp() {
+                    checkToggle(prefersDark.matches);
+                }
+
+                function checkToggle(shouldCheck) {
+                    this.toggle.checked = shouldCheck;
+                }
             }
-            function checkToggle(shouldCheck) {
-              this.toggle.checked = shouldCheck;
-            }
-          }
         }
-        if( this.data.storeCategories.length == 0 ) {
+        if (this.data.storeCategories.length == 0) {
             this.api.postItem('get_store_categories').then(res => {
                 this.data.storeCategories = res;
             }, err => {
                 console.error(err);
             });
         }
+
+
     }
     async login() {
         const modal = await this.modalController.create({

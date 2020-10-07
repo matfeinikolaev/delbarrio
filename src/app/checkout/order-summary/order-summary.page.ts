@@ -7,6 +7,7 @@ import { Data } from './../../data';
 import { ChatApi } from './../../chat/chat.api';
 import { OneSignal } from '@ionic-native/onesignal/ngx';
 // import { Map } from './../../googleMap/googleMap';
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import {
     GoogleMaps,
     GoogleMap,
@@ -29,7 +30,7 @@ export class OrderSummaryPage implements OnInit {
     filter: any = {};
     storePath: any = '';
     @ViewChild ("map", {static: true}) map: ElementRef;
-    constructor(/*public gMap: Map, */public onesignal: OneSignal , public chatapi: ChatApi,public data: Data, public api: ApiService, public settings: Settings, public router: Router, public loadingController: LoadingController, public navCtrl: NavController, public route: ActivatedRoute) {}
+    constructor(/*public gMap: Map, */public localNotifications: LocalNotifications,public onesignal: OneSignal , public chatapi: ChatApi,public data: Data, public api: ApiService, public settings: Settings, public router: Router, public loadingController: LoadingController, public navCtrl: NavController, public route: ActivatedRoute) {}
     async getOrder() {
         console.log(this);
         const loading = await this.loadingController.create({
@@ -58,13 +59,28 @@ export class OrderSummaryPage implements OnInit {
             console.log(err);
             loading.dismiss();
         }).then(() => {
-            // this.postFireBaseMessage();
+            this.sendNotification();
+        }, err => {
+            console.error(err);
+        });
+    }
+    sendNotification() {
+        this.localNotifications.requestPermission().then(res => {
+            if (res) {
+                this.localNotifications.schedule({
+                    title: "Estado de su Orden " + this.order.id,
+                    text: "Estimado/a " + this.order.billing.first_name + ' ' + this.order.billing.last_name
+                    + " el estado de su orden es: " + this.order.status,
+                    foreground: true,
+                    data: { secret: 'secret' }
+                });
+            }
         }, err => {
             console.error(err);
         });
     }
     ngOnInit() {
-        this.filter.onesignal_user_id = this.data.onesignal_ids.userId;
+        // this.filter.onesignal_user_id = this.data.onesignal_ids.userId;
         this.filter.id = this.route.snapshot.paramMap.get('id');
         this.filter.store_id = this.data.store.ID;
         this.storePath = this.route.snapshot.paramMap.get('storeID');
@@ -106,6 +122,7 @@ export class OrderSummaryPage implements OnInit {
         mapRedirect.appendChild(link);
         link.setAttribute("href", "http://maps.google.com/maps?daddr=" + this.data.store.wordpress_store_locator_lat + ", " + this.data.store.wordpress_store_locator_lng);
         link.innerHTML = "Abrir tienda en google maps";
+        link.style.fontSize = "3vw";
         link.target = "_blank";
         
         this.map.nativeElement.before(mapRedirect);
