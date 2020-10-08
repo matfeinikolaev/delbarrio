@@ -46,6 +46,7 @@ export class CheckoutPage implements OnInit {
     stripeForm: any = {};
     storePath: any;
     map: any;
+    changingData: any = false;
     // @ViewChild ("map", {static: true}) mapEl: ElementRef;
     constructor(/*public gMap: Map, */public data: Data, private oneSignal: OneSignal, public toastController: ToastController, public platform: Platform, public api: ApiService, public checkoutData: CheckoutData, public settings: Settings, public router: Router, public iab: InAppBrowser, public loadingController: LoadingController, public navCtrl: NavController, public route: ActivatedRoute/*, private braintree: Braintree*/) {}
     ngOnInit() {
@@ -98,11 +99,13 @@ export class CheckoutPage implements OnInit {
         this.setOldWooCommerceVersionData();
         await this.api.updateOrderReview('update_order_review', this.checkoutData.form, this.storePath).subscribe(res => {
             this.orderReview = res;
+            this.changingData = false;
             if(this.orderReview.payment && this.orderReview.payment.stripe) {
                 this.stripe = Stripe(this.orderReview.payment.stripe.publishable_key);
             }
         }, err => {
             console.log(err);
+            this.changingData = false;
         });
     }
     async updateOrderReview() {
@@ -115,10 +118,17 @@ export class CheckoutPage implements OnInit {
         this.checkoutData.form['wc-ajax'] = 'update_order_review';
         this.setOldWooCommerceVersionData();
         await this.api.updateOrderReview('update_order_review', this.checkoutData.form, this.storePath).subscribe(res => {
+            this.orderReview = res;
+            this.changingData = false;
             this.handleData(res);
         }, err => {
             console.log(err);
+            this.changingData = false;
         });
+    }
+    changeData() {
+        this.changingData = true;
+        this.updateOrderReview();
     }
     setOldWooCommerceVersionData(){
         this.checkoutData.form.city = this.checkoutData.form.billing_city;

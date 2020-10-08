@@ -16,8 +16,9 @@ import { ForgottenPage } from './forgotten/forgotten.page';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook/ngx';
 import { AccountApi } from '../account.api';
-import {Plugins, LocalNotificationEnabledResult, LocalNotificationActionPerformed, LocalNotification, Device} from '@capacitor/core';
-const {LocalNotifications} = Plugins;
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+// import {Plugins, LocalNotificationEnabledResult, LocalNotificationActionPerformed, LocalNotification, Device} from '@capacitor/core';
+// const {LocalNotifications} = Plugins;
 
 @Component({
     selector: 'app-account',
@@ -46,7 +47,7 @@ export class AccountPage {
     userInfo: any;
     phoneVerificationError: any;
     loading: any;
-    constructor(public data: Data, public loadingController: LoadingController, public oneSignal: OneSignal, public modalController: ModalController, private statusBar: StatusBar, private config: Config, public api: ApiService, public navCtrl: NavController, public settings: Settings, public platform: Platform, private appRate: AppRate, private emailComposer: EmailComposer, private socialSharing: SocialSharing, public routerOutlet: IonRouterOutlet, public storeData: Store, private googlePlus: GooglePlus, private facebook: Facebook, private account: AccountApi) {}
+    constructor(public localNotifications: LocalNotifications, public data: Data, public loadingController: LoadingController, public oneSignal: OneSignal, public modalController: ModalController, private statusBar: StatusBar, private config: Config, public api: ApiService, public navCtrl: NavController, public settings: Settings, public platform: Platform, private appRate: AppRate, private emailComposer: EmailComposer, private socialSharing: SocialSharing, public routerOutlet: IonRouterOutlet, public storeData: Store, private googlePlus: GooglePlus, private facebook: Facebook, private account: AccountApi) {}
     goTo(path) {
         this.navCtrl.navigateForward(path);
 
@@ -115,7 +116,7 @@ export class AccountPage {
         this.emailComposer.open(email);
     }
     async ngOnInit() {
-        await LocalNotifications.requestPermission();
+        await this.localNotifications.requestPermission();
         console.log(this);
         this.platform.ready().then(() => {
             // if (window.localStorage.googleLogin == '1') {
@@ -152,19 +153,13 @@ export class AccountPage {
             console.log(err);
         });
         if (this.settings.user || this.settings.customer.id) {
-            const notifs = await LocalNotifications.schedule({
-                notifications: [
-                    {
+            const notifs = await this.localNotifications.schedule({
                         title: "Title",
-                        body: "Body",
+                        text: "Body",
                         id: 1,
-                        schedule: { at: new Date(Date.now() + 1000 * 5) },
+                        trigger: { at: new Date(Date.now() + 1000 * 5) },
                         sound: null,
                         attachments: null,
-                        actionTypeId: "",
-                        extra: null
-                    }
-                ]
             });
             console.log('scheduled notifications', notifs);
             this.toggle = document.querySelector('#themeToggle');
@@ -270,6 +265,7 @@ export class AccountPage {
               this.redirectToHomePage();
               window.localStorage.setItem ("googleLogin", '1');
               window.localStorage.setItem ("user_id", this.settings.user.ID);
+              window.localStorage.setItem ("managed_sites", this.settings.user.managed_sites);
               window.localStorage.setItem ("user_deleted", this.settings.user.deleted);
               window.localStorage.setItem ("user_display_name", this.settings.user.display_name);
               window.localStorage.setItem ("user_spam", this.settings.user.spam);
@@ -330,6 +326,7 @@ export class AccountPage {
               this.dismissLoading();
               window.localStorage.setItem ("facebookLogin", '1');
               window.localStorage.setItem ("user_id", this.settings.user.ID);
+              window.localStorage.setItem ("managed_sites", this.settings.user.managed_sites);
               window.localStorage.setItem ("user_deleted", this.settings.user.deleted);
               window.localStorage.setItem ("user_display_name", this.settings.user.display_name);
               window.localStorage.setItem ("user_spam", this.settings.user.spam);

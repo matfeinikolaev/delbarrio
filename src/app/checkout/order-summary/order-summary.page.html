@@ -117,7 +117,6 @@
 
     <ion-item lines="full">
       <ion-label text-wrap color="dark" style=" margin-left: 10px;">
-      <p  >{{"Envío" | translate}}<span style="float: right; ">{{order.shipping_total | currency:settings.currency:'symbol':'1.2-2'}}</span></p>
       <p  >{{"Descuenta" | translate}}<span style="float: right; ">{{order.discount_total | currency:settings.currency:'symbol':'1.2-2'}}</span></p>
       <p  >{{"Impuestos" | translate}}<span style="float: right; ">{{order.total_tax | currency:settings.currency:'symbol':'1.2-2'}}</span></p>
       <div *ngIf="order.total_fee">
