@@ -207,7 +207,6 @@ export class CheckoutAddressPage implements OnInit {
         // marker.setMap(this.map);
 
         var myLocation = document.querySelector("#myLocation");
-        console.log(myLocation);
         myLocation.addEventListener("click", function() {
             let marker = new google.maps.Marker({position: coords});
             if (markers.length > 0) {
@@ -218,6 +217,37 @@ export class CheckoutAddressPage implements OnInit {
             markers.push(marker);
             marker.setMap(that.map);
             that.map.setOptions(mapOptions);
+            const latlng = {
+                lat: parseFloat(coords.lat()),
+                lng: parseFloat(coords.lng()),
+              };
+            const geocoder = new google.maps.Geocoder();
+            geocoder.geocode({ location: latlng }, (results, status) => {
+                if( status == "OK" ) {
+                    results.forEach(place => {
+                        place.address_components.forEach(element => {
+                            if (element.types.includes("route")) {
+                                that.checkoutData.form.billing_address_1 = place.formatted_address;
+                                that.checkoutData.form.billing_address_2 = "";
+                            }
+                            else if (element.types.includes("locality", "political")) {
+                                that.checkoutData.form.billing_city = element.long_name;
+                            }
+                            else if (element.types.includes("administrative_area_level_1", "political")) {
+                                that.checkoutData.form.billing_state = element.long_name;
+                            }
+                            else if (element.types.includes("postal_code")) {
+                                that.checkoutData.form.billing_postcode = element.long_name;
+                            }
+                            else if (element.types.includes("country")) {
+                                that.checkoutData.form.billing_country = element.short_name;
+                            }
+                        });
+                    });
+                }
+                console.log(results);
+                console.log(status);
+            });
         });
 
         this.map.addListener("click", function (p) {

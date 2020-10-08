@@ -82,7 +82,8 @@
           
         </form>
         </ion-list>
-        <ion-button id="pruebas" color="danger" expand="block"  fill="solid" [disabled]="!form.valid || disableSubmit" (click)="onSubmit()">{{"REGISTRAR" | translate}}</ion-button>
+
+        <ion-button id="pruebas" color="danger" expand="block"  fill="solid" [disabled]="disableSubmit" (click)="onSubmit()">{{"REGISTRAR" | translate}}</ion-button>
 
         <div class="errors" *ngIf="errorsRegister">
           <div *ngFor="let error of errorsRegister | keys" style="text-align: center; padding-top: 20px;">

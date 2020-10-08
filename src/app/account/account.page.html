@@ -1,4 +1,4 @@
-<ion-header mode="ios" mode='ios'>
+<ion-header mode="ios">
     <!-- <ion-toolbar>      
       <ion-title>{{"Cuenta" | translate}}</ion-title>
     </ion-toolbar> -->
@@ -28,6 +28,14 @@
     </ion-grid-->
 </ion-header>
 <ion-content>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button style="font-size: 4vw;" text="{{'Atrás' | translate}}" defaultHref="/tabs/home"></ion-back-button> <!--defaultHref="/tabs/home/store/{{store.id}}"-->
+    </ion-buttons>
+    <ion-title style="font-size: 4vw;" >
+      {{"" | translate}}
+    </ion-title>
+  </ion-toolbar>
   <div style="text-align: center;height: 25%">
     <img class="logo" src="assets/image/logo.png" style="height: 100%">
   </div>

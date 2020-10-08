@@ -265,6 +265,7 @@ export class AccountPage {
               this.redirectToHomePage();
               window.localStorage.setItem ("googleLogin", '1');
               window.localStorage.setItem ("user_id", this.settings.user.ID);
+              window.localStorage.setItem ("managed_sites", this.settings.user.managed_sites);
               window.localStorage.setItem ("user_deleted", this.settings.user.deleted);
               window.localStorage.setItem ("user_display_name", this.settings.user.display_name);
               window.localStorage.setItem ("user_spam", this.settings.user.spam);
@@ -325,6 +326,7 @@ export class AccountPage {
               this.dismissLoading();
               window.localStorage.setItem ("facebookLogin", '1');
               window.localStorage.setItem ("user_id", this.settings.user.ID);
+              window.localStorage.setItem ("managed_sites", this.settings.user.managed_sites);
               window.localStorage.setItem ("user_deleted", this.settings.user.deleted);
               window.localStorage.setItem ("user_display_name", this.settings.user.display_name);
               window.localStorage.setItem ("user_spam", this.settings.user.spam);
