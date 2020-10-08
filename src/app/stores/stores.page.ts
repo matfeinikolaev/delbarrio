@@ -46,6 +46,8 @@ export class StoresPage {
     loadingAllStores: any = false;
     errorMessage: any;
     pageHeight: any;
+    showAllStores: any = false;
+    result: any;
     constructor(public routerOutlet: IonRouterOutlet, public modalCtrl: ModalController, private nativeGeocoder: NativeGeocoder, private geolocation: Geolocation, private locationAccuracy: LocationAccuracy, private storage: Storage, public translate: TranslateService, public alertController: AlertController, private config: Config, public api: ApiService, private splashScreen: SplashScreen, public platform: Platform, public translateService: TranslateService, public data: Data, public settings: Settings, public product: Product, public store: Store, public loadingController: LoadingController, public router: Router, public navCtrl: NavController, public route: ActivatedRoute, private oneSignal: OneSignal, private nativeStorage: NativeStorage, private chatapi: ChatApi, private fb: FormBuilder) {
         this.filter.page = 1;
         this.filter.status = 'publish';
@@ -253,8 +255,9 @@ export class StoresPage {
             /* HERE WE GET ALL THE STORES */
             if (this.data.storesNearby.length == 0) {
                 this.loadingStoresNearby = true;
-                this.api.postItem('get_stores', {'categories': this.data.storeCategory.term_id,'lat':this.api.userLocation['latitude'], 'lng':this.api.userLocation['longitude'], 'radius':this.api.userLocation['distance']}).then(res=>{
-                    var result: any = res;
+                this.api.postItem('get_stores', {'categories': this.data.storeCategory.term_id,'lat':this.api.userLocation['latitude'], 'lng':this.api.userLocation['longitude'], 'radius': this.api.userLocation['distance']}).then(res=>{
+                    this.result = res;
+                    var result = this.result.stores;
                     this.data.storesNearby = [];
                     if( Object.values(result).length >= 1) {
                         for ( let i in result ) {
@@ -268,24 +271,6 @@ export class StoresPage {
                     this.loadingStoresNearby = false;
                 });
             }
-            if (this.data.allStores.length == 0) {
-                this.loadingAllStores = true;
-                this.api.postItem('get_stores', {'categories': this.data.storeCategory.term_id,'lat':this.api.userLocation['latitude'], 'lng':this.api.userLocation['longitude'], 'radius':'20000'}).then(res=>{
-                    var result: any = res;
-                    this.data.allStores = [];
-                    for ( let i in result ) {
-                        if (this.data.storesNearby.indexOf(result[i]) == '-1') {
-                            this.data.allStores.push(result[i]);
-                        }
-                    }
-                    this.pageHeight = this.data.allStores.length * 420 + "px";
-                    this.establishPageHeight();
-                    this.loadingAllStores = false;
-                },err=>{
-                    console.error(err);
-                    this.loadingAllStores = false;
-                });
-            } 
 
             if(this.settings.user) {
                 this.getIncomeMessages();
@@ -318,13 +303,39 @@ export class StoresPage {
         }); 
     }
     establishPageHeight() {
-        var div = document.getElementById("basic-wrapper");
-        div.style.height = this.pageHeight;
+        // var div = document.getElementById("basic-wrapper");
+        // div.style.height = this.pageHeight;
     }
     getStore(store) {
         this.store.store = store;
         this.data.store = store;
         this.navCtrl.navigateForward('/tabs/home/store/' + store.ID);
+    }
+    openAllStores() {
+        // if (this.data.allStores.length == 0) {
+        //     this.loadingAllStores = true;
+        //     this.api.postItem('get_stores', {'categories': this.data.storeCategory.term_id,'lat':this.api.userLocation['latitude'], 'lng':this.api.userLocation['longitude'], 'radius':'20000'}).then(res=>{
+        //         this.result = res;
+        //         var result = this.result.stores;
+        //         this.data.allStores = [];
+        //         for ( let i in result ) {
+        //             if (!this.data.storesNearby.some(store => store.ID == result[i].ID)) {
+        //                 this.data.allStores.push(result[i]);
+        //             }
+        //         }
+        //         this.pageHeight = this.data.allStores.length * 420 + "px";
+        //         this.establishPageHeight();
+        //         this.loadingAllStores = false;
+        //     },err=>{
+        //         console.error(err);
+        //         this.loadingAllStores = false;
+        //     });
+        // } 
+        this.data.allStores = this.result.all_stores;
+        this.showAllStores = true;
+    }
+    hideAllStores() {
+        this.showAllStores = false;
     }
     goto(item) {
         if (item.description == 'category') this.navCtrl.navigateForward('/tabs/home/products/' + item.url);

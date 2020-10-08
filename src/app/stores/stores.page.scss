@@ -26,6 +26,42 @@ a.welcome-card ion-img {
 }
 ion-content {
     --background: var(--ion-color-white);
+    #show-all-stores-button {
+        @media screen and (max-width: 415px) {
+            width: 100%;
+            text-align: center;
+            ion-button {
+                width: 70%;
+            }
+            margin-bottom: 10%;
+        }
+        @media screen and (min-width: 540px) {
+            width: 100%;
+            text-align: center;
+            ion-button {
+                width: 70%;
+            }
+            margin-bottom: 10%;
+        }
+    }
+    #hide-all-stores-button {
+        @media screen and (max-width: 415px) {
+            width: 100%;
+            text-align: center;
+            ion-button {
+                width: 70%;
+            }
+            margin-bottom: 10%;
+        }
+        @media screen and (min-width: 540px) {
+            width: 100%;
+            text-align: center;
+            ion-button {
+                width: 70%;
+            }
+            margin-bottom: 10%;
+        }
+    }
 }
 .products {
     //Check and delete when not required
@@ -747,7 +783,6 @@ ion-refresher {
 
 @media screen and (max-width: 415px) {
     .nearby-stores{
-        height: 50%;
         #nearby-stores-wrapping-div {
             height: 200px;
             margin-top: 2%;
@@ -760,22 +795,21 @@ ion-refresher {
             width: 100%; 
             height:70%; 
         }
+        .all-stores{
+            #all-stores-wrapping-div {
+                height: 200px;
+                margin-top: 2%;
+            }
+            #all-stores-card {
+                width:70%; 
+                height:100%;
+            }
+            #all-stores-card-content {
+                width: 100%; 
+                height: 70%; 
+            }
+        }
     }
-    .all-stores{
-        height: 50%;
-        #all-stores-wrapping-div {
-            height: 200px;
-            margin-top: 2%;
-        }
-        #all-stores-card {
-            width:70%; 
-            height:100%;
-        }
-        #all-stores-card-content {
-            width: 100%; 
-            height: 70%; 
-        }
-    }    
 }
 @media screen and (min-width: 540px) {
     .nearby-stores{
@@ -791,19 +825,19 @@ ion-refresher {
             width: 100%; 
             height:90%; 
         }
-    }
-    .all-stores{
-        #all-stores-wrapping-div {
-            height: 200px;
-            margin-top: 10%;
-        }
-        #all-stores-card {
-            width:70%; 
-            height:100%;
-        }
-        #all-stores-card-content {
-            width: 100%; 
-            height: 90%; 
+        .all-stores{
+            #all-stores-wrapping-div {
+                height: 200px;
+                margin-top: 10%;
+            }
+            #all-stores-card {
+                width:70%; 
+                height:100%;
+            }
+            #all-stores-card-content {
+                width: 100%; 
+                height: 90%; 
+            }
         }
     }
 }
@@ -821,19 +855,20 @@ ion-refresher {
             width: 100%; 
             height:90%; 
         }
+        .all-stores{
+            #all-stores-wrapping-div {
+                height: 300px;
+                margin-top: 10%;
+            }
+            #all-stores-card {
+                width:70%; 
+                height:100%;
+            }
+            #all-stores-card-content {
+                width: 100%; 
+                height: 90%; 
+            }
+        }
     }
-    .all-stores{
-        #all-stores-wrapping-div {
-            height: 300px;
-            margin-top: 10%;
-        }
-        #all-stores-card {
-            width:70%; 
-            height:100%;
-        }
-        #all-stores-card-content {
-            width: 100%; 
-            height: 90%; 
-        }
-    }  
 }
+

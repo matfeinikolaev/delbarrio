@@ -93,6 +93,7 @@ export class LoginPage implements OnInit {
                 this.close(true);
             }
             window.localStorage.setItem ("user_id", this.settings.user.ID);
+            window.localStorage.setItem ("managed_sites", this.settings.user.managed_sites);
             window.localStorage.setItem ("user_deleted", this.settings.user.deleted);
             window.localStorage.setItem ("user_display_name", this.settings.user.display_name);
             window.localStorage.setItem ("user_spam", this.settings.user.spam);
@@ -162,6 +163,7 @@ export class LoginPage implements OnInit {
                 this.googleLogingInn = false;
                 this.dismissLoading();
                 window.localStorage.setItem ("user_id", this.settings.user.ID);
+                window.localStorage.setItem ("managed_sites", this.settings.user.managed_sites);
                 window.localStorage.setItem ("user_deleted", this.settings.user.deleted);
                 window.localStorage.setItem ("user_display_name", this.settings.user.display_name);
                 window.localStorage.setItem ("user_spam", this.settings.user.spam);
@@ -222,6 +224,7 @@ export class LoginPage implements OnInit {
                 this.facebookLogingInn = false;
                 this.dismissLoading();
                 window.localStorage.setItem ("user_id", this.settings.user.ID);
+                window.localStorage.setItem ("managed_sites", this.settings.user.managed_sites);
                 window.localStorage.setItem ("user_deleted", this.settings.user.deleted);
                 window.localStorage.setItem ("user_display_name", this.settings.user.display_name);
                 window.localStorage.setItem ("user_spam", this.settings.user.spam);
@@ -291,6 +294,7 @@ export class LoginPage implements OnInit {
                 }
                 this.phoneLogingInn = false;            
                 window.localStorage.setItem ("user_id", this.settings.user.ID);
+                window.localStorage.setItem ("managed_sites", this.settings.user.managed_sites);
                 window.localStorage.setItem ("user_deleted", this.settings.user.deleted);
                 window.localStorage.setItem ("user_display_name", this.settings.user.display_name);
                 window.localStorage.setItem ("user_spam", this.settings.user.spam);

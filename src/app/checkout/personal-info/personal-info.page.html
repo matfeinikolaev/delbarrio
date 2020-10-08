@@ -9,15 +9,14 @@
     </ion-toolbar>
   </ion-header>
 <ion-content id="ionContent">
-    <div class="spinner" ><ion-spinner> </ion-spinner></div>
     <div #form style="height: 100%">
         <ion-list>
             <form> 
                 <ion-item lines="full" >
                     <ion-label position="stacked" color="medium">{{"TIPO DE CLIENTE" | translate}}</ion-label>
                     <ion-select required type="text" [(ngModel)]="settings.user.billing_company_type" name="company_type"> 
-                        <ion-select-option value="" selected="selected">Seleccione</ion-select-option>
-                        <ion-select-option value="Persona Natural" >Persona Natural</ion-select-option>
+                        <!-- <ion-select-option value="">Seleccione</ion-select-option> -->
+                        <ion-select-option value="Persona Natural"  selected="selected">Persona Natural</ion-select-option>
                         <ion-select-option value="Empresa" >Empresa</ion-select-option>
                     </ion-select>
                 </ion-item>
@@ -25,8 +24,8 @@
                     <ion-label position="stacked" color="medium">{{"TIPO DE IDENTIFICACIÓN" | translate}}</ion-label>
                     <!-- <ion-input required type="text" [(ngModel)]="checkoutData.form.billing_document_type" name="document_type"> </ion-input> -->
                     <ion-select required  [(ngModel)]="settings.user.billing_document_type" name="billing_document_type" id="billing_document_type" class="select " data-allow_clear="true" data-placeholder="Seleccione">
-                        <ion-select-option value="" selected="selected">Seleccione</ion-select-option>
-                        <ion-select-option value="01">Cédula de identidad</ion-select-option>
+                        <!-- <ion-select-option value="">Seleccione</ion-select-option> -->
+                        <ion-select-option value="01" selected="selected">Cédula de identidad</ion-select-option>
                         <ion-select-option value="02">RUC</ion-select-option>
                         <ion-select-option value="03">Pasaporte</ion-select-option>
                         <ion-select-option value="04">ID del exterior</ion-select-option>
