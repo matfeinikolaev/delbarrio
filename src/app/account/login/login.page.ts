@@ -59,7 +59,7 @@ export class LoginPage implements OnInit {
         this.path = this.navParams.data.path;
     }
     async onSubmit(request = this.form.value) {
-        this.disableSubmit = true;
+        //this.disableSubmit = true;
         await this.api.postItem('login', request).then(res => {
             this.status = res;
             console.log(this.status);
@@ -315,7 +315,6 @@ export class LoginPage implements OnInit {
       this.slides.slideTo(1);
     }
     async onRegister() {
-        this.disableSubmit = true;
         await this.api.postItem('create-user', this.formRegister.value).then(res => {
             this.status = res;
             if (this.status.errors) {
@@ -337,7 +336,6 @@ export class LoginPage implements OnInit {
                 this.close(true);
                 this.disableSubmit = false;
             }
-            else this.disableSubmit = false;
         }, err => {
             this.disableSubmit = false;
         });

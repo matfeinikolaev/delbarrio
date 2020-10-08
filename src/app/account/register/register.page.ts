@@ -31,7 +31,7 @@ export class RegisterPage implements OnInit {
     }
     ngOnInit() {}
     async onSubmit() {
-        this.disableSubmit = true;
+        //this.disableSubmit = true;
         await this.api.postItem('create-user', this.form.value).then(res => {
             this.status = res;
             if (this.status.errors) {
