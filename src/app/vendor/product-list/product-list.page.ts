@@ -21,6 +21,7 @@ export class ProductListPage {
     hasMoreItems: boolean = true;
     loader: boolean = false;
     searchInput: any;
+    store: any;
     constructor(public platform: Platform, public alertController: AlertController, public modalController: ModalController, public api: ApiService, public data: Data, public product: Product, public store: Store, public settings: Settings, public router: Router, public navCtrl: NavController, public route: ActivatedRoute) {
         this.filter.page = 1;
         // this.filter.vendor = this.settings.customer.id;
@@ -77,6 +78,17 @@ export class ProductListPage {
             console.log(err);
         });
     }
+    getStore() {
+        this.api.postItem('get_user_sites', {id: this.settings.user.id}).then(res => {
+            this.store = res;
+        }, err => {
+            console.error(err);
+        }).finally().then(() => {
+            // this.http.post(this.store + "get_all_products")
+        }, err => {
+            console.error(err);
+        });
+    }
     ngOnInit() {
         console.log(this);
         this.filter.category = this.route.snapshot.paramMap.get('id');
@@ -88,8 +100,12 @@ export class ProductListPage {
             }
         }
         if (this.settings.colWidthProducts == 4) this.filter.per_page = 15;
-        this.getProducts();
-        this.getAttributes();
+        if (this.settings.user.userIsManager) {
+            this.getStore();
+        } else {
+            this.getProducts();
+            this.getAttributes();
+        }
     }
     onInput() {
         this.filter.page = 1;

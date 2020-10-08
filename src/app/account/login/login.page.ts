@@ -90,9 +90,13 @@ export class LoginPage implements OnInit {
                     this.settings.administrator = true;
                     window.localStorage.setItem ("user_admin", '1');
                 }
+                this.settings.user.roles = JSON.stringify(this.status.roles);
+                this.settings.user.userRoles = JSON.parse(this.settings.user.roles);
+                this.settings.user.userIsManager = this.settings.user.userRoles.includes("shop_manager");
                 this.close(true);
             }
             window.localStorage.setItem ("user_id", this.settings.user.ID);
+            window.localStorage.setItem ("roles", this.settings.user.roles);
             window.localStorage.setItem ("managed_sites", this.settings.user.managed_sites);
             window.localStorage.setItem ("user_deleted", this.settings.user.deleted);
             window.localStorage.setItem ("user_display_name", this.settings.user.display_name);
@@ -158,11 +162,15 @@ export class LoginPage implements OnInit {
                         this.settings.administrator = true;
                         window.localStorage.setItem ("user_admin", '1');
                     }
+                    this.settings.user.roles = JSON.stringify(this.status.roles);
+                    this.settings.user.userRoles = JSON.parse(this.settings.user.roles);
+                    this.settings.user.userIsManager = this.settings.user.userRoles.includes("shop_manager");
                     this.close(true);
                 }
                 this.googleLogingInn = false;
                 this.dismissLoading();
                 window.localStorage.setItem ("user_id", this.settings.user.ID);
+                window.localStorage.setItem ("roles", this.settings.user.roles);
                 window.localStorage.setItem ("managed_sites", this.settings.user.managed_sites);
                 window.localStorage.setItem ("user_deleted", this.settings.user.deleted);
                 window.localStorage.setItem ("user_display_name", this.settings.user.display_name);
@@ -219,11 +227,15 @@ export class LoginPage implements OnInit {
                         this.settings.administrator = true;
                         window.localStorage.setItem ("user_admin", '1');
                     }
+                    this.settings.user.roles = JSON.stringify(this.status.roles);
+                    this.settings.user.userRoles = JSON.parse(this.settings.user.roles);
+                    this.settings.user.userIsManager = this.settings.user.userRoles.includes("shop_manager");
                     this.close(true);
                 }
                 this.facebookLogingInn = false;
                 this.dismissLoading();
                 window.localStorage.setItem ("user_id", this.settings.user.ID);
+                window.localStorage.setItem ("roles", this.settings.user.roles);
                 window.localStorage.setItem ("managed_sites", this.settings.user.managed_sites);
                 window.localStorage.setItem ("user_deleted", this.settings.user.deleted);
                 window.localStorage.setItem ("user_display_name", this.settings.user.display_name);
@@ -290,10 +302,14 @@ export class LoginPage implements OnInit {
                         this.settings.administrator = true;
                         window.localStorage.setItem ("user_admin", '1');
                     }
+                    this.settings.user.roles = JSON.stringify(this.status.roles);
+                    this.settings.user.userRoles = JSON.parse(this.settings.user.roles);
+                    this.settings.user.userIsManager = this.settings.user.userRoles.includes("shop_manager");
                     this.close(true);
                 }
                 this.phoneLogingInn = false;            
                 window.localStorage.setItem ("user_id", this.settings.user.ID);
+                window.localStorage.setItem ("roles", this.settings.user.roles);
                 window.localStorage.setItem ("managed_sites", this.settings.user.managed_sites);
                 window.localStorage.setItem ("user_deleted", this.settings.user.deleted);
                 window.localStorage.setItem ("user_display_name", this.settings.user.display_name);

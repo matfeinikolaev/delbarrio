@@ -12,6 +12,8 @@ import { ApiService } from './../api.service';
 })
 export class TabsPage {
   location: any = window.location.pathname;
+  userRoles: any;
+  userIsManager: any;
 	constructor(public api: ApiService, public data: Data, public settings: Settings, public platform: Platform, public navCtrl: NavController, public modCtlr: ModalController, public route: ActivatedRoute, public router: Router){
   }
   ngOnInit() {
@@ -22,6 +24,7 @@ export class TabsPage {
         this.settings.customer.id = window.localStorage.user_id;
         this.settings.user = {};
         this.settings.user.ID = window.localStorage.user_id;
+        this.settings.user.roles = window.localStorage.roles;
         this.settings.user.managed_sites = window.localStorage.getItem("managed_sites");
         this.settings.user.deleted = window.localStorage.user_deleted;
         this.settings.user.display_name = window.localStorage.user_display_name;
@@ -40,6 +43,8 @@ export class TabsPage {
         if (window.localStorage.user_vendor == '1') {
             this.settings.vendor = true;
         }
+        this.settings.user.userRoles = JSON.parse(this.settings.user.roles);
+        this.settings.user.userIsManager = this.settings.user.userRoles.includes("shop_manager");
       }
     });
   }

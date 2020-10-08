@@ -69,6 +69,9 @@ export class HomePage {
     }
     ngOnInit() {
         this.platform.ready().then(() => {
+            if (this.settings.user.userIsManager) {
+                this.navCtrl.navigateForward("tabs/account");
+            }
             this.sendNotification();
             this.locationAccuracy.canRequest().then((canRequest: boolean) => {
               if(canRequest) {

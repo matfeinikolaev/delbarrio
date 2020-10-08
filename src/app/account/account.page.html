@@ -28,14 +28,6 @@
     </ion-grid-->
 </ion-header>
 <ion-content>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button style="font-size: 4vw;" text="{{'Atrás' | translate}}" defaultHref="/tabs/home"></ion-back-button> <!--defaultHref="/tabs/home/store/{{store.id}}"-->
-    </ion-buttons>
-    <ion-title style="font-size: 4vw;" >
-      {{"" | translate}}
-    </ion-title>
-  </ion-toolbar>
   <div style="text-align: center;height: 25%">
     <img class="logo" src="assets/image/logo.png" style="height: 100%">
   </div>
@@ -72,7 +64,25 @@
         </ion-grid>
       </div>
 
-    <ion-list *ngIf="settings.user || settings.customer.id">
+    <!-- <div *ngIf="settings.user"> -->
+      <ion-list *ngIf="settings.user?.userIsManager">
+        <ion-item style="margin-bottom: 5%;" (click)="goTo('tabs/account/vendor-stores/view-store/')"  detail="true" lines="inset" class="ion-activatable">
+            <ion-icon style="background-color: var(--ion-color-danger, #eb445a); color: white; font-size: 4vw;" class="icon-start ion-margin-end" name="basket" mode="md" slot="start"></ion-icon>
+            <ion-label style="font-size: 4vw; margin-left: 5%">{{"Productos" | translate}}</ion-label>
+        </ion-item>
+        <ion-item style="margin-bottom: 5%;" (click)="goTo('tabs/account/vendor-orders')" detail="true" lines="inset" class="ion-activatable">
+            <ion-icon style="background-color: var(--ion-color-danger, #eb445a); color: white; font-size: 4vw;" class="icon-start ion-margin-end" name="document" mode="md" slot="start"></ion-icon>
+            <ion-label style="font-size: 4vw; margin-left: 5%">{{"Pedidos" | translate}}</ion-label>
+        </ion-item>
+        <ion-item style="margin-bottom: 5%;"detail="true"  lines="inset" class="ion-activatable" (click)="log_out()" *ngIf="settings.customer?.id">
+          <ion-icon style="background-color: var(--ion-color-danger, #eb445a); color: white; font-size: 4vw;" class="icon-start ion-margin-end" name="log-out" mode="md" slot="start"></ion-icon>
+          <ion-label style="font-size: 4vw; margin-left: 5%">{{"Salir" | translate}}</ion-label>
+      </ion-item>
+      </ion-list>
+    <!-- </div> -->
+
+
+    <ion-list *ngIf="(settings.user || settings.customer.id) && !settings.user?.userIsManager">
         
         <ion-item style="margin-bottom: 5%;"(click)="goTo('tabs/account/wallet')" *ngIf="settings.customer?.id && settings.settings?.enable_wallet"  detail="true" lines="inset" class="ion-activatable">
             <ion-icon style="background-color: var(--ion-color-danger, #eb445a); color: white; font-size: 4vw;" class="icon-start ion-margin-end" name="wallet" mode="md" slot="start"></ion-icon>
