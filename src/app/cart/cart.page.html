@@ -1,7 +1,7 @@
 <ion-header mode='ios'>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button style="font-size: 4vw;" text="{{'Atrás' | translate}}" defaultHref="/tabs/home/store/{{data.store.ID}}"></ion-back-button> <!--defaultHref="/tabs/home/store/{{store.id}}"-->
+      <ion-back-button style="font-size: 4vw;" text="{{'Atrás' | translate}}" defaultHref="/tabs/home/store/{{data.store.ID}}"></ion-back-button>
    </ion-buttons>
     <ion-title style="font-size: 4vw;">
       {{"Carrito" | translate}}
@@ -201,7 +201,7 @@
               <ion-item *ngIf="cardResponse.cardNumber">
                 <ion-label text-wrap color="medium" >
                   <ion-text>
-                    <h3>{{"NÚMERO DE TARGETA" | translate}}</h3>
+                    <h3>{{"NÚMERO DE TARJETA" | translate}}</h3>
                   </ion-text>
                   <p>{{cardResponse.cardNumber}}</p>
                 </ion-label>

@@ -142,11 +142,13 @@ export class CartPage {
     backToStore() {
         this.navCtrl.navigateForward('/tabs/home/store/' + this.id);
     }
-    checkout() {
+    async checkout() {
         if(this.settings.customer.id || this.settings.settings.disable_guest_checkout == 0) {
             this.navCtrl.navigateForward('/tabs/cart/address' + this.store.path);
         }
-        else this.login();
+        else{
+            this.login();
+        }
     }
     getProduct(id){
         this.productData.product = {};
@@ -261,12 +263,22 @@ export class CartPage {
               swipeToClose: true,
               //presentingElement: this.routerOutlet.nativeEl,
           });
-          modal.present();
-          const { data } = await modal.onWillDismiss();
 
-            if(this.settings.customer.id) {
-                this.navCtrl.navigateForward('/tabs/cart/address' + this.store.path);
-            }
+        //modal.onDidDismiss(())
+        modal.present();
+        const { data } = await modal.onWillDismiss();
+
+        if(this.settings.customer.id) {
+            await this.api.updateOrderReview('update_order_review', this.checkoutData.form, this.store.path).subscribe(res => {
+                this.orderReview = res;
+                this.changingData = false;
+                // this.handleData(res);
+            }, err => {
+                console.log(err);
+                this.changingData = false;
+            });
+            this.navCtrl.navigateForward('/tabs/cart/address' + this.store.path);
+        }
     }
     async onSubmit(userData) {
         this.loginForm.username = userData.username;
