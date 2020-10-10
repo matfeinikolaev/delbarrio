@@ -92,7 +92,7 @@
             <ion-select-option style=" width:100%;" *ngFor="let main of store.categories; let i = index" text-wrap value="{{main.id}}">{{main.name}}</ion-select-option>
          </ion-select>
       </ion-col>
-      <ion-col *ngIf="store.ordering">
+      <ion-col *ngIf="store.ordering && data.storeCategory.term_id != 45">
          <ion-select multiple="false" placeholder="Ordenar por" [(ngModel)]="chosenOrder" (ionChange)="getProducts()" style="color: #687e95; float:right; clear: both;--placeholder-opacity: 1; ; width: 100%">
             <ion-select-option style=" width:100%;" *ngFor="let order of store.ordering | keys" text-wrap value="{{order.key}}">{{order.value}}</ion-select-option>
          </ion-select>

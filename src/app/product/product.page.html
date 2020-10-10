@@ -128,12 +128,18 @@
          <ion-label>{{"Vendido por" | translate }} - {{product.vendor.name}}</ion-label>
          </ion-chip>
 
-         <ion-item lines="none">
+         <ion-item lines="none" *ngIf="!priceWithAddons || priceWithAddons == product.price">
             <ion-label *ngIf="product.sale_price">
                <span class="price" style="font-size: 4vw" [innerHTML]="product.formated_sales_price"></span><del><span class="special-price"  style="font-size: 3vw" [innerHTML]="product.formated_price"></span></del>
             </ion-label>
             <ion-label *ngIf="!product.sale_price">
                <span class="price" style="font-size: 4vw" [innerHTML]="product.formated_price"></span>
+            </ion-label>
+         </ion-item>
+
+         <ion-item lines="none" *ngIf="priceWithAddons && priceWithAddons != product.price">
+            <ion-label>
+               <span class="price" style="font-size: 4vw">{{priceWithAddons | currency:settings.currency:'symbol':'1.2-2'}}</span>
             </ion-label>
          </ion-item>
 
@@ -172,17 +178,17 @@
                   <ion-label *ngIf="item.name">{{item.name}}</ion-label>
                   <ion-label *ngIf="item.label && !item.name">{{item.label}}</ion-label>
 
-                  <ion-select required="{{item.required == 1 ? true : false}}" [(ngModel)]="item.selected" multiple="true" *ngIf="(item.type == 'checkbox' || item.operator == 'OR') && item.options.length">
-                     <ion-select-option *ngFor="let option of item.options" value="{{option.label}}">{{option.label}}<span *ngIf="option.price"> + {{option.price | currency:settings.currency:true:'1.2-2'}}</span></ion-select-option> 
+                  <ion-select required="{{item.required == 1 ? true : false}}" [(ngModel)]="item.selected" (ngModelChange)="addAddonPrice()" multiple="true" *ngIf="(item.type == 'checkbox' || item.operator == 'OR') && item.options.length">
+                     <ion-select-option  *ngFor="let option of item.options" value="{{option.label}}">{{option.label}}<span *ngIf="option.price"  > + {{option.price | currency:settings.currency:true:'1.2-2'}}</span></ion-select-option> 
                      <!-- {name: '{{item.name}}', value: '{{option.label}}', price: '{{option.price}}', add_on_type: '{{item.type}}', type_id: '{{item.id}}', price_type: '{{option.type}}', sold_individually: '{{item.sold_individually}}', calculate_quantity_sum: '{{item.calculate_quantity_sum}}'}" -->
                   </ion-select>
 
-                  <ion-select required="{{item.required == 1 ? true : false}}" [(ngModel)]="item.selected" *ngIf="(item.type == 'radiobutton' || item.operator == 'AND') && item.options.length">
-                     <ion-select-option *ngFor="let option of item.options" value="{{option.label}}">{{option.label}}<span *ngIf="option.price"> + {{option.price | currency:settings.currency:true:'1.2-2'}}</span></ion-select-option>
+                  <ion-select required="{{item.required == 1 ? true : false}}" [(ngModel)]="item.selected" (ngModelChange)="addAddonPrice()" *ngIf="(item.type == 'radiobutton' || item.operator == 'AND') && item.options.length">
+                     <ion-select-option  *ngFor="let option of item.options" value="{{option.label}}">{{option.label}}<span *ngIf="option.price"  > + {{option.price | currency:settings.currency:true:'1.2-2'}}</span></ion-select-option>
                   </ion-select>
 
-                  <ion-select required="{{item.required == 1 ? true : false}}" [(ngModel)]="item.selected" *ngIf="item.type == 'select' && item.options.length">
-                     <ion-select-option *ngFor="let option of item.options" value="{{option.label}}">{{option.label}}<span *ngIf="option.price"> + {{option.price | currency:settings.currency:true:'1.2-2'}}</span></ion-select-option>
+                  <ion-select required="{{item.required == 1 ? true : false}}" [(ngModel)]="item.selected" (ngModelChange)="addAddonPrice()" *ngIf="item.type == 'select' && item.options.length">
+                     <ion-select-option  *ngFor="let option of item.options" value="{{option.label}}">{{option.label}}<span *ngIf="option.price"  > + {{option.price | currency:settings.currency:true:'1.2-2'}}</span></ion-select-option>
                   </ion-select>
 
                </ion-item>
@@ -255,34 +261,34 @@
             </ion-col>
             </ion-row>
             <ion-row class="ion-align-items-center ion-justify-content-center" *ngIf="product.type != 'variable'">
-            <ion-col *ngIf="data.cart[product.id] == undefined || data.cart[product.id] == 0">
-               <ion-button *ngIf="product.price != 0 && product.stock_status == 'instock'" style="--border-radius: 64px 64px 64px 64px;" mode="ios" expand="block" color="{{settings.theme.button}}"  (click)="addToCart(product)">
-                  <!-- [disabled]="product.price == 0 && product.regular_price == 0 && product.sale_price == 0" -->
-                  {{"Añadir"  | translate}}
-               </ion-button>
-               <ion-button *ngIf="product.price == 0 || product.stock_status=='outofstock'"  mode="ios" expand="block" color="primary"  (click)="notifyClient(product)">
-                  <!-- [disabled]="product.price == 0 && product.regular_price == 0 && product.sale_price == 0" -->
-                  {{ "Avisar, cuando llega" | translate}}
-               </ion-button>
+               <ion-col *ngIf="data.cart[product.id] == undefined || data.cart[product.id] == 0 || addonsList?.length">
+                  <ion-button *ngIf="product.price != 0 && product.stock_status == 'instock'" style="--border-radius: 64px 64px 64px 64px;" mode="ios" expand="block" color="{{settings.theme.button}}"  (click)="addToCart(product)">
+                     <!-- [disabled]="product.price == 0 && product.regular_price == 0 && product.sale_price == 0" -->
+                     {{"Añadir"  | translate}}
+                  </ion-button>
+                  <ion-button *ngIf="product.price == 0 || product.stock_status=='outofstock'"  mode="ios" expand="block" color="primary"  (click)="notifyClient(product)">
+                     <!-- [disabled]="product.price == 0 && product.regular_price == 0 && product.sale_price == 0" -->
+                     {{ "Avisar, cuando llega" | translate}}
+                  </ion-button>
                </ion-col>
-               <ion-col style="text-align: center;" *ngIf="data.cart[product.id] >= 1" align-self-end>
-            <ion-row>
-               <ion-col>
-                     <ion-button style="--border-radius: 64px 0 0 64px;" mode="ios" expand="block" color="{{settings.theme.button}}" (click)="deleteFromCart(product)">
-                     <ion-icon slot="icon-only" name="remove-circle-outline"></ion-icon>
-                     </ion-button>
+               <ion-col style="text-align: center;" *ngIf="data.cart[product.id] >= 1 && !addonsList?.length" align-self-end>
+                  <ion-row>
+                     <ion-col>
+                           <ion-button style="--border-radius: 64px 0 0 64px;" mode="ios" expand="block" color="{{settings.theme.button}}" (click)="deleteFromCart(product)">
+                           <ion-icon slot="icon-only" name="remove-circle-outline"></ion-icon>
+                           </ion-button>
+                     </ion-col>
+                     <ion-col>
+                           <ion-button expand="full" mode="ios" fill="outline" color="{{settings.theme.button}}" *ngIf="data.cart[product.id] >= 1">{{data.cart[product.id]}}
+                           </ion-button>
+                     </ion-col>
+                     <ion-col>
+                           <ion-button style="--border-radius: 0 64px 64px 0;" mode="ios" expand="block" color="{{settings.theme.button}}"  *ngIf="data.cart[product.id] >= 1" (click)="updateToCart(product)">
+                           <ion-icon slot="icon-only" name="add-circle-outline"></ion-icon>
+                           </ion-button>
+                     </ion-col>
+                  </ion-row>
                </ion-col>
-               <ion-col>
-                     <ion-button expand="full" mode="ios" fill="outline" color="{{settings.theme.button}}" *ngIf="data.cart[product.id] >= 1">{{data.cart[product.id]}}
-                     </ion-button>
-               </ion-col>
-               <ion-col>
-                     <ion-button style="--border-radius: 0 64px 64px 0;" mode="ios" expand="block" color="{{settings.theme.button}}"  *ngIf="data.cart[product.id] >= 1" (click)="updateToCart(product)">
-                     <ion-icon slot="icon-only" name="add-circle-outline"></ion-icon>
-                     </ion-button>
-               </ion-col>
-            </ion-row>
-            </ion-col>
             </ion-row>
          </div>
 

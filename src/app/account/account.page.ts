@@ -47,10 +47,11 @@ export class AccountPage {
     userInfo: any;
     phoneVerificationError: any;
     loading: any;
+    userRoles: any;
+    userIsManager: any;
     constructor(public localNotifications: LocalNotifications, public data: Data, public loadingController: LoadingController, public oneSignal: OneSignal, public modalController: ModalController, private statusBar: StatusBar, private config: Config, public api: ApiService, public navCtrl: NavController, public settings: Settings, public platform: Platform, private appRate: AppRate, private emailComposer: EmailComposer, private socialSharing: SocialSharing, public routerOutlet: IonRouterOutlet, public storeData: Store, private googlePlus: GooglePlus, private facebook: Facebook, private account: AccountApi) {}
     goTo(path) {
         this.navCtrl.navigateForward(path);
-
     }
     async log_out() {
         this.settings.user = undefined;
@@ -60,6 +61,7 @@ export class AccountPage {
         this.settings.wishlist = [];
         if (window.localStorage.user_id != null) {
             window.localStorage.removeItem ("user_id");
+            window.localStorage.removeItem ("roles");
             window.localStorage.removeItem ("user_deleted");
             window.localStorage.removeItem ("user_display_name");
             window.localStorage.removeItem ("user_spam");
@@ -116,39 +118,9 @@ export class AccountPage {
         this.emailComposer.open(email);
     }
     async ngOnInit() {
-        await this.localNotifications.requestPermission();
         console.log(this);
         this.platform.ready().then(() => {
-            // if (window.localStorage.googleLogin == '1') {
-            //     this.account.googleLogin();
-            // }
-            // if (window.localStorage.facebookLogin == '1') {
-            //     this.account.facebookLogin();
-            // }
-            // if (window.localStorage.user_id != null) {
-            //     // this.account.login({'username': window.localStorage.username, 'password': window.localStorage.password});
-            //     console.log(window.localStorage);
-            //     this.settings.customer.id = window.localStorage.user_id;
-            //     this.settings.user = {};
-            //     this.settings.user.ID = window.localStorage.user_id;
-            //     this.settings.user.deleted = window.localStorage.user_deleted;
-            //     this.settings.user.display_name = window.localStorage.user_display_name;
-            //     this.settings.user.spam = window.localStorage.user_spam;
-            //     this.settings.user.user_activation_key = window.localStorage.user_activation_key;
-            //     this.settings.user.user_email = window.localStorage.user_email;
-            //     this.settings.user.user_login = window.localStorage.user_login;
-            //     this.settings.user.user_nicename = window.localStorage.user_nicename;
-            //     this.settings.user.user_pass = window.localStorage.user_pass;
-            //     this.settings.user.user_registered = window.localStorage.user_registered;
-            //     this.settings.user.user_status = window.localStorage.user_status;
-            //     this.settings.user.user_url = window.localStorage.user_url;
-            //     if (window.localStorage.user_admin == '1') {
-            //         this.settings.administrator = true;
-            //     }
-            //     if (window.localStorage.user_vendor == '1') {
-            //         this.settings.vendor = true;
-            //     }
-            // }
+            this.localNotifications.requestPermission();
         }, err => {
             console.log(err);
         });
@@ -195,8 +167,6 @@ export class AccountPage {
                 console.error(err);
             });
         }
-
-
     }
     async login() {
         const modal = await this.modalController.create({
@@ -258,6 +228,9 @@ export class AccountPage {
                       this.settings.administrator = true;
                       window.localStorage.setItem ("user_admin", '1');
                   }
+                  this.settings.user.roles = JSON.stringify(this.status.roles);
+                  this.settings.user.userRoles = JSON.parse(this.settings.user.roles);
+                  this.settings.user.userIsManager = this.settings.user.userRoles.includes("shop_manager");
                   this.close(true);
               }
               this.googleLogingInn = false;
@@ -266,6 +239,7 @@ export class AccountPage {
               window.localStorage.setItem ("googleLogin", '1');
               window.localStorage.setItem ("user_id", this.settings.user.ID);
               window.localStorage.setItem ("managed_sites", this.settings.user.managed_sites);
+              window.localStorage.setItem ("roles", this.settings.user.roles);
               window.localStorage.setItem ("user_deleted", this.settings.user.deleted);
               window.localStorage.setItem ("user_display_name", this.settings.user.display_name);
               window.localStorage.setItem ("user_spam", this.settings.user.spam);
@@ -320,6 +294,9 @@ export class AccountPage {
                       this.settings.administrator = true;
                       window.localStorage.setItem ("user_admin", '1');
                   }
+                  this.settings.user.roles = JSON.stringify(this.status.roles);
+                  this.settings.user.userRoles = JSON.parse(this.settings.user.roles);
+                  this.settings.user.userIsManager = this.settings.user.userRoles.includes("shop_manager");
                   this.close(true);
               }
               this.facebookLogingInn = false;
@@ -327,6 +304,7 @@ export class AccountPage {
               window.localStorage.setItem ("facebookLogin", '1');
               window.localStorage.setItem ("user_id", this.settings.user.ID);
               window.localStorage.setItem ("managed_sites", this.settings.user.managed_sites);
+              window.localStorage.setItem ("roles", this.settings.user.roles);
               window.localStorage.setItem ("user_deleted", this.settings.user.deleted);
               window.localStorage.setItem ("user_display_name", this.settings.user.display_name);
               window.localStorage.setItem ("user_spam", this.settings.user.spam);

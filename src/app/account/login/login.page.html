@@ -44,7 +44,7 @@
               </ion-item>
              </form>
             </ion-list>
-            <ion-button color="danger" expand="block"  fill="solid" [disabled]="disableSubmit" (click)="onSubmit()">{{"LOGIN" | translate}}</ion-button>
+            <ion-button color="danger" expand="block"  fill="solid" (click)="onSubmit()">{{"LOGIN" | translate}}</ion-button>
             <ion-button style="margin-top: 0px;" color="dark" expand="full" fill="clear" (click)="forgotton()" style="margin-top: 10%;">{{"Se te olvidó tu contraseña"| translate}}?</ion-button>
             <div class="errors" *ngIf="errors">
               <div *ngFor="let error of errors | keys" style="text-align: center; padding-top: 10px;">
@@ -83,7 +83,7 @@
         </form>
         </ion-list>
 
-        <ion-button id="pruebas" color="danger" expand="block"  fill="solid" [disabled]="disableSubmit" (click)="onSubmit()">{{"REGISTRAR" | translate}}</ion-button>
+        <ion-button id="pruebas" color="danger" expand="block"  fill="solid"  (click)="onSubmit()">{{"REGISTRAR" | translate}}</ion-button>
 
         <div class="errors" *ngIf="errorsRegister">
           <div *ngFor="let error of errorsRegister | keys" style="text-align: center; padding-top: 20px;">

@@ -139,10 +139,10 @@ export class EditProductPage {
     }
     async saveProduct() {
         this.disableButton = true;
-        this.product.categories = [];
-        this.product.post_title = this.product.name;
-        this.product.post_name = this.product.name.toLowerCase();
-        this.product.post_status = this.product.status;
+        // this.product.categories = [];
+        // this.product.post_title = this.product.name;
+        // this.product.post_name = this.product.name.toLowerCase();
+        // this.product.post_status = this.product.status;
         for (let id in this.categories) {
             this.product.categories[id] = {
                 id: parseInt(this.categories[id])
@@ -150,6 +150,8 @@ export class EditProductPage {
         }
         if (this.product.images.length) this.product.images[0].position = 0;
         if (this.product.type == 'external') this.product.manage_stock = false;
+        this.product.ID = this.product.id;
+        this.product.post_id = this.product.id;
         await this.api.postItem('update_product', this.product, this.product.path).then(res => {
             // this.product = res;
             console.log(res);

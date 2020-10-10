@@ -60,7 +60,11 @@ export class StoreListPage {
     }
     async getStores() {
         // this.loader = true;
+<<<<<<< HEAD
         this.filter.managed_stores = JSON.stringify(this.settings.user.managed_stores);
+=======
+        this.filter.managed_sites = JSON.stringify(this.settings.user.managed_sites);
+>>>>>>> f39bce94564ef8163f4746451bc1535bdf6a3188
         await this.api.postItem('get_user_stores', this.filter).then(res => {
             console.log(this.filter);
             console.log(res);

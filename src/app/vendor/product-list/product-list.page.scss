@@ -32,6 +32,12 @@ ion-searchbar {
         margin-top: 20px;
         width: 100%;
     }
+    .chunk-slide.md.swiper-slide.swiper-zoom-container.hydrated.swiper-slide-active {
+        width: 100%;
+    }
+    .md.swiper-slide.swiper-zoom-container.hydrated.swiper-slide-active {
+        width: 100%;
+    }
 }
 
 @media screen and (max-width: 415px) {
@@ -163,6 +169,11 @@ ion-searchbar {
 }
 
 ion-content {
+    ::ng-deep {
+        #chunk-slider {
+            width:100%;
+        }
+    }
     ion-label {
         @media screen and (min-width: 540px) {
             font-size: 3vw;

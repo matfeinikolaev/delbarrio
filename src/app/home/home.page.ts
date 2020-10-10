@@ -86,6 +86,9 @@ export class HomePage {
             this.nativeStorage.getItem('settings').then((settings : any) => {
                 this.config.lang = settings.lang;
                 document.documentElement.setAttribute('dir', settings.dir);
+                if (this.settings.user.userIsManager) {
+                    this.navCtrl.navigateForward("tabs/account");
+                }
             }, error => {
             });
 
@@ -159,6 +162,9 @@ export class HomePage {
         }
     }
     getBlocks() {
+        if (this.settings.user.userIsManager) {
+            this.navCtrl.navigateForward("tabs/account");
+        }
         this.api.postItem('get_store_categories').then(res => {
             this.stores = res;
             this.data.storeCategories = res;
