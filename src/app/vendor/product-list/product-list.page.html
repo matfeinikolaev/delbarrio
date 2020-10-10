@@ -6,7 +6,7 @@
     <ion-title style="font-size: 4vw;">
       {{"Productos" | translate}}
     </ion-title>
-    <ion-buttons style="font-size: 4vw;" slot="end" fill="clear" (click)="getFilter()"><ion-icon style="font-size: 4vw;" name="funnel" style="margin-right: 8px;font-size: 4vw"></ion-icon></ion-buttons>
+    <ion-buttons style="font-size: 4vw;" *ngIf="!settings.user.userIsManager" slot="end" fill="clear" (click)="getFilter()"><ion-icon style="font-size: 4vw;" name="funnel" style="margin-right: 8px;font-size: 4vw"></ion-icon></ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -23,6 +23,10 @@
 
   <ion-searchbar mode="ios" *ngIf="!loader" animated [(ngModel)]="searchInput" (ionChange)="onInput()" style="--border-radius:50px 50px 50px 50px; clear:both" placeholder="{{'Buscar productos' | translate}}"></ion-searchbar>
 
+
+  <!-- <ion-item>
+    <ion-button *ngFor="let type of productTypes | keys" fill="clear" (click)="getProductsByType(type.value.status)">{{type.value.name}} ({{type.value.num}})</ion-button>
+  </ion-item> -->
   <!--ion-row>
     <ion-col size="6" size-sm="4" size-md="3" *ngFor="let product of products">
     <ion-card mode="{{settings.settings.mode}}">
@@ -44,30 +48,42 @@
   </ion-card>
 </ion-col>
 </ion-row-->
-
-<ion-item *ngFor="let product of products">
-  <ion-thumbnail slot="start" id="image">
-    <img src="{{product.images[0].src}}" *ngIf="product.images.length">
-    <img style="clear: both;" src="../../../assets/image/logo.png" *ngIf="product.images.length == 0">
-  </ion-thumbnail>
-  <ion-label >
-  <h4 text-wrap>{{product.name}}</h4>
-  <!-- <p [innerHTML]="product.description" class="product-description" ></p> -->
-  <h4>
-    <span class="regular-price" >{{1*product.price | currency:settings.currency:'symbol':'1.2-2'}}</span>
-    <span *ngIf="product.sale_price" class="special-price" ><del>{{1*product.sale_price | currency:settings.currency:'symbol':'1.2-2'}}</del></span>
-  </h4>
-  <p >{{product.stock_quantity==null?0:product.stock_quantity}}</p>
-  <p >{{product.post_status}}</p>
-  <ion-icon style="float: right;"  color="danger" slot="icon-only" (click)="delete(product)" name="trash"></ion-icon> 
-  <ion-button fill="clear" color="primary"  (click)="editProduct(product)">EDITAR</ion-button>
-  <!-- <ion-button fill="clear" color="danger" (click)="delete(product)">BORRAR</ion-button> -->
-  <!-- <ion-icon style="float: right; padding: 10px 10px;" color="primary" slot="icon-only" (click)="editProduct(product)" name="create"></ion-icon>
-  <ion-icon style="float: left; padding: 10px 10px;" color="danger" slot="icon-only" (click)="delete(product)" name="trash"></ion-icon> -->
-</ion-label>
-
+<ion-item *ngIf="!loader">
+  <ion-button fill="clear" (click)="changeSlide('back')" *ngIf="products?.length" [disabled]="products?.length == 1">
+    <ion-icon style="color:#687e95;font-size: 4vw;" name="arrow-back-outline"></ion-icon>
+  </ion-button>
+  <ion-slides #slider style="font-size: 4vw;" (ionSlideDidChange)="ionSlideDidChange()" style="width:60%;">
+    <ion-slide style="color:#687e95; font-size: 4vw; width: 100%;" *ngFor="let slide of products; let i = index">{{i}}</ion-slide>
+  </ion-slides>
+  <ion-button fill="clear" (click)="changeSlide('forward')" *ngIf="products?.length" [disabled]="products?.length == 1">
+    <ion-icon style="color:#687e95;font-size: 4vw;" name="arrow-forward-outline"></ion-icon>
+  </ion-button>
 </ion-item>
-  
+
+<div *ngIf="!loader">
+  <ion-item *ngFor="let product of displayProducts">
+    <ion-thumbnail slot="start" id="image">
+      <img src="{{product.images[0].src}}" *ngIf="product.images.length">
+      <img style="clear: both;" src="../../../assets/image/logo.png" *ngIf="product.images.length == 0">
+    </ion-thumbnail>
+    <ion-label >
+    <h4 text-wrap>{{product.name}}</h4>
+    <!-- <p [innerHTML]="product.description" class="product-description" ></p> -->
+    <h4>
+      <span class="regular-price" >{{1*product.price | currency:settings.currency:'symbol':'1.2-2'}}</span>
+      <span *ngIf="product.sale_price" class="special-price" ><del>{{1*product.sale_price | currency:settings.currency:'symbol':'1.2-2'}}</del></span>
+    </h4>
+    <p >{{product.stock_quantity==null?0:product.stock_quantity}}</p>
+    <p >{{product.post_status}}</p>
+    <ion-icon style="float: right;"  color="danger" slot="icon-only" (click)="delete(product)" name="trash"></ion-icon> 
+    <ion-button fill="clear" color="primary"  (click)="editProduct(product)">EDITAR</ion-button>
+    <!-- <ion-button fill="clear" color="danger" (click)="delete(product)">BORRAR</ion-button> -->
+    <!-- <ion-icon style="float: right; padding: 10px 10px;" color="primary" slot="icon-only" (click)="editProduct(product)" name="create"></ion-icon>
+    <ion-icon style="float: left; padding: 10px 10px;" color="danger" slot="icon-only" (click)="delete(product)" name="trash"></ion-icon> -->
+  </ion-label>
+
+  </ion-item>
+</div>
   <ion-infinite-scroll threshold="100px" *ngIf="hasMoreItems && products?.length" (ionInfinite)="loadData($event)">
     <ion-infinite-scroll-content style="font-size: 4vw;"
       loadingSpinner="bubbles"

@@ -117,7 +117,7 @@ export class StorePage {
                 console.error(err);
             }).then(() => {
                 this.loadingProducts = true;
-                this.api.postItem('products', {include: JSON.stringify(this.store.product_ids[this.store.chosenChunk])}, this.path).then(res => {
+                this.api.postItem('products', {include: JSON.stringify(this.store.product_ids[this.store.chosenChunk]), store_category: this.data.storeCategory.term_id}, this.path).then(res => {
                     console.log(this.store.product_ids[this.store.chosenChunk]);
                     console.log(res);
                     this.loadingProducts = false;

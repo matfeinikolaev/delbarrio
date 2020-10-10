@@ -15,6 +15,7 @@ export class OrderListPage implements OnInit {
     orders: any = [];
     hasMoreItems: boolean = true;
     loader: boolean = true;
+    store_site: any;
     constructor(public actionSheetController: ActionSheetController, public platform: Platform, public api: ApiService, public settings: Settings, public store: Store, public router: Router, public navCtrl: NavController, public route: ActivatedRoute) {
         this.filter.page = 1;
         this.filter.vendor = this.settings.customer.id;
@@ -22,22 +23,81 @@ export class OrderListPage implements OnInit {
             delete this.filter.vendor;
         }
     }
-    ngOnInit() {
+    ionViewWillEnter(){
         console.log(this);
-        if(this.settings.settings.vendorType === 'product_vendor') {
+        this.loader = true;
+        if (this.orders != []) this.orders = [];
+        if(this.settings.user.userIsManager) {
+            this.getStore();
+        } else if(this.settings.settings.vendorType === 'product_vendor') {
             this.getWooCommerceProductVendorOrders();
         } else {
             this.getOrders(); //THIS WORKS FOE WCFM ALSO, DO NOT CHANEG THIS. WCFM API NOT WORKING
         }
-
+    }
+    ngOnInit() {
         //WCFM DO NOT USE THIS. WCFM API THIS IS NOT WORKING
         //this.getWCFMOrders();
     }
-    
+    getStore() {
+        this.api.postItem('get_user_sites', {id: this.settings.user.ID}).then(res => {
+            this.store_site = res;
+            if (window.localStorage.getItem("store_site") != null) {
+                window.localStorage.removeItem("store_site");
+                window.localStorage.setItem("store_site", JSON.stringify(this.store_site.map( a=>a.path )));
+            } else {
+                window.localStorage.setItem("store_site", JSON.stringify(this.store_site.map( a=>a.path )));
+            }
+        }, err => {
+            console.error(err);
+        }).finally().then(() => {
+            this.getOrdersManager(0);
+        }, err => {
+            console.error(err);
+        });
+    }
+    async getOrdersManager(i) {
+        this.loader = true;
+        await this.api.postItem('orders', this.filter, this.store_site[i].path).then(res => {
+            var result: any = res;
+            for ( let order of result ) {
+                switch(order.status) {
+                    case 'on-hold': order.status = 'en-espera'; break;
+                    case 'pending': order.status = 'pendiente'; break;
+                    case 'completed': order.status = 'completado'; break;
+                    case 'cancelled': order.status = 'cancelado'; break;
+                    case 'processing': order.status = 'procesando'; break;
+                    case 'refunded': order.status = 'reembolsado'; break;
+                    case 'failed': order.status = 'fallido'; break;
+                    default: break;
+                }
+            }
+            this.orders = result;
+            this.loader = false;
+        }, err => {
+            console.log(err);
+        }).finally().then(() => {
+            if (i != this.store_site.length - 1) {
+                this.getOrdersManager(i+1);
+            }
+        });
+    }
     getOrders() {
         this.api.postItem('orders', this.filter, this.store.store.post_name).then(res => {
-            console.log(res);
-            this.orders = res;
+            var result: any = res;
+            for ( let order of result ) {
+                switch(order.status) {
+                    case 'on-hold': order.status = 'en-espera'; break;
+                    case 'pending': order.status = 'pendiente'; break;
+                    case 'completed': order.status = 'completado'; break;
+                    case 'cancelled': order.status = 'cancelado'; break;
+                    case 'processing': order.status = 'procesando'; break;
+                    case 'refunded': order.status = 'reembolsado'; break;
+                    case 'failed': order.status = 'fallido'; break;
+                    default: break;
+                }
+            }
+            this.orders = result;
             this.loader = false;
         }, err => {
             console.log(err);

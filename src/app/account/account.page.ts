@@ -61,6 +61,7 @@ export class AccountPage {
         this.settings.wishlist = [];
         if (window.localStorage.user_id != null) {
             window.localStorage.removeItem ("user_id");
+            window.localStorage.removeItem ("roles");
             window.localStorage.removeItem ("user_deleted");
             window.localStorage.removeItem ("user_display_name");
             window.localStorage.removeItem ("user_spam");

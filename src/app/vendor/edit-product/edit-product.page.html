@@ -24,7 +24,12 @@
 
   <ion-item>
       <ion-label position="floating" >{{"Nombre" | translate}}</ion-label>
-      <ion-input required type="text"  [(ngModel)]="product.name" name="name"></ion-input>
+      <ion-input required type="text"  [(ngModel)]="product.post_name" name="name"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating" >{{"Titulo" | translate}}</ion-label>
+    <ion-input required type="text"  [(ngModel)]="product.post_title" name="title"></ion-input>
   </ion-item>
 
   <ion-item style="padding-top:10px">
@@ -40,7 +45,7 @@
 
   <ion-item style="padding-top:10px">
       <ion-label position="floating" >{{"Estado" | translate}}</ion-label>
-      <ion-select value='draft' [(ngModel)]="product.status"  name="status" okText="OK" cancelText="Cancel">
+      <ion-select value='draft' [(ngModel)]="product.post_status"  name="status" okText="OK" cancelText="Cancel">
                <ion-select-option value="draft" >{{"Borrador" | translate}}</ion-select-option>
                <ion-select-option value="publish" >{{"Publicado" | translate}}</ion-select-option>
                <ion-select-option value="pending" >{{"Pendiente" | translate}}</ion-select-option>
@@ -57,12 +62,12 @@
 
   <ion-item>
       <ion-label position="floating" >{{"Breve descripción" | translate}}</ion-label>
-      <ion-textarea rows="4" required type="text"  [(ngModel)]="product.short_description" name="short_description"></ion-textarea>
+      <ion-textarea rows="4" required type="text"  [(ngModel)]="product.post_excerpt" name="short_description"></ion-textarea>
   </ion-item>  
 
   <ion-item>
       <ion-label position="floating" >{{"Descripción" | translate}}</ion-label>
-      <ion-textarea rows="4" required   type="text" [(ngModel)]="product.description" name="description"></ion-textarea>
+      <ion-textarea rows="4" required   type="text" [(ngModel)]="product.post_content" name="description"></ion-textarea>
   </ion-item>
 
   <ion-list-header>
@@ -79,19 +84,20 @@
   </div>
   <ion-item>
       <ion-label position="floating" >{{"Precio regular" | translate}}</ion-label>
-      <ion-input required type="text"  [(ngModel)]="product.regular_price" name="regular_price"></ion-input>
+      <ion-input required type="text"  [(ngModel)]="product._regular_price" name="regular_price"></ion-input>
   </ion-item>
 
   <ion-item>
       <ion-label position="floating" >{{"Precio de venta" | translate}}</ion-label>
-      <ion-input required type="text"  [(ngModel)]="product.sale_price" name="sale_price"></ion-input>
+      <ion-input required type="text"  [(ngModel)]="product._sale_price" name="sale_price"></ion-input>
   </ion-item>
 
 <ion-item>
-    <ion-label position="floating" >{{"Peso" | translate}}</ion-label>
+    <ion-label position="floating">{{"Peso" | translate}}</ion-label>
     <ion-input required type="text"  [(ngModel)]="product.weight" name="weight"></ion-input>
 </ion-item>
 
+<!-- 
   <ion-item class="date">
       <ion-label position="floating" >{{"Fecha de venta desde" | translate}}</ion-label>
       <ion-datetime displayFormat="YYYY-MM-DD"  [(ngModel)]="product.date_on_sale_from" name="date_on_sale_from"></ion-datetime>
@@ -100,37 +106,62 @@
   <ion-item class="date">
       <ion-label position="floating" >{{"Fecha de venta a" | translate}}</ion-label>
       <ion-datetime displayFormat="YYYY-MM-DD"  [(ngModel)]="product.date_on_sale_to" name="date_on_sale_to"></ion-datetime>
-  </ion-item>
+  </ion-item> -->
 
 
   <ion-item>
       <ion-label >{{"Comprable" | translate}}</ion-label>
-      <ion-toggle color="{{settings.theme.button}}"  checked="true" [(ngModel)]="product.purchasable" name="purchasable"></ion-toggle>
+      <ion-toggle color="{{settings.theme.button}}"  checked="true" [(ngModel)]="product._purchasable" name="purchasable"></ion-toggle>
   </ion-item>
 
   <ion-item>
+    <ion-label >{{"Descargable" | translate}}</ion-label>
+    <ion-toggle color="{{settings.theme.button}}"  checked="true" [(ngModel)]="product._downloadable" name="downloadable"></ion-toggle>
+  </ion-item>
+  <ion-item>
+    <ion-label >{{"Virtual" | translate}}</ion-label>
+    <ion-toggle color="{{settings.theme.button}}"  checked="true" [(ngModel)]="product._virtual" name="virtual"></ion-toggle>
+  </ion-item>
+
+
+  <!-- <ion-item>
       <ion-label >{{"En stock" | translate}}</ion-label>
       <ion-toggle color="{{settings.theme.button}}"  checked="true" [(ngModel)]="product.in_stock" name="in_stock"></ion-toggle>
-  </ion-item>
+  </ion-item> -->
 
   <ion-item>
       <ion-label >{{"Se requiere envío" | translate}}</ion-label>
-      <ion-toggle color="{{settings.theme.button}}"  checked="true" [(ngModel)]="product.shipping_required" name="shipping_required"></ion-toggle>
+      <ion-toggle color="{{settings.theme.button}}"  checked="true" [(ngModel)]="product._shipping_required" name="shipping_required"></ion-toggle>
   </ion-item>
 
   <ion-item>
       <ion-label >{{"Vendidos individualmente" | translate}}</ion-label>
-      <ion-toggle color="{{settings.theme.button}}"  checked="true" [(ngModel)]="product.sold_individually" name="sold_individually"></ion-toggle>
+      <ion-toggle color="{{settings.theme.button}}"  checked="true" [(ngModel)]="product._sold_individually" name="sold_individually"></ion-toggle>
   </ion-item>
 
   <ion-item class="option" *ngIf="product.type != 'external'">
     <ion-label >{{"Gestionar stock" | translate}}</ion-label>
-    <ion-toggle color="{{settings.theme.button}}"  checked="true" [(ngModel)]="product.manage_stock" name="manage_stock"></ion-toggle>
+    <ion-toggle color="{{settings.theme.button}}"  checked="true" [(ngModel)]="product._manage_stock" name="manage_stock"></ion-toggle>
 </ion-item>
 
-<ion-item *ngIf="product.manage_stock && product.type != 'external'">
+<ion-item style="padding-top:10px" *ngIf="product._manage_stock">
+  <ion-label position="floating" >{{"Estado de inventario" | translate}}</ion-label>
+  <ion-select value='instock' [(ngModel)]="product._stock_status"  name="status" okText="OK" cancelText="Cancel">
+           <ion-select-option value="instock" >{{"Hay existencias" | translate}}</ion-select-option>
+           <ion-select-option value="outstock" >{{"Agotado" | translate}}</ion-select-option>
+           <!--ion-select-option value="public">public</ion-select-option-->
+  </ion-select>
+</ion-item>
+
+
+<ion-item *ngIf="product._manage_stock && product.type != 'external'">
     <ion-label position="floating" >{{"Cantidad" | translate}}</ion-label>
-    <ion-input required type="number"  [(ngModel)]="product.stock_quantity" name="stock_quantity"></ion-input>
+    <ion-input required type="number"  [(ngModel)]="product._stock" name="_stock"></ion-input>
+</ion-item>
+
+<ion-item>
+    <ion-label position="floating" >{{"SKU" | translate}}</ion-label>
+    <ion-input required type="number"  [(ngModel)]="product._sku" name="_sku"></ion-input>
 </ion-item>
 
   <ion-item style="padding-top:10px" *ngIf="data?.categories">

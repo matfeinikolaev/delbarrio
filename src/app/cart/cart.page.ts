@@ -41,7 +41,11 @@ export class CartPage {
         });
         this.store = this.storeData.store;
         this.id = this.route.snapshot.paramMap.get('storeId');
-        this.getCheckoutForm();
+        this.getCheckoutForm().finally().then(() => {
+            this.updateOrder();
+        }, err => {
+            console.error(err);
+        });
     }
     
     async getCheckoutForm() {
@@ -66,8 +70,6 @@ export class CartPage {
         }, err => {
             console.log(err);
             this.loader = false;
-        }).finally().then(() => {
-            this.updateOrder();
         });
     }
 

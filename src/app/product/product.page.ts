@@ -49,6 +49,7 @@ export class ProductPage {
     unavailableProduct:any;
     store: any;
     incomeMessages: any;
+    priceWithAddons: number = 0;;
     constructor(private fb: FormBuilder ,private config: Config, public translate: TranslateService, public toastController: ToastController, private socialSharing: SocialSharing, public modalCtrl: ModalController, public api: ApiService, public data: Data, public productData: Product, public settings: Settings, public router: Router, public loadingController: LoadingController, public navCtrl: NavController, public alertController: AlertController, public route: ActivatedRoute, public vendor: Vendor, public iab: InAppBrowser) {
         this.filter.page = 1;
         this.quantity = "1";
@@ -465,6 +466,21 @@ export class ProductPage {
                 this.addonsList[i].selected = false;
             }
         }
+    }
+    addAddonPrice() {
+        // console.log(item);
+        this.priceWithAddons = this.product.price;
+        this.addonsList.forEach(item => {
+            if(item.selected) {
+                item.selected.forEach(element => {
+                    var res = item.options.find(option => {
+                        return option.label == element;
+                    });
+                    console.log(res);
+                    this.priceWithAddons += 1*res.price;
+                }); 
+            }
+        });
     }
     getGlobalAddons(){
         this.api.getAddonsList('product-add-ons').then(res => {

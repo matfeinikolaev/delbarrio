@@ -7,6 +7,7 @@ import { Settings } from './../../data/settings';
 import { Product } from './../../data/product';
 import { FilterPage } from './../../filter/filter.page';
 import { Store } from './../../data/store';
+import {IonSlides} from '@ionic/angular';
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.page.html',
@@ -19,9 +20,13 @@ export class ProductListPage {
     filter: any = {};
     attributes: any;
     hasMoreItems: boolean = true;
-    loader: boolean = false;
+    loader: boolean = true;
     searchInput: any;
-    store: any;
+    store_site: any;
+    displayProducts: any;
+    productTypes: any;
+    path: any;
+    @ViewChild("slider", { static: true }) ionSlides: IonSlides;
     constructor(public platform: Platform, public alertController: AlertController, public modalController: ModalController, public api: ApiService, public data: Data, public product: Product, public store: Store, public settings: Settings, public router: Router, public navCtrl: NavController, public route: ActivatedRoute) {
         this.filter.page = 1;
         // this.filter.vendor = this.settings.customer.id;
@@ -61,9 +66,46 @@ export class ProductListPage {
     async getProducts() {
         this.loader = true;
         await this.api.postItem('get_all_products', this.filter, this.store.store.post_name).then(res => {
-            console.log(this.filter);
-            console.log(res);
             this.products = res;
+            this.displayProducts = this.products[0];
+            this.loader = false;
+        }, err => {
+            console.log(err);
+        }).finally().then(() => {
+            this.api.postItem("get_product_types", {}, this.store.store.post_name).then(res => {
+                this.productTypes = res;
+            }, err => {
+                console.error(err);
+            });
+        });;
+    }
+    async getProductsManager(i) {
+        this.loader = true;
+        await this.api.postItem('get_all_products', this.filter, this.store_site[i].path).then(res => {
+            this.products = res;
+            this.displayProducts = this.products[0];
+            this.path = this.store_site[i].path;
+            this.loader = false;
+        }, err => {
+            console.log(err);
+        }).finally().then(() => {
+            if (i != this.store_site.length - 1) {
+                this.getProductsManager(i+1);
+            } else {
+                this.api.postItem("get_product_types", {}, this.store_site[i].path).then(res => {
+                    this.productTypes = res;
+                }, err => {
+                    console.error(err);
+                });
+            }
+        });
+    }
+    getProductsByType(status) {
+        this.filter.status = status;
+        this.loader = true;
+        this.api.postItem('get_all_products', this.filter, this.path).then(res => {
+            this.products = res;
+            this.displayProducts = this.products[0];
             this.loader = false;
         }, err => {
             console.log(err);
@@ -79,15 +121,18 @@ export class ProductListPage {
         });
     }
     getStore() {
-        this.api.postItem('get_user_sites', {id: this.settings.user.id}).then(res => {
-            this.store = res;
+        this.api.postItem('get_user_sites', {id: this.settings.user.ID}).then(res => {
+            this.store_site = res;
         }, err => {
             console.error(err);
         }).finally().then(() => {
-            // this.http.post(this.store + "get_all_products")
+            this.getProductsManager(0);
         }, err => {
             console.error(err);
         });
+    }
+    ionViewWillEnter(){ 
+        this.ngOnInit();
     }
     ngOnInit() {
         console.log(this);
@@ -105,6 +150,40 @@ export class ProductListPage {
         } else {
             this.getProducts();
             this.getAttributes();
+        }
+    }
+    ionSlideDidChange() {
+        this.loader = true;
+        this.ionSlides.getActiveIndex().then(res => {
+            this.displayProducts = this.products[res];
+            this.loader = false;
+        }, err => {
+            console.error(err);
+        });
+    }
+    changeSlide(dir) {
+        this.loader = true;
+        switch (dir) {
+            case "back": 
+                this.ionSlides.slidePrev().then(res => {
+                    this.ionSlides.getActiveIndex().then(res => { 
+                        this.displayProducts = this.products[res];
+                        this.loader = false;
+                    }, err => {
+                        console.error(err);
+                    });
+                });
+                break;
+            case "forward":
+                this.ionSlides.slideNext().then(res => {
+                    this.ionSlides.getActiveIndex().then(res => { 
+                        this.displayProducts = this.products[res];
+                        this.loader = false;
+                    }, err => {
+                        console.error(err);
+                    });
+                });
+                break
         }
     }
     onInput() {
