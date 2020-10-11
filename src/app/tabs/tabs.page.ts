@@ -24,10 +24,7 @@ export class TabsPage {
         this.settings.customer.id = window.localStorage.user_id;
         this.settings.user = {};
         this.settings.user.ID = window.localStorage.user_id;
-<<<<<<< HEAD
-=======
         this.settings.user.roles = window.localStorage.roles;
->>>>>>> f39bce94564ef8163f4746451bc1535bdf6a3188
         this.settings.user.managed_sites = window.localStorage.getItem("managed_sites");
         this.settings.user.deleted = window.localStorage.user_deleted;
         this.settings.user.display_name = window.localStorage.user_display_name;
