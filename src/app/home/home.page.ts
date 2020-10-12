@@ -23,9 +23,7 @@ import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@io
 import { ChatApi } from './../chat/chat.api';
 import { AccountApi } from '../account.api';
 import { format, formatDistance, formatRelative, subDays } from 'date-fns';
-// import { Plugins } from '@capacitor/core';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
-// const { LocalNotifications } = Plugins;
 @Component({
     selector: 'app-home',
     templateUrl: 'home.page.html',

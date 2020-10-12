@@ -1,11 +1,8 @@
 <ion-header mode='ios'>
   <ion-toolbar>
     <ion-buttons slot="start">
-<<<<<<< HEAD
+
       <ion-back-button style="font-size: 4vw;" text="{{'Atrás' | translate}}" defaultHref="/tabs/home/store/{{data.store.ID}}"></ion-back-button>
-=======
-      <ion-back-button style="font-size: 4vw;" text="{{'Atrás' | translate}}" defaultHref="/tabs/home/store/{{data.store.ID}}"></ion-back-button> <!--defaultHref="/tabs/home/store/{{store.id}}"-->
->>>>>>> f39bce94564ef8163f4746451bc1535bdf6a3188
    </ion-buttons>
     <ion-title style="font-size: 4vw;">
       {{"Carrito" | translate}}
@@ -205,11 +202,7 @@
               <ion-item *ngIf="cardResponse.cardNumber">
                 <ion-label text-wrap color="medium" >
                   <ion-text>
-<<<<<<< HEAD
-                    <h3>{{"NÚMERO DE TARJETA" | translate}}</h3>
-=======
                     <h3>{{"NÚMERO DE TARGETA" | translate}}</h3>
->>>>>>> f39bce94564ef8163f4746451bc1535bdf6a3188
                   </ion-text>
                   <p>{{cardResponse.cardNumber}}</p>
                 </ion-label>
@@ -343,6 +336,7 @@
       </ion-item>
       <ion-item>
         <ion-label color="dark" class="ion-text-wrap">{{"Total"}}<span style="float: right">{{orderReview.totals.total}}</span>
+        </ion-label>
         <ion-label color="dark" class="ion-text-wrap">{{"Subtotal"}}<span style="float: right">{{1*cart.cart_totals.subtotal | currency:settings.currency:'symbol':'1.2-2'}}</span>
         </ion-label>
       </ion-item>
@@ -356,7 +350,6 @@
       </ion-item>
       <ion-item>
         <ion-label color="dark" class="ion-text-wrap">{{"Total"}}<span style="float: right">{{1*orderReview.totals.total | currency:settings.currency:'symbol':'1.2-2'}}</span>
->>>>>>> f39bce94564ef8163f4746451bc1535bdf6a3188
         </ion-label>
       </ion-item>
     </ion-list>
