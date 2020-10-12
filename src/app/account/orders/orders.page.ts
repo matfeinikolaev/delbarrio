@@ -165,9 +165,9 @@ export class OrdersPage implements OnInit {
 
     async getLastOrder() {
         this.getActualOrder(this.settings.user.ID).then(data => {
-            console.log(data);
             var result: any = data;
-            if (result.orders.length > 1) {
+            console.log(typeof result, result);
+            if (result.length > 1) {
                 return this.notificationApply(data[0]);
             }
         })
@@ -213,7 +213,7 @@ export class OrdersPage implements OnInit {
 
     getActualOrder(user_id){
         return new Promise((resolve, reject) => {
-            this.http.post('https://delbarrio.ec//wp-admin/admin-ajax.php?action=mstoreapp-get_last_order&user='+this.settings.user.ID,'')
+            this.http.post('https://delbarrio.ec//wp-admin/admin-ajax.php?action=mstoreapp-get_last_order&user='+user_id,'')
                 .subscribe(data => {
                     resolve(data)
                 }, error => {
@@ -223,21 +223,15 @@ export class OrdersPage implements OnInit {
     }
 
     async notificationApply(data) {
-        await this.localNotifications.requestPermission().then(res => {
-            if (res) {
-                this.localNotifications.schedule([{
-                    id: 1,
-                    title: "Estado de su Orden " + data.ID,
-                    text: "Estimado " + data.name + ' ' + data.last_name
-                    + " el estado de su orden es: " + data.order_status,
-                    foreground: true,
-                    trigger: { at: new Date(Date.now() + 5000) },
-                    data: { secret: 'secret' }
-                }]);
-            }
-        }, err => {
-            console.error(err);
-        });
+        await this.localNotifications.schedule([{
+            id: 1,
+            title: "Estado de su Orden " + data.ID,
+            text: "Estimado " + data.name + ' ' + data.last_name
+            + " el estado de su orden es: " + data.order_status,
+            foreground: true,
+            trigger: { at: new Date(Date.now() + 5000) },
+            data: { secret: 'secret' }
+        }]);
     }
 
 

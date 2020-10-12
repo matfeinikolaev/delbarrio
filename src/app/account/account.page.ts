@@ -125,15 +125,6 @@ export class AccountPage {
             console.log(err);
         });
         if (this.settings.user || this.settings.customer.id) {
-            const notifs = await this.localNotifications.schedule({
-                        title: "Title",
-                        text: "Body",
-                        id: 1,
-                        trigger: { at: new Date(Date.now() + 1000 * 5) },
-                        sound: null,
-                        attachments: null,
-            });
-            console.log('scheduled notifications', notifs);
             this.toggle = document.querySelector('#themeToggle');
             if (this.toggle !== null) {
                 this.toggle.addEventListener('ionChange', (ev) => {

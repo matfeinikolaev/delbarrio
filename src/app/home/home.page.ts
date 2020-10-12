@@ -84,9 +84,11 @@ export class HomePage {
             this.nativeStorage.getItem('settings').then((settings : any) => {
                 this.config.lang = settings.lang;
                 document.documentElement.setAttribute('dir', settings.dir);
-                if (this.settings.user.userIsManager) {
-                    this.navCtrl.navigateForward("tabs/account");
-                }
+                //if (this.settings.user.userIsManager) {
+                    //console.log('Here');
+                    //this.navCtrl.navigateForward("tabs/account");
+                    //this.router.navigate(['account'])
+                //}
             }, error => {
             });
 
@@ -160,8 +162,14 @@ export class HomePage {
         }
     }
     getBlocks() {
-        if (this.settings.user.userIsManager) {
-            this.navCtrl.navigateForward("tabs/account");
+        // The last redirect was giving preoblems finding the property of the object
+        // better search in the localstorage to redirect
+        if (localStorage.roles) {
+            var role_validate = localStorage.getItem('roles');
+            if (role_validate === '["shop_manager"]'){
+                this.router.navigate(['tabs/account']);
+            }
+
         }
         this.api.postItem('get_store_categories').then(res => {
             this.stores = res;

@@ -15,6 +15,7 @@ export class EditOrderPage implements OnInit {
     orders: any;
     disableButton: boolean = false;
     path: any;
+    userIsManager: any;
     constructor(public router: Router, public platform: Platform, public api: ApiService, public settings: Settings, public store: Store, public route: ActivatedRoute, public loadingController: LoadingController, public navCtrl: NavController) { }
 
     ngOnInit() {

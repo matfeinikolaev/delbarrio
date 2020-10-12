@@ -18,6 +18,7 @@ import {
     Marker,
     Environment
   } from '@ionic-native/google-maps';
+import {LocalNotifications} from "@ionic-native/local-notifications/ngx";
 declare var google;
 //import { CardIO } from '@ionic-native/card-io/ngx';
 //import { Braintree, ApplePayOptions, PaymentUIOptions, PaymentUIResult } from '@ionic-native/braintree/ngx';
@@ -48,7 +49,7 @@ export class CheckoutPage implements OnInit {
     map: any;
     changingData: any = false;
     // @ViewChild ("map", {static: true}) mapEl: ElementRef;
-    constructor(/*public gMap: Map, */public data: Data, private oneSignal: OneSignal, public toastController: ToastController, public platform: Platform, public api: ApiService, public checkoutData: CheckoutData, public settings: Settings, public router: Router, public iab: InAppBrowser, public loadingController: LoadingController, public navCtrl: NavController, public route: ActivatedRoute/*, private braintree: Braintree*/) {}
+    constructor(public localNotifications: LocalNotifications, public data: Data, private oneSignal: OneSignal, public toastController: ToastController, public platform: Platform, public api: ApiService, public checkoutData: CheckoutData, public settings: Settings, public router: Router, public iab: InAppBrowser, public loadingController: LoadingController, public navCtrl: NavController, public route: ActivatedRoute/*, private braintree: Braintree*/) {}
     ngOnInit() {
         this.storePath = this.route.snapshot.paramMap.get('storePath');
         console.log(this);
@@ -193,11 +194,13 @@ export class CheckoutPage implements OnInit {
                     console.log(err);
                 });
             }
+
         }
     }
     handleOrder() {
         if (this.results.result == 'success') {
             if (this.checkoutData.form.payment_method == 'wallet' || this.checkoutData.form.payment_method == 'paypalpro' || this.checkoutData.form.payment_method == 'stripe' || this.checkoutData.form.payment_method == 'bacs' || this.checkoutData.form.payment_method == 'cheque' || this.checkoutData.form.payment_method == 'cod' || this.checkoutData.form.payment_method == 'authnet') {
+                console.log(this.results);
                 this.orderSummary(this.results.redirect);
             } else if (this.checkoutData.form.payment_method == 'payuindia') {
                 this.handlePayUPayment();
@@ -219,6 +222,17 @@ export class CheckoutPage implements OnInit {
         var pos2 = str.lastIndexOf("/?key=wc_order");
         var pos3 = pos2 - (pos1 + 10);
         var order_id = str.substr(pos1 + 10, pos3);
+
+        // Set Notification to confirm that order has been completed
+        this.localNotifications.schedule([{
+            id: 2,
+            title: 'Confirmación ordén!',
+            text: 'Su orden ' + order_id + 'se esta procesando, estaremos notificando su estado' +
+                ' cada 15 minutos.',
+            foreground: true,
+            data: { secret: 'secret' }
+        }]);
+
         this.navCtrl.navigateForward('/tabs/order-summary/' + this.storePath + '/' + order_id);
     }
     handlePayment() {

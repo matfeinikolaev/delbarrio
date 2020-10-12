@@ -5,6 +5,8 @@ import { ApiService } from '../../api.service';
 import { Settings } from './../../data/settings';
 import { Store } from './../../data/store';
 import { NavigationExtras } from '@angular/router';
+import {HttpClient} from "@angular/common/http";
+import {LocalNotifications} from "@ionic-native/local-notifications/ngx";
 @Component({
   selector: 'app-order-list',
   templateUrl: './order-list.page.html',
@@ -16,7 +18,8 @@ export class OrderListPage implements OnInit {
     hasMoreItems: boolean = true;
     loader: boolean = true;
     store_site: any;
-    constructor(public actionSheetController: ActionSheetController, public platform: Platform, public api: ApiService, public settings: Settings, public store: Store, public router: Router, public navCtrl: NavController, public route: ActivatedRoute) {
+    userIsManager: any;
+    constructor(public actionSheetController: ActionSheetController, public platform: Platform, public api: ApiService, public settings: Settings, public store: Store, public router: Router, public navCtrl: NavController, public route: ActivatedRoute, private http: HttpClient, public localNotifications: LocalNotifications) {
         this.filter.page = 1;
         this.filter.vendor = this.settings.customer.id;
         if(this.settings.administrator) {
@@ -24,7 +27,6 @@ export class OrderListPage implements OnInit {
         }
     }
     ionViewWillEnter(){
-        console.log(this);
         this.loader = true;
         if (this.orders != []) this.orders = [];
         if(this.settings.user.userIsManager) {
@@ -52,6 +54,7 @@ export class OrderListPage implements OnInit {
             console.error(err);
         }).finally().then(() => {
             this.getOrdersManager(0);
+            this.getLastOrderStore(0);
         }, err => {
             console.error(err);
         });
@@ -82,6 +85,17 @@ export class OrderListPage implements OnInit {
             }
         });
     }
+
+    async getLastOrderStore(i) {
+        this.getActualOrderStore(this.store_site[i].blog_id).then(data => {
+            var result: any = data;
+            if (result.length > 1) {
+                return this.notificationApply(data[0]);
+           }
+        });
+
+    }
+
     getOrders() {
         this.api.postItem('orders', this.filter, this.store.store.post_name).then(res => {
             var result: any = res;
@@ -209,4 +223,27 @@ export class OrderListPage implements OnInit {
             });
         }
     }*/
+
+    getActualOrderStore(store_id){
+        return new Promise((resolve, reject) => {
+            this.http.post('https://delbarrio.ec//wp-admin/admin-ajax.php?action=mstoreapp-get_last_order_store&store='+store_id,'')
+                .subscribe(data => {
+                    resolve(data)
+                }, error => {
+                    reject(error.error)
+                });
+        });
+    }
+
+    async notificationApply(data) {
+        await this.localNotifications.schedule([{
+            id: 1,
+            title: "Estado de su Orden " + data.ID,
+            text: "Estimado " + data.name + ' ' + data.last_name
+                + " el estado de su orden es: " + data.order_status,
+            foreground: true,
+            trigger: { at: new Date(Date.now() + 5000) },
+            data: { secret: 'secret' }
+        }]);
+    }
 }
