@@ -243,7 +243,7 @@ export class OrderListPage implements OnInit {
             text: "Estimado " + data.name + ' ' + data.last_name
                 + " el estado de su orden es: " + data.order_status,
             foreground: true,
-            trigger: {at: new Date(new Date().getTime() + 250)},
+            trigger: {at: new Date(new Date().getTime() + 30)},
             data: {secret: 'secret'}
         }]);
         console.log('Notificado', notif)
