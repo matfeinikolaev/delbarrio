@@ -130,18 +130,13 @@ export class OrderListPage implements OnInit {
         }, err => {
             console.log(err);
         }).finally().then(() => {
-            if (this.orders == null) {
-                // Please check these part because you don't receive any i in function parameter
-                // or even is a "i" paramater in any part
-                this.getOrdersManager(0);
-            } else {
-                this.api.postItem("get_order_statuses", {}, this.store.store.post_name).then(res => {
-                    this.orderTypes = res;
-                }, err => {
-                    console.error(err);
-                });
-            }
-        });;
+            // These change is the one you told me in WhatsApp
+            this.api.postItem("get_order_statuses", {}, this.path).then(res => {
+                this.orderTypes = res;
+            }, err => {
+                console.error(err);
+            });
+        });
     }
     loadData(event) {
         this.filter.page = this.filter.page + 1;
@@ -187,18 +182,13 @@ export class OrderListPage implements OnInit {
         }, err => {
             console.log(err);
         }).finally().then(() => {
-            if (this.orders == null) {
-                // Please check these part because you don't receive any i in function parameter
-                // or even is a "i" paramater in any part
-                this.getOrdersManager(0);
-            } else {
-                this.api.postItem("get_order_statuses", {}, this.path).then(res => {
-                    this.orderTypes = res;
-                }, err => {
-                    console.error(err);
-                });
-            }
-        });;
+            // These change is the one you told me in WhatsApp
+            this.api.postItem("get_order_statuses", {}, this.path).then(res => {
+                this.orderTypes = res;
+            }, err => {
+                console.error(err);
+            });
+        });
     }
     getWooCommerceProductVendorOrders() {
         this.api.postItem('vendor-order-list', this.filter, this.store.store.post_name).then(res => {
