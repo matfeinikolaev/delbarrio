@@ -112,7 +112,17 @@ export class OrderListPage implements OnInit {
             this.loader = false;
         }, err => {
             console.log(err);
-        });
+        }).finally().then(() => {
+            if (this.orders == null) {
+                this.getOrdersManager(i+1);
+            } else {
+                this.api.postItem("get_order_statuses", {}, this.store.store.post_name).then(res => {
+                    this.orderTypes = res;
+                }, err => {
+                    console.error(err);
+                });
+            }
+        });;
     }
     loadData(event) {
         this.filter.page = this.filter.page + 1;
@@ -157,7 +167,17 @@ export class OrderListPage implements OnInit {
           this.loader = false;
         }, err => {
             console.log(err);
-        });
+        }).finally().then(() => {
+            if (this.orders == null) {
+                this.getOrdersManager(i+1);
+            } else {
+                this.api.postItem("get_order_statuses", {}, this.path).then(res => {
+                    this.orderTypes = res;
+                }, err => {
+                    console.error(err);
+                });
+            }
+        });;
     }
     getWooCommerceProductVendorOrders() {
         this.api.postItem('vendor-order-list', this.filter, this.store.store.post_name).then(res => {
