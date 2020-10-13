@@ -56,10 +56,10 @@ export class HomePage {
         this.localNotifications.requestPermission().then(res => {
             if (res) {
                 this.localNotifications.schedule([{
-                    id: 1,
                     title: 'Bienvenido!',
                     text: 'Gracias por usar nuestra applicación',
                     foreground: true,
+                    trigger: {every: { minute: 0}},
                     data: { secret: 'secret' }
                 }]);
             }
@@ -185,7 +185,7 @@ export class HomePage {
         //     }
         //     //this.settings.theme = this.data.blocks.theme;
         //     this.settings.locale = this.data.blocks.locale;
-            
+
         //     this.settings.pages = this.data.blocks.pages;
         //     if(this.data.blocks.user)
         //     this.settings.reward = this.data.blocks.user.data.points_vlaue;
@@ -250,7 +250,7 @@ export class HomePage {
         //             categories: this.data.categories
         //         }).then(
         //     () => console.log('Stored item!'), error => console.error('Error storing item', error));
-                
+
         //     /* Product Addons */
         //     if(this.data.blocks.settings.switchAddons){
         //         this.api.getAddonsList('product-add-ons').then(res => {
@@ -259,7 +259,7 @@ export class HomePage {
         //     }
 
         //     /* HERE WE GET ALL THE STORES */
-            
+
         //     this.loadingStoresNearby = true;
         //     this.api.postItem('get_stores', {'lat':this.api.userLocation['latitude'], 'lng':this.api.userLocation['longitude'], 'radius':this.api.userLocation['distance']}).then(res=>{
         //         var result: any = res;
@@ -274,7 +274,7 @@ export class HomePage {
         //         console.error(err);
         //         this.loadingStoresNearby = false;
         //     });
-            
+
         //     this.loadingAllStores = true;
         //     this.api.postItem('get_stores', {'lat':this.api.userLocation['latitude'], 'lng':this.api.userLocation['longitude'], 'radius':'20000'}).then(res=>{
         //         var result: any = res;
@@ -295,7 +295,7 @@ export class HomePage {
         //     console.log(this);
         // }, err => {
         //     console.log(err);
-        // }); 
+        // });
     }
     getStoreCategory(storeCat) {
         this.data.storeCategory = storeCat;
@@ -366,14 +366,14 @@ export class HomePage {
     }
     getHeight(child) {
         return (child.height * this.screenWidth) / child.width;
-    }    
+    }
     getIncomeMessages() {
         var incomeMessages = this.chatapi.getIncomeMessages(this.settings.user.ID, '');
         incomeMessages.on('value', resp => {
             this.data.messages = this.chatapi.snapshotToArray(resp);
         });
     }
-    
+
     setVariations(product) {
         if(product.variationId){
             this.options.variation_id = product.variationId;

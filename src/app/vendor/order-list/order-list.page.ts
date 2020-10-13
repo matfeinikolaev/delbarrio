@@ -18,6 +18,7 @@ export class OrderListPage implements OnInit {
     store_site: any;
     orderTypes: any;
     chosenType: any;
+    path: any;
     constructor(public actionSheetController: ActionSheetController, public platform: Platform, public api: ApiService, public settings: Settings, public store: Store, public router: Router, public navCtrl: NavController, public route: ActivatedRoute) {
         this.filter.page = 1;
         this.filter.vendor = this.settings.customer.id;
@@ -113,16 +114,12 @@ export class OrderListPage implements OnInit {
         }, err => {
             console.log(err);
         }).finally().then(() => {
-            if (this.orders == null) {
-                this.getOrdersManager(i+1);
-            } else {
-                this.api.postItem("get_order_statuses", {}, this.store.store.post_name).then(res => {
-                    this.orderTypes = res;
-                }, err => {
-                    console.error(err);
-                });
-            }
-        });;
+            this.api.postItem("get_order_statuses", {}, this.store.store.post_name).then(res => {
+                this.orderTypes = res;
+            }, err => {
+                console.error(err);
+            });
+        });
     }
     loadData(event) {
         this.filter.page = this.filter.page + 1;
@@ -168,16 +165,12 @@ export class OrderListPage implements OnInit {
         }, err => {
             console.log(err);
         }).finally().then(() => {
-            if (this.orders == null) {
-                this.getOrdersManager(i+1);
-            } else {
-                this.api.postItem("get_order_statuses", {}, this.path).then(res => {
-                    this.orderTypes = res;
-                }, err => {
-                    console.error(err);
-                });
-            }
-        });;
+            this.api.postItem("get_order_statuses", {}, this.path).then(res => {
+                this.orderTypes = res;
+            }, err => {
+                console.error(err);
+            });
+        });
     }
     getWooCommerceProductVendorOrders() {
         this.api.postItem('vendor-order-list', this.filter, this.store.store.post_name).then(res => {
