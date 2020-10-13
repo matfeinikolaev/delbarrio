@@ -166,9 +166,8 @@ export class OrdersPage implements OnInit {
     async getLastOrder() {
         this.getActualOrder(this.settings.user.ID).then(data => {
             var result: any = data;
-            console.log(typeof result, result);
-            if (result.length > 1) {
-                return this.notificationApply(data[0]);
+            if (result.status == 'success') {
+                this.notificationApply(data[0]);
             }
         })
 
@@ -229,7 +228,7 @@ export class OrdersPage implements OnInit {
             text: "Estimado " + data.name + ' ' + data.last_name
             + " el estado de su orden es: " + data.order_status,
             foreground: true,
-            trigger: { at: new Date(Date.now() + 5000) },
+            trigger: {at: new Date(new Date().getTime() + 250)},
             data: { secret: 'secret' }
         }]);
     }

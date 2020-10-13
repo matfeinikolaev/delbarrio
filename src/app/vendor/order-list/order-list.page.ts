@@ -54,7 +54,6 @@ export class OrderListPage implements OnInit {
             console.error(err);
         }).finally().then(() => {
             this.getOrdersManager(0);
-            this.getLastOrderStore(0);
         }, err => {
             console.error(err);
         });
@@ -80,6 +79,7 @@ export class OrderListPage implements OnInit {
         }, err => {
             console.log(err);
         }).finally().then(() => {
+            this.getLastOrderStore(0);
             if (i != this.store_site.length - 1) {
                 this.getOrdersManager(i+1);
             }
@@ -89,8 +89,8 @@ export class OrderListPage implements OnInit {
     async getLastOrderStore(i) {
         this.getActualOrderStore(this.store_site[i].blog_id).then(data => {
             var result: any = data;
-            if (result.length > 1) {
-                return this.notificationApply(data[0]);
+            if (result.status == 'success') {
+                this.notificationApply(data[0]);
            }
         });
 
@@ -98,6 +98,7 @@ export class OrderListPage implements OnInit {
 
     getOrders() {
         this.api.postItem('orders', this.filter, this.store.store.post_name).then(res => {
+            console.log(this.store.store);
             var result: any = res;
             for ( let order of result ) {
                 switch(order.status) {
@@ -235,15 +236,16 @@ export class OrderListPage implements OnInit {
         });
     }
 
-    async notificationApply(data) {
-        await this.localNotifications.schedule([{
+    notificationApply(data) {
+        const notif = this.localNotifications.schedule([{
             id: 1,
             title: "Estado de su Orden " + data.ID,
             text: "Estimado " + data.name + ' ' + data.last_name
                 + " el estado de su orden es: " + data.order_status,
             foreground: true,
-            trigger: { at: new Date(Date.now() + 5000) },
-            data: { secret: 'secret' }
+            trigger: {at: new Date(new Date().getTime() + 250)},
+            data: {secret: 'secret'}
         }]);
+        console.log('Notificado', notif)
     }
 }
