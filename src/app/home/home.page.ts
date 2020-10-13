@@ -162,6 +162,7 @@ export class HomePage {
         }
     }
     getBlocks() {
+
         // The last redirect was giving preoblems finding the property of the object
         // better search in the localstorage to redirect
         if (localStorage.roles) {
@@ -169,7 +170,6 @@ export class HomePage {
             if (role_validate === '["shop_manager"]'){
                 this.router.navigate(['tabs/account']);
             }
-
         }
         this.api.postItem('get_store_categories').then(res => {
             this.stores = res;

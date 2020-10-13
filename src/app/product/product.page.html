@@ -143,7 +143,7 @@
             </ion-label>
          </ion-item>
 
-         <div class="variation-block" *ngIf="product.variationOptions && product.variationOptions.length">
+         <div class="variation-block" *ngIf="product.variationOptions?.length">
             <div *ngFor="let attribute of product.variationOptions; let i = index" class="variation-product">
                <h6 style="margin-left: 16px;">{{"Seleccionar" | translate}} {{attribute.name}}</h6>
                <div *ngIf="attribute.options.length" class="option-box">
@@ -152,6 +152,15 @@
             </div>
          </div>
 
+         <div *ngIf="product.variations?.length && !product.variationOptions?.length">
+            <div *ngFor="let variation of product.variations; let i = index">
+               <h6 style="margin-left: 16px;">{{variation}}</h6>
+               <ion-item lines="full">
+                  <ion-label position="stacked" color="medium">Cantidad</ion-label>
+                  <ion-input type="number" value="0"></ion-input>
+               </ion-item>
+            </div>
+         </div>
          <!-- USE WHEN ABOVE ONE NOT WORKING PROPERLY -->
          <!--div class="variation-block" *ngIf="variations.length">
             <div *ngFor="let attribute of usedVariationAttributes" class="variation-product">

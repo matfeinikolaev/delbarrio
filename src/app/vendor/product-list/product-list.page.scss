@@ -4,6 +4,10 @@ ion-card {
 ion-icon {
     font-size: 20px;
 }
+.current {
+  color: black;
+  font-weight: bold;
+}
 .regular-price {
     font-size: 16px;
     font-weight: 400;
@@ -43,7 +47,7 @@ ion-searchbar {
 @media screen and (max-width: 415px) {
     ion-content {
         #image {
-            width: 100px; 
+            width: 100px;
             height: 100px;
         }
     }
@@ -56,7 +60,7 @@ ion-searchbar {
             --height: 33%;
             --max-height: 33%;
             --min-height: 33%;
-            
+
             --max-width: 70%;
             --min-width: 70%;
             --width: 70%;
@@ -103,7 +107,7 @@ ion-searchbar {
     }
     ion-content {
         #image {
-            width: 200px; 
+            width: 200px;
             height: 100px;
         }
     }
@@ -115,7 +119,7 @@ ion-searchbar {
             --height: 33%;
             --max-height: 33%;
             --min-height: 33%;
-            
+
             --max-width: 70%;
             --min-width: 70%;
             --width: 70%;
@@ -162,7 +166,7 @@ ion-searchbar {
     }
     ion-content {
         #image {
-            width: 300px; 
+            width: 300px;
             height: 200px;
         }
     }

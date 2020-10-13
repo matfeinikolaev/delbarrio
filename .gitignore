@@ -31,6 +31,9 @@ npm-debug.log*
 /www
 /resources/ios
 /resources/android
+/shop.metamorf.net
+/public_html
+/.ftpconfig
 
 GoogleService-Info.plist
 google-services.json
@@ -40,3 +43,4 @@ src.zip
 my-release-key.keystore
 private_key.pepk
 upload-key.jks
+.ftpconfig

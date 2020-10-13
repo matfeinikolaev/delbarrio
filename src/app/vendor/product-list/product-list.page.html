@@ -17,16 +17,46 @@
 
   <div class="spinner" *ngIf="loader"><ion-spinner> </ion-spinner></div>
 
-  <div class="spinner" *ngIf="!loader && products?.length == 0" >{{"No hay resultados, " | translate}} 
+  <div class="spinner" *ngIf="!loader && products?.length == 0" >{{"No hay resultados, " | translate}}
     <a (click)="goTo('tabs/account/add-products')" style="text-decoration: none;" >añadir productos</a>
   </div>
 
   <ion-searchbar mode="ios" *ngIf="!loader" animated [(ngModel)]="searchInput" (ionChange)="onInput()" style="--border-radius:50px 50px 50px 50px; clear:both" placeholder="{{'Buscar productos' | translate}}"></ion-searchbar>
 
 
-  <!-- <ion-item>
-    <ion-button *ngFor="let type of productTypes | keys" fill="clear" (click)="getProductsByType(type.value.status)">{{type.value.name}} ({{type.value.num}})</ion-button>
-  </ion-item> -->
+  <ion-row text-wrap *ngIf="!loader" >
+    <ion-col *ngFor="let type of productTypes | keys">
+      <ion-button fill="clear" (click)="getProductsByType(type.value.status)" [disabled]="type.value.status == filter.status">{{type.value.name}} ({{type.value.num}})</ion-button>
+    </ion-col>
+  </ion-row>
+
+  <ion-row *ngIf="!loader" >
+      <ion-col>
+          <ion-select multiple="false" [(ngModel)]="chosenCategory" placeholder="Categoría">
+            <ion-select-option value="null">{{"Todos" | translate}}</ion-select-option>
+            <ion-select-option *ngFor="let category of categories | keys" value="{{category.value.term_id}}">{{category.value.name}}</ion-select-option>
+          </ion-select>
+      </ion-col>
+
+      <ion-col>
+          <ion-select multiple="false" [(ngModel)]="chosenType" placeholder="Tipo">
+            <ion-select-option value="null">{{"Todos" | translate}}</ion-select-option>
+            <ion-select-option *ngFor="let type of types" value="{{type.term_id}}">{{type.name}}</ion-select-option>
+          </ion-select>
+      </ion-col>
+
+      <ion-col>
+          <ion-select multiple="false" [(ngModel)]="chosenStockState" placeholder="Inventario">
+            <ion-select-option value="instock">Hay existencias</ion-select-option>
+            <ion-select-option value="outofstock">Agotado</ion-select-option>
+            <ion-select-option value="onbackorder">Se puede reservar</ion-select-option>
+          </ion-select>
+      </ion-col>
+  </ion-row>
+
+<ion-button (click)="filterProducts()" fill="clear" *ngIf="!loader">
+  Filtrar
+  </ion-button>
   <!--ion-row>
     <ion-col size="6" size-sm="4" size-md="3" *ngFor="let product of products">
     <ion-card mode="{{settings.settings.mode}}">
@@ -48,7 +78,7 @@
   </ion-card>
 </ion-col>
 </ion-row-->
-<ion-item *ngIf="!loader">
+<ion-item [hidden]="loader">
   <ion-button fill="clear" (click)="changeSlide('back')" *ngIf="products?.length" [disabled]="products?.length == 1">
     <ion-icon style="color:#687e95;font-size: 4vw;" name="arrow-back-outline"></ion-icon>
   </ion-button>
@@ -73,9 +103,7 @@
       <span class="regular-price" >{{1*product.price | currency:settings.currency:'symbol':'1.2-2'}}</span>
       <span *ngIf="product.sale_price" class="special-price" ><del>{{1*product.sale_price | currency:settings.currency:'symbol':'1.2-2'}}</del></span>
     </h4>
-    <p >{{product.stock_quantity==null?0:product.stock_quantity}}</p>
-    <p >{{product.post_status}}</p>
-    <ion-icon style="float: right;"  color="danger" slot="icon-only" (click)="delete(product)" name="trash"></ion-icon> 
+    <ion-icon style="float: right;"  color="danger" slot="icon-only" (click)="delete(product)" name="trash"></ion-icon>
     <ion-button fill="clear" color="primary"  (click)="editProduct(product)">EDITAR</ion-button>
     <!-- <ion-button fill="clear" color="danger" (click)="delete(product)">BORRAR</ion-button> -->
     <!-- <ion-icon style="float: right; padding: 10px 10px;" color="primary" slot="icon-only" (click)="editProduct(product)" name="create"></ion-icon>
@@ -90,5 +118,5 @@
       loadingText="Cargando más datos...">
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
-	
+
 </ion-content>
