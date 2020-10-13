@@ -16,6 +16,8 @@ export class OrderListPage implements OnInit {
     hasMoreItems: boolean = true;
     loader: boolean = true;
     store_site: any;
+    orderTypes: any;
+    chosenType: any;
     constructor(public actionSheetController: ActionSheetController, public platform: Platform, public api: ApiService, public settings: Settings, public store: Store, public router: Router, public navCtrl: NavController, public route: ActivatedRoute) {
         this.filter.page = 1;
         this.filter.vendor = this.settings.customer.id;
@@ -59,6 +61,7 @@ export class OrderListPage implements OnInit {
     async getOrdersManager(i) {
         this.loader = true;
         await this.api.postItem('orders', this.filter, this.store_site[i].path).then(res => {
+          if(res != null) {
             var result: any = res;
             for ( let order of result ) {
                 switch(order.status) {
@@ -73,12 +76,20 @@ export class OrderListPage implements OnInit {
                 }
             }
             this.orders = result;
+            this.path = this.store_site[i].path;
             this.loader = false;
+          }
         }, err => {
             console.log(err);
         }).finally().then(() => {
-            if (i != this.store_site.length - 1) {
+            if (this.orders == null) {
                 this.getOrdersManager(i+1);
+            } else {
+                this.api.postItem("get_order_statuses", {}, this.path).then(res => {
+                    this.orderTypes = res;
+                }, err => {
+                    console.error(err);
+                });
             }
         });
     }
@@ -125,7 +136,29 @@ export class OrderListPage implements OnInit {
     editOrder(order) {
         this.navCtrl.navigateForward('/tabs/account/vendor-orders/edit-order/' + order.id);
     }
-
+    getOrdersByType() {
+        this.filter.status = this.chosenType;
+        this.loader = true;
+        this.api.postItem('orders', this.filter, this.path).then(res => {
+          var result: any = res;
+          for ( let order of result ) {
+              switch(order.status) {
+                  case 'on-hold': order.status = 'en-espera'; break;
+                  case 'pending': order.status = 'pendiente'; break;
+                  case 'completed': order.status = 'completado'; break;
+                  case 'cancelled': order.status = 'cancelado'; break;
+                  case 'processing': order.status = 'procesando'; break;
+                  case 'refunded': order.status = 'reembolsado'; break;
+                  case 'failed': order.status = 'fallido'; break;
+                  default: break;
+              }
+          }
+          this.orders = result;
+          this.loader = false;
+        }, err => {
+            console.log(err);
+        });
+    }
     getWooCommerceProductVendorOrders() {
         this.api.postItem('vendor-order-list', this.filter, this.store.store.post_name).then(res => {
             this.orders = res;
@@ -134,7 +167,7 @@ export class OrderListPage implements OnInit {
             console.log(err);
         });
     }
-    
+
     async updateOrderStatus(order) {
       const actionSheet = await this.actionSheetController.create({
       header: 'Estado',
@@ -167,7 +200,7 @@ export class OrderListPage implements OnInit {
         }
         }]
       });
-      await actionSheet.present();        
+      await actionSheet.present();
     }
 
     //WCFM

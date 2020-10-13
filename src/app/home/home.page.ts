@@ -162,8 +162,10 @@ export class HomePage {
         }
     }
     getBlocks() {
-        if (this.settings.user.userIsManager) {
-            this.navCtrl.navigateForward("tabs/account");
+        if (this.settings.user) {
+            if (this.settings.user.userIsManager) {
+                this.navCtrl.navigateForward("tabs/account");
+            }
         }
         this.api.postItem('get_store_categories').then(res => {
             this.stores = res;

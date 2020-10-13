@@ -11,6 +11,13 @@
 
   <div class="spinner" *ngIf="loader"><ion-spinner> </ion-spinner></div>
 
+  <div text-wrap *ngIf="!loader" >
+    <ion-select multiple="false" [(ngModel)] = "chosenType" placeholder="Típo" (ionChange)="getOrdersByType()">
+      <ion-select-option *ngFor="let type of orderTypes | keys" value="{{type.key}}">
+        {{type.value}}
+      </ion-select-option>
+    </ion-select>
+  </div>
 
     <div *ngIf="orders">
       <div *ngIf="!loader && orders.length == 0" text-center class="empty">
