@@ -22,7 +22,11 @@ export class OrderListPage implements OnInit {
     userIsManager: any;
     orderTypes: any;
     chosenType: any;
+    //These is the final constructor I need
     constructor(public actionSheetController: ActionSheetController, public platform: Platform, public api: ApiService, public settings: Settings, public store: Store, public router: Router, public navCtrl: NavController, public route: ActivatedRoute, private http: HttpClient, public localNotifications: LocalNotifications) {
+
+
+
         this.filter.page = 1;
         this.filter.vendor = this.settings.customer.id;
         if(this.settings.administrator) {
@@ -130,8 +134,8 @@ export class OrderListPage implements OnInit {
         }, err => {
             console.log(err);
         }).finally().then(() => {
-            // These change is the one you told me in WhatsApp
-            this.api.postItem("get_order_statuses", {}, this.path).then(res => {
+
+            this.api.postItem("get_order_statuses", {}, this.store.store.post_name).then(res => {
                 this.orderTypes = res;
             }, err => {
                 console.error(err);
@@ -182,7 +186,6 @@ export class OrderListPage implements OnInit {
         }, err => {
             console.log(err);
         }).finally().then(() => {
-            // These change is the one you told me in WhatsApp
             this.api.postItem("get_order_statuses", {}, this.path).then(res => {
                 this.orderTypes = res;
             }, err => {
