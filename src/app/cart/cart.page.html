@@ -43,8 +43,8 @@
         <ion-col class="align-self-start">
           <ion-button color="{{settings.theme.button}}" fill="clear" (click)="deleteFromCart(item.value.product_id, item.key)">
               <ion-icon slot="icon-only" name="remove-circle-outline"></ion-icon>
-          </ion-button> 
-          <ion-button color="{{settings.theme.button}}" fill="clear" style="font-size: 3vw;" >{{item.value.quantity}}</ion-button> 
+          </ion-button>
+          <ion-button color="{{settings.theme.button}}" fill="clear" style="font-size: 3vw;" >{{item.value.quantity}}</ion-button>
           <ion-button color="{{settings.theme.button}}" fill="clear" (click)="addToCart(item.value.product_id, item)">
               <ion-icon slot="icon-only" name="add-circle-outline">
               </ion-icon>
@@ -59,7 +59,7 @@
     </ion-grid>
 
     </ion-label>
-    
+
   </ion-item>
 
   <ion-item lines="none">
@@ -69,7 +69,7 @@
 <form #f="ngForm" class="coupon" [hidden]="!IhaveCouponChecked" >
     <ion-item>
         <ion-input type="text" [(ngModel)]="cart.coupon" name="coupon" placeholder="{{'Ingrese el cupón aquí' | translate}}"> </ion-input>
-        <h2 item-right> 
+        <h2 item-right>
             <ion-button block color="{{settings.theme.button}}" style="font-size: 3vw;" type="submit" text-uppercase (click)="submitCoupon(cart.coupon)">{{"Aplicar" | translate}}
             </ion-button>
         </h2>
@@ -88,11 +88,11 @@
       <ion-item>
         <ion-label>{{"Usar" | translate}} <span style="font-size: 3vw; font-weight: 600">{{cart.points.points}}</span> {{"Puntos de recompensa por un" | translate}} <span style="font-size: 16px; font-weight: 600">{{cart.points.discount_available | currency:settings.currency:'symbol':'1.2-2'}}</span> {{"¡descuento en este pedido!" | translate}}
           <ion-button color="{{settings.theme.button}}" fill="solid" type="submit" text-uppercase small (click)="redeem()"> {{"Canjear puntos" | translate}}
-          </ion-button> 
+          </ion-button>
         </ion-label>
       </ion-item>
 
-      
+
       </div>
 
   </div>
@@ -103,8 +103,8 @@
     <ion-label>
      {{1*cart.cart_totals.subtotal + 1*cart.cart_totals.subtotal_tax | currency:settings.currency:'symbol':'1.2-2'}}
     </ion-label>
-  </ion-item> 
-  
+  </ion-item>
+
   <ion-item>
     <ion-label>
      {{"Subtotal" | translate}} <span class="totals-amount">{{1*cart.cart_totals.subtotal | currency:settings.currency:'symbol':'1.2-2'}}</span>
@@ -145,17 +145,17 @@
     <ion-label>
       {{"Complementos total" | translate}}<span class="totals-amount">{{1*addonsTotal | currency:settings.currency:'symbol':'1.2-2'}}</span>
     </ion-label>
-  </ion-item>  
+  </ion-item>
    <ion-item>
     <ion-label>
       {{"Envío" | translate}} <span class="totals-amount">{{1*cart.cart_totals.shipping_total | currency:settings.currency:'symbol':'1.2-2'}}</span>
     </ion-label>
-  </ion-item> 
+  </ion-item>
    <ion-item>
     <ion-label class="grand-total">
       {{"Total sin envío" | translate}} <span class="totals-amount">{{1*cart.cart_totals.total | currency:settings.currency:'symbol':'1.2-2'}}</span>
     </ion-label>
-  </ion-item> 
+  </ion-item>
   <ion-item>
     <p style="font-size: 2vw;">El precio mostrado no incluye el envío. Proceda a continuación para elegir su envío</p>
   </ion-item>
@@ -184,7 +184,7 @@
         </ion-item>
       </ion-radio-group>
     </ion-list>
-  
+
     <ion-list *ngIf="orderReview?.payment">
       <ion-radio-group [(ngModel)]="checkoutData.form.payment_method" (ngModelChange)="changeData()">
         <ion-list-header style=" color:grey">
@@ -196,7 +196,7 @@
         </ion-item>
       </ion-radio-group>
     </ion-list>
-  
+
       <div *ngIf="cardResponse?.cardNumber && checkoutData.form.payment_method == 'stripe'">
           <ion-card mode="md" *ngIf="cardResponse.cardNumber && checkoutData.form.payment_method == 'stripe'">
               <ion-item *ngIf="cardResponse.cardNumber">
@@ -207,7 +207,7 @@
                   <p>{{cardResponse.cardNumber}}</p>
                 </ion-label>
               </ion-item>
-  
+
                 <ion-item>
                 <ion-label text-wrap color="medium" >
                   <ion-text>
@@ -216,7 +216,7 @@
                   <p>{{cardResponse.expiryMonth}}/{{cardResponse.expiryYear}}</p>
                 </ion-label>
               </ion-item>
-  
+
                 <ion-item>
                 <ion-label text-wrap color="medium" >
                   <ion-text>
@@ -227,7 +227,7 @@
               </ion-item>
             </ion-card>
       </div>
-  
+
         <div *ngIf="checkoutData.form.payment_method =='authnet'" class="card-payment">
             <form #f="ngForm">
                 <ion-list no-margin>
@@ -253,26 +253,26 @@
                 </ion-list>
             </form>
         </div>
-  
+
         <!-- <ion-item style="padding-top: 16px;" lines="none" *ngIf="checkoutData.form.payment_method =='stripe'">
           <ion-label color="medium" >{{"USE UNA NUEVA TARGETA" | translate}}</ion-label>
           <ion-checkbox color="{{settings.theme.button}}" [(ngModel)]="checkoutData.form.card" (ngModelChange)="onUseNewCard()" slot="end"></ion-checkbox>
         </ion-item> -->
-  
+
         <div *ngIf="checkoutData.form.payment_method =='stripe'" class="stripe-payment">
           <form action="/charge" method="post" id="payment-form">
             <div class="form-row">
-  
+
               <div id="card-element">
                 <!-- A Stripe Element will be inserted here. -->
               </div>
-  
+
               <!-- Used to display form errors. -->
               <div id="card-errors" class="card-error" role="alert"></div>
             </div>
           </form>
         </div>
-  
+
         <!--div *ngIf="checkoutData.form.payment_method =='stripe'" class="card-payment">
             <form #f="ngForm">
                 <ion-list no-margin>
@@ -298,7 +298,7 @@
                 </ion-list>
             </form>
         </div-->
-  
+
         <!--ion-row class="check-box-bottom" style="margin-top:0" *ngIf="form.show_terms">
           <ion-col no-lines class="col1">
               <ion-checkbox checked="true" [(ngModel)]="form.terms" name="terms"> </ion-checkbox>
@@ -308,35 +308,21 @@
           </ion-col>
         </ion-row-->
     <ion-item *ngIf="orderReview.payment[checkoutData.form.payment_method]?.description" lines="none">
-      <ion-label class="ion-text-wrap payment-description" style=" color:grey"> 
+      <ion-label class="ion-text-wrap payment-description" style=" color:grey">
       <span [innerHTML]="orderReview.payment[checkoutData.form.payment_method]?.description"></span>
       </ion-label>
     </ion-item>
-  
+
     <div class="spinner" *ngIf="changingData">
       <div style="margin-bottom:25px;  text-align:center; color:#687e95; font-size: 4vw; font-weight: light;">{{"CARGANDO TOTALES..." | translate}}</div>
       <ion-spinner></ion-spinner>
     </div>
-  
+
     <ion-list *ngIf="orderReview?.totals && !changingData">
       <ion-list-header style=" color:grey">
         {{"TOTALES" | translate}}
       </ion-list-header>
       <ion-item>
-        <ion-label color="dark" class="ion-text-wrap">{{"Subtotal"}}<span style="float: right">{{orderReview.totals.subtotal}}</span>
-        </ion-label>
-      </ion-item>
-      <ion-item>
-        <ion-label color="dark" class="ion-text-wrap">{{"Impuesto"}}<span style="float: right">{{orderReview.totals.total_tax}}</span>
-        </ion-label>
-      </ion-item>
-      <ion-item *ngFor="let fee of orderReview.fees | keys">
-        <ion-label color="dark" class="ion-text-wrap">{{fee.value.name}}<span style="float: right">{{fee.value.total}}</span>
-        </ion-label>
-      </ion-item>
-      <ion-item>
-        <ion-label color="dark" class="ion-text-wrap">{{"Total"}}<span style="float: right">{{orderReview.totals.total}}</span>
-        </ion-label>
         <ion-label color="dark" class="ion-text-wrap">{{"Subtotal"}}<span style="float: right">{{1*cart.cart_totals.subtotal | currency:settings.currency:'symbol':'1.2-2'}}</span>
         </ion-label>
       </ion-item>

@@ -42,18 +42,19 @@
       </a>
   </ion-fab>
 
-  <ion-row *ngIf="data.storesNearby.length == 0 && !loadingStoresNearby" class="products" style="margin-top: 5%;">
+<div *ngIf="data.storesNearby.length == 0 && !loadingStoresNearby" >
+  <ion-row class="notify-form" style="margin-top: 5%;">
     <!--  -->
     <ion-list-header style="margin:auto; text-align:center; color:#687e95; font-size:5vw; font-weight: light;">
       <ion-label>{{"LO SENTIMOS, NO HAY TIENDAS CERCA DE " + api.userLocation.distance + " KM DE USTED" | translate}}</ion-label>
     </ion-list-header>
     <ion-list [hidden]="settings.clientDataSent" style="margin: auto; margin-top: 40px; text-align: center;">
-      <form [formGroup]="form" style="width: 70%; text-align: center; margin: auto;"> 
+      <form [formGroup]="form" style="width: 70%; text-align: center; margin: auto;">
       <div style="color:#687e95; font-size:5vw; font-weight: light; margin-bottom: 10%;">
         <ion-label>{{"Déjanos tu información, para avisarte cuando abran" | translate}}</ion-label>
       </div>
       <ion-label for="name" mode="ios" color="medium" style="font-size:3vw; margin-bottom: 10%;">NOMBRE</ion-label>
-      <ion-item style="margin: 0 0 10% 0;   
+      <ion-item style="margin: 0 0 10% 0;
       --border-color: var(--ion-color-medium-shade);
       --border-radius: 50px;
       --border-width: 1px;
@@ -62,7 +63,7 @@
       <ion-input type="text" formControlName="name" clearInput="true"></ion-input>
       </ion-item>
       <ion-label for="phone" mode="ios" color="medium" style="font-size:3vw; margin-bottom: 10%;">TELEFONO</ion-label>
-      <ion-item style="margin: 0 0 10% 0;   
+      <ion-item style="margin: 0 0 10% 0;
       --border-color: var(--ion-color-medium-shade);
       --border-radius: 50px;
       --border-width: 1px;
@@ -71,14 +72,14 @@
       <ion-input type="number" formControlName="phone" clearInput="true"></ion-input>
       </ion-item>
       <ion-label for="email" mode="ios" color="medium" style="font-size:3vw; margin-bottom: 10%;">EMAIL</ion-label>
-      <ion-item style="margin: 0 0 10% 0;   
+      <ion-item style="margin: 0 0 10% 0;
       --border-color: var(--ion-color-medium-shade);
       --border-radius: 50px;
       --border-width: 1px;
       --highlight-height: 0;
       --background: #f8f9fa;">
       <ion-input type="email" formControlName="email" clearInput="true"></ion-input>
-      </ion-item>        
+      </ion-item>
       </form>
       <ion-item lines="none" *ngIf="errorMessage" style="width: 70%;">
         <span style="color: red;">{{errorMessage}}</span>
@@ -91,7 +92,40 @@
         <p>{{"Te notificamos cuando abre una tienda cercana" | translate}}</p>
       </ion-item>
     </ion-list>
+
   </ion-row>
+
+  <div id="show-all-stores-button2" *ngIf="result?.all_stores" [hidden]="showAllStores">
+    <ion-button color="danger" (click)="openAllStores()"  *ngIf="result?.all_stores && !showAllStores" text-wrap>Mostrar todas las tiendas</ion-button>
+  </div>
+
+  <div *ngIf="showAllStores" class="all-stores2">
+    <ion-list-header style="margin:auto; margin-bottom: 7%; margin-top: 5%; text-align:center; color:#687e95; font-size:5vw; font-weight: light; font-family: Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">
+      <ion-label>{{"TODAS LAS TIENDAS"}}</ion-label>
+    </ion-list-header>
+    <div *ngFor="let store of data.allStores | keys" id="all-stores-wrapping-div2">
+      <ion-card (click)="getStore(store.value)" id="all-stores-card2" style="margin: auto;margin:auto; border-radius: 15px; color:white; text-align: center;box-shadow: 0px 0px;">
+        <ion-card-content id="all-stores-card-content2" style="background-image: url(../../assets/image/fondo-tiendas.png);background-repeat: no-repeat;background-position: center; background-size: 100% 100%; text-align: center; position: relative;"> <!--background-color: #62788d;-->
+          <div style="position: absolute; top:35%; right:10%; left: 10%">
+            <h1 *ngIf="store.value.post_title" style="font-size: 5vw;">{{store.value.post_title}}</h1>
+            <span *ngIf="store.value.wordpress_store_locator_city" style="font-size: 3vw; font-weight:100;font-weight: light;">{{store.value.wordpress_store_locator_city}}</span>
+            <span *ngIf="store.value.wordpress_store_locator_city && store.value.wordpress_store_locator_zip" style="font-size: 3vw;">, </span>
+            <span *ngIf="store.value.wordpress_store_locator_zip" style="font-size: 3vw; font-weight:100;font-weight: light;">{{store.value.wordpress_store_locator_zip}}</span>
+            <h1 *ngIf="store.value.na" style="font-size: 5vw;">{{store.value.na}}</h1>
+            <span *ngIf="store.value.ct" style="font-size: 3vw; font-weight:100;font-weight: light;">{{store.value.ct}}</span>
+            <span *ngIf="store.value.ct && store.value.zp" style="font-size: 3vw;">, </span>
+            <span *ngIf="store.value.zp" style="font-size: 3vw; font-weight:100;font-weight: light;">{{store.value.zp}}</span>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </div>
+
+  <div id="hide-all-stores-button2" *ngIf="result?.all_stores" [hidden]="!showAllStores">
+    <ion-button color="danger" (click)="hideAllStores()"  *ngIf="result?.all_stores && showAllStores" text-wrap>Ocultar tiendas lejanas</ion-button>
+  </div>
+</div>
+
 
   <div *ngIf="data.storesNearby.length >= 1" class="nearby-stores">
     <ion-list-header style="margin:auto; margin-bottom: 7%; margin-top: 5%; text-align:center; color:#687e95; font-size:5vw; font-weight: light; font-family: Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">
@@ -124,7 +158,7 @@
       </ion-list-header> -->
       <div *ngFor="let store of data.allStores | keys" id="all-stores-wrapping-div">
         <ion-card (click)="getStore(store.value)" id="all-stores-card" style="margin: auto;margin:auto; border-radius: 15px; color:white; text-align: center;box-shadow: 0px 0px;">
-          <ion-card-content id="all-stores-card-content" style="background-image: url(../../assets/image/fondo-tiendas.png);background-repeat: no-repeat;background-position: center; background-size: 100% 100%; text-align: center; position: relative;"> <!--background-color: #62788d;--> 
+          <ion-card-content id="all-stores-card-content" style="background-image: url(../../assets/image/fondo-tiendas.png);background-repeat: no-repeat;background-position: center; background-size: 100% 100%; text-align: center; position: relative;"> <!--background-color: #62788d;-->
             <div style="position: absolute; top:35%; right:10%; left: 10%">
               <h1 *ngIf="store.value.post_title" style="font-size: 5vw;">{{store.value.post_title}}</h1>
               <span *ngIf="store.value.wordpress_store_locator_city" style="font-size: 3vw; font-weight:100;font-weight: light;">{{store.value.wordpress_store_locator_city}}</span>
@@ -144,7 +178,7 @@
       <!-- <ion-button color="danger" (click)="openAllStores()"  *ngIf="result?.all_stores && !showAllStores" text-wrap>Mostrar todas las tiendas</ion-button> -->
       <ion-button color="danger" (click)="hideAllStores()"  *ngIf="result?.all_stores && showAllStores" text-wrap>Ocultar tiendas lejanas</ion-button>
     </div>
-    
+
   </div>
 
   <div class="spinner" *ngIf="data.allStores.length == 0 && loadingAllStores && !loadingStoresNearby">
@@ -174,5 +208,5 @@
         <ion-button mode="md" color="{{settings.theme.button}}" expand="block" fill="solid" (click)="getLocation()">{{"Address" | translate}}</ion-button>
       </ion-label>
     </div>
-  
+
 </ion-content>

@@ -307,4 +307,3 @@ export class OrderListPage implements OnInit {
         console.log('Notifica', notif)
     }
 }
-

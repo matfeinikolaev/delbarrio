@@ -37,7 +37,7 @@
     </ion-label>
   </ion-item>
 
-  
+
   <div *ngIf="order.shipping?.first_name || order.shipping?.last_name">
   <ion-list-header>
     <ion-label style=" text-transform: uppercase; color:grey; ">{{"Dirección de envío" | translate}}</ion-label>
@@ -75,8 +75,8 @@
     </ion-list-header>
     <ion-item text-wrap>
       <ion-label color="dark" class="ion-text-wrap">
-        {{data.store.wordpress_store_locator_address1}}, 
-        {{data.store.wordpress_store_locator_region}}, 
+        {{data.store.wordpress_store_locator_address1}},
+        {{data.store.wordpress_store_locator_region}},
         {{data.store.wordpress_store_locator_zip}}
       </ion-label>
     </ion-item>
@@ -103,7 +103,7 @@
       <ion-label text-wrap color="dark" style=" margin-left: 10px;">
       <div *ngFor="let item of order.line_items">{{item.name}}
         <p *ngFor="let meta of item.meta_data" >
-          <span *ngIf="checkMetaType(meta.value)"  >{{meta.value}}</span> 
+          <span *ngIf="checkMetaType(meta.value)"  >{{meta.value}}</span>
         </p>
         x {{item.quantity}}
         <span style="float: right">{{item.total | currency:settings.currency:'symbol':'1.2-2'}}</span>
@@ -117,20 +117,20 @@
 
     <ion-item lines="full">
       <ion-label text-wrap color="dark" style=" margin-left: 10px;">
-      <p  >{{"Descuenta" | translate}}<span style="float: right; ">{{order.discount_total | currency:settings.currency:'symbol':'1.2-2'}}</span></p>
-      <p  >{{"Impuestos" | translate}}<span style="float: right; ">{{order.total_tax | currency:settings.currency:'symbol':'1.2-2'}}</span></p>
+      <p  >{{"Descuenta" | translate}}<span style="float: right; ">{{1*order.discount_total | currency:settings.currency:'symbol':'1.2-2'}}</span></p>
+      <p  >{{"Impuestos" | translate}}<span style="float: right; ">{{1*order.total_tax | currency:settings.currency:'symbol':'1.2-2'}}</span></p>
       <div *ngIf="order.total_fee">
         <div *ngFor="let line of order.fee_lines">
-          <p>{{line.name}}<span style="float: right; ">{{line.total | currency:settings.currency:'symbol':'1.2-2'}}</span></p>
+          <p>{{line.name}}<span style="float: right; ">{{1*line.total | currency:settings.currency:'symbol':'1.2-2'}}</span></p>
         </div>
       </div>
-      <ion-label class="grand-total">Total<span style="float: right">{{order.total | currency:settings.currency:'symbol':'1.2-2'}}</span></ion-label>
+      <ion-label class="grand-total">Total<span style="float: right">{{1*order.total | currency:settings.currency:'symbol':'1.2-2'}}</span></ion-label>
     </ion-label>
     </ion-item>
     <div class="submit-button">
     <ion-button color="{{settings.theme.button}}" expand="block" fill="solid"  (click)="continue()">{{"Continuar" | translate}}</ion-button>
     </div>
-    
+
   </div>
 </ion-list>
 

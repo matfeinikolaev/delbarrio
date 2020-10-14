@@ -50,14 +50,14 @@
   </ion-list-header>
   <ion-item text-wrap>
     <ion-label color="dark"  class="ion-text-wrap">
-      {{data.store.wordpress_store_locator_address1}}, 
-      {{data.store.wordpress_store_locator_region}}, 
+      {{data.store.wordpress_store_locator_address1}},
+      {{data.store.wordpress_store_locator_region}},
       {{data.store.wordpress_store_locator_zip}}
     </ion-label>
   </ion-item>
   <!-- <ion-item id = "mapRedirect"></ion-item>
   <div #map style="height: 300px"></div> -->
-</ion-list> 
+</ion-list>
 
 <div *ngIf="orderReview">
 
@@ -199,7 +199,7 @@
         </ion-col>
       </ion-row-->
   <ion-item *ngIf="orderReview.payment[checkoutData.form.payment_method]?.description" lines="none">
-    <ion-label class="ion-text-wrap payment-description" style=" color:grey"> 
+    <ion-label class="ion-text-wrap payment-description" style=" color:grey">
     <span [innerHTML]="orderReview.payment[checkoutData.form.payment_method]?.description"></span>
     </ion-label>
   </ion-item>
@@ -214,19 +214,19 @@
       {{"TOTALES" | translate}}
     </ion-list-header>
     <ion-item>
-      <ion-label color="dark" class="ion-text-wrap">{{"Subtotal"}}<span style="float: right">{{orderReview.totals.subtotal}}</span>
+      <ion-label color="dark" class="ion-text-wrap">{{"Subtotal"}}<span style="float: right">{{1*orderReview.totals.subtotal | currency:settings.currency:'symbol':'1.2-2'}}</span>
       </ion-label>
     </ion-item>
     <ion-item>
-      <ion-label color="dark" class="ion-text-wrap">{{"Impuesto"}}<span style="float: right">{{orderReview.totals.total_tax}}</span>
+      <ion-label color="dark" class="ion-text-wrap">{{"Impuesto"}}<span style="float: right">{{1*orderReview.totals.total_tax | currency:settings.currency:'symbol':'1.2-2'}}</span>
       </ion-label>
     </ion-item>
     <ion-item *ngFor="let fee of orderReview.fees | keys">
-      <ion-label color="dark" class="ion-text-wrap">{{fee.value.name}}<span style="float: right">{{fee.value.total}}</span>
+      <ion-label color="dark" class="ion-text-wrap">{{fee.value.name}}<span style="float: right">{{1*fee.value.total | currency:settings.currency:'symbol':'1.2-2'}}</span>
       </ion-label>
     </ion-item>
     <ion-item>
-      <ion-label color="dark" class="ion-text-wrap">{{"Total"}}<span style="float: right">{{orderReview.totals.total}}</span>
+      <ion-label color="dark" class="ion-text-wrap">{{"Total"}}<span style="float: right">{{1*orderReview.totals.total | currency:settings.currency:'symbol':'1.2-2'}}</span>
       </ion-label>
     </ion-item>
   </ion-list>
@@ -236,7 +236,7 @@
   </div>
 
   <ion-item lines="none" *ngIf="checkoutData.form.show_terms">
-    <ion-label for="terms" text-wrap>He leído y estoy de acuerdo con los 
+    <ion-label for="terms" text-wrap>He leído y estoy de acuerdo con los
       <a href="http://delbarrio.ec/burgerclan/terms-conditions/" class="woocommerce-terms-and-conditions-link" target="_blank">términos y condiciones</a> de la web
     </ion-label>
     <ion-checkbox slot="start" name="terms" id="terms" [(ngModel)]="checkoutData.form.terms_checked"></ion-checkbox>

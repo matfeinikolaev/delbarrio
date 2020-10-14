@@ -22,8 +22,8 @@
          <div style="color:#687e95;  font-weight: light; margin-bottom: 20px;">
             <ion-label>{{"Déjanos tus contactos, te avisaremos, cuando aparezca este producto" | translate}}</ion-label>
          </div>
-         <form [formGroup]="form"> 
-         <ion-item style="   
+         <form [formGroup]="form">
+         <ion-item style="
          --border-color: var(--ion-color-medium-shade);
          --border-radius: 50px;
          --border-width: 1px;
@@ -32,7 +32,7 @@
          <ion-label for="name" mode="ios" color="medium" >NOMBRE</ion-label>
          <ion-input type="text" formControlName="name" clearInput="true"></ion-input>
          </ion-item>
-         <ion-item style="   
+         <ion-item style="
          --border-color: var(--ion-color-medium-shade);
          --border-radius: 50px;
          --border-width: 1px;
@@ -41,7 +41,7 @@
          <ion-label for="phone" mode="ios" color="medium" >TELEFONO</ion-label>
          <ion-input type="number" formControlName="phone" clearInput="true"></ion-input>
          </ion-item>
-         <ion-item style="   
+         <ion-item style="
          --border-color: var(--ion-color-medium-shade);
          --border-radius: 50px;
          --border-width: 1px;
@@ -49,7 +49,7 @@
          --background: #f8f9fa;">
          <ion-label for="email" mode="ios" color="medium" >EMAIL</ion-label>
          <ion-input type="email" formControlName="email" clearInput="true"></ion-input>
-         </ion-item>        
+         </ion-item>
          </form>
          <ion-item lines="none" *ngIf="errorMessage" style="width: 250px;">
          <span style="color: red;">{{errorMessage}}</span>
@@ -107,7 +107,7 @@
       <div *ngIf="data.store.product_ids">
          <ion-button fill="clear" (click)="changeSlide('back')" [disabled]="data.store.product_ids.length == 1">
             <ion-icon style="color:#687e95" name="arrow-back-outline"></ion-icon>
-         </ion-button>  
+         </ion-button>
       </div>
       <ion-slides #slider id="chunk-slider" (ionSlideDidChange)="ionSlideDidChange()">
          <ion-slide style="color:#687e95;  font-weight: lighter;" class="chunk-slide" *ngFor="let chunk of store.product_ids; let i = index">{{i}}</ion-slide>
@@ -145,7 +145,7 @@
             </div>
 
             <!-- <ion-label *ngIf="product.sale_price && ((product.regular_price - product.price) /product.regular_price*100) >= 1" style="background-color:rgb(1, 211, 1); padding: 3px; border-radius: 10px; width: 1%; top: 10px;" color="white">- {{(product.regular_price - product.price) /product.regular_price*100 | number : '1.0-0'}}%</ion-label> -->
-            
+
             <div class="product-details">
                <ion-item lines="none">
                   <ion-label text-wrap style=" width: 50px; overflow: hidden; text-overflow: ellipsis;">
@@ -232,7 +232,7 @@
                      {{ "Avisar, cuando llega" | translate}}
                   </ion-button>
                </ion-col>
-               <ion-col style="text-align: center;" *ngIf="data.cart[product.variation_id] >= 1 && product.variationOptions?.length" align-self-end>
+               <ion-col style="text-align: center;" *ngIf="data.cart[product.variation_id] >= 1 && !product.variationOptions?.length" align-self-end>
                   <ion-row>
                      <ion-button style="--border-radius: 64px 0 0 64px;" mode="ios" expand="block" color="{{settings.theme.button}}" (click)="deleteFromCart(product)">
                      <ion-icon slot="icon-only" name="remove-circle-outline"></ion-icon>
@@ -260,7 +260,7 @@
                         {{ "Avisar, cuando llega" | translate}}
                      </ion-button>
                   </ion-col>
-                  <ion-col style="text-align: center;" *ngIf="data.cart[product.id] != undefined && data.cart[product.id] >= 1 && product.variationOptions?.length" align-self-end>
+                  <ion-col style="text-align: center;" *ngIf="data.cart[product.id] != undefined && data.cart[product.id] >= 1 && !product.variationOptions?.length" align-self-end>
                      <ion-row>
                         <ion-button style="--border-radius: 64px 0 0 64px; width:30%;padding-right: 0px; margin-right:0px;" mode="ios" expand="block" color="{{settings.theme.button}}" (click)="deleteFromCart(product)">
                         <ion-icon slot="icon-only" name="remove-circle-outline"></ion-icon>
@@ -278,7 +278,7 @@
 
             </div>
 
-   
+
          <ion-button style="--border-radius: 64px 64px 64px 64px;" mode="ios" *ngIf="product.type == 'external'" class="add-to-cart-button" color="{{settings.theme.button}}" expand="block" fill="solid" [disabled]="disableButton || product.stock_status == 'outofstock'" (click)="buyExternalProduct(product.id)">{{"COMPRAR AHORA" | translate}}</ion-button>
 
          <div *ngIf="relatedProducts?.relatedProducts?.length" class="related-products">
@@ -330,7 +330,7 @@
          </div>
       </ion-col>
    </ion-row>
-   
+
    <div *ngIf="upsellProducts?.upsellProducts?.length" class="related-products">
       <ion-list-header>
          <ion-label>{{"Te gustará" | translate}}</ion-label>
@@ -340,7 +340,7 @@
          <ion-card mode="md" class="ion-activatable ion-focusable hydrated {{settings.settings.product_shadow}}" [style.border-radius.px]="settings.dimensions.productBorderRadius">
             <ion-img alt="" [style.height.px]="settings.dimensions.homeSliderHeight" src="{{item?.images[0]?.src}}"></ion-img>
             <ion-icon name="heart-outline" mode="md" class="wishlist-button-grid" *ngIf="!settings.wishlist[item.id]" (click)="settings.addToWishlist(item.id, item.path)"></ion-icon>
-            <ion-icon name="heart" color="{{settings.theme.button}}" mode="md" class="wishlist-button-grid" *ngIf="settings.wishlist[item.id]" (click)="settings.removeFromWishlist(item.id, item.path)"></ion-icon> 
+            <ion-icon name="heart" color="{{settings.theme.button}}" mode="md" class="wishlist-button-grid" *ngIf="settings.wishlist[item.id]" (click)="settings.removeFromWishlist(item.id, item.path)"></ion-icon>
             <ion-card-header (click)="goToProduct(item)">
                <ion-card-subtitle mode="md">{{item.name}}</ion-card-subtitle>
             </ion-card-header>
@@ -452,4 +452,4 @@
       </ion-item>
    </div>
 
-</ion-content> 
+</ion-content>
