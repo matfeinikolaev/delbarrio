@@ -104,14 +104,13 @@ export class OrderListPage implements OnInit {
     }
 
     getLastOrderStore() {
-        var store_owner_id = localStorage.getItem("store_owner_id");
-        if (store_owner_id) {
-            this.getActualOrderStore(store_owner_id).then(data => {
+        if (this.settings.store_owner_id) {
+            this.getActualOrderStore(this.settings.store_owner_id).then(data => {
                 var result: any = data;
                 if (result.status == 'success') {
                     setInterval(() => {
-                        this.notificationApply(data[0]);
-                    }, 60000)
+                        this.notificationApply(result);
+                    }, 60000);
 
                 } else console.log(result);
             });
@@ -295,16 +294,35 @@ export class OrderListPage implements OnInit {
     }
 
     notificationApply(data) {
-        const notif = this.localNotifications.schedule([{
+        var data_arr = Object.values(data);
+        var title_notif = "";
+        var texto_notif = "";
+        var order_id = [];
+        var client_names = [];
+        var order_status = [];
+        if (data_arr.length > 1){
+            for (var i = 0; i < data_arr.length - 1; i++){
+                order_id.push(data_arr[i]['ID']);
+                client_names.push(data_arr[i]['name']+' '+data_arr[i]['last_name']);
+                order_status.push(data_arr[i]['order_status']);
+            }
+            title_notif = "Su local tiene varias Ordenes " + order_id.join();
+            texto_notif = "Clientes  " + client_names.join()
+                + " el estado de las Ordenes son: " + order_status.join();
+        }else {
+            title_notif = "Su local tiene una Orden " + data.ID;
+            texto_notif = "Cliente  " + data.name + ' ' + data.last_name
+                + " el estado de la Orden es: " + data.order_status;
+        }
+
+        this.localNotifications.schedule([{
             id: 1,
-            title: "Estado de su Orden " + data.ID,
-            text: "Estimado " + data.name + ' ' + data.last_name
-                + " el estado de su orden es: " + data.order_status,
+            title: title_notif,
+            text: texto_notif,
             foreground: true,
             trigger: {at: new Date(new Date().getTime() + 10)},
             data: {secret: 'secret'}
         }]);
-        console.log('Notifica', notif)
     }
 }
 

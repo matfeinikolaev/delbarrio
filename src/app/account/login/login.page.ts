@@ -90,6 +90,13 @@ export class LoginPage implements OnInit {
                     this.settings.administrator = true;
                     window.localStorage.setItem ("user_admin", '1');
                 }
+                if (this.status.roles[0] === "shop_manager"){
+                    this.api.postItem('get_user_sites', {id: this.status.ID}).then(res => {
+                        var site_important : any = res;
+                        this.settings.store_owner_id = site_important[0].blog_id
+                        console.log(this.settings.store_owner_id)
+                    });
+                }
                 this.settings.user.roles = JSON.stringify(this.status.roles);
                 this.settings.user.userRoles = JSON.parse(this.settings.user.roles);
                 this.settings.user.userIsManager = this.settings.user.userRoles.includes("shop_manager");
