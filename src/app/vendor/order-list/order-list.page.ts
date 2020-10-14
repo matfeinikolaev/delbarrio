@@ -41,6 +41,7 @@ export class OrderListPage implements OnInit {
         } else if(this.settings.settings.vendorType === 'product_vendor') {
             this.getWooCommerceProductVendorOrders();
         } else {
+          this.path = this.store.store.post_name.replace("-", "");
             this.getOrders(); //THIS WORKS FOE WCFM ALSO, DO NOT CHANEG THIS. WCFM API NOT WORKING
         }
     }
