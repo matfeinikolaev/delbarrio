@@ -58,6 +58,7 @@ export class Settings implements OnInit {
     remove_wishlist:any; 
     store_wishlist: any = [];
     clientDataSent: any;
+    store_owner_id: any;
     constructor(public translate: TranslateService, public api: ApiService, public toastController: ToastController) {
         this.customer.billing = {};
         this.customer.shipping = {};

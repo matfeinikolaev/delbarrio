@@ -75,7 +75,6 @@ export class AccountPage {
             window.localStorage.removeItem ("user_url");
             window.localStorage.removeItem ("user_admin");
             window.localStorage.removeItem ("user_vendor");
-            window.localStorage.removeItem("store_owner_id");
         }
         await this.api.postItem('logout').then(res => {}, err => {
             console.log(err);
@@ -125,14 +124,6 @@ export class AccountPage {
         }, err => {
             console.log(err);
         });
-        var roleUser = localStorage.getItem('roles');
-        if (roleUser === '["shop_manager"]'){
-            var user_ids = localStorage.getItem('user_id');
-            this.api.postItem('get_user_sites', {id: user_ids}).then(res => {
-                var site_important : any = res;
-                window.localStorage.setItem ("store_owner_id", site_important[0].blog_id);
-            });
-        }
         if (this.settings.user || this.settings.customer.id) {
             this.toggle = document.querySelector('#themeToggle');
             if (this.toggle !== null) {
