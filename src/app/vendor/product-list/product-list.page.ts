@@ -223,7 +223,7 @@ export class ProductListPage {
         if (this.settings.user.userIsManager) {
             this.getStore();
         } else {
-            this.path = this.store.store.post_name;
+            this.path = this.store.store.post_name.replace("-", "");
             this.getProducts();
             this.getAttributes();
         }
