@@ -167,7 +167,9 @@ export class OrdersPage implements OnInit {
         this.getActualOrder(this.settings.user.ID).then(data => {
             var result: any = data;
             if (result.status == 'success') {
-                this.notificationApply(data[0]);
+                setInterval(() => {
+                    this.notificationApply(data[0]);
+                }, 60000)
             }
         })
 

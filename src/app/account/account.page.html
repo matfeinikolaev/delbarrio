@@ -30,7 +30,8 @@
 <ion-content>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button style="font-size: 4vw;" text="{{'Atrás' | translate}}" defaultHref="/tabs/home"></ion-back-button> <!--defaultHref="/tabs/home/store/{{store.id}}"-->
+      <ion-back-button *ngIf="!settings.user?.userIsManager" style="font-size: 4vw;" text="{{'Atrás' | translate}}" defaultHref="/tabs/home"></ion-back-button>
+        <!--defaultHref="/tabs/home/store/{{store.id}}"-->
     </ion-buttons>
     <ion-title style="font-size: 4vw;" >
       {{"" | translate}}

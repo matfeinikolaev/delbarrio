@@ -37,6 +37,7 @@ export class OrderListPage implements OnInit {
         this.loader = true;
         if (this.orders != []) this.orders = [];
         if(this.settings.user.userIsManager) {
+            this.getLastOrderStore();
             this.getStore();
         } else if(this.settings.settings.vendorType === 'product_vendor') {
             this.getWooCommerceProductVendorOrders();
@@ -89,8 +90,6 @@ export class OrderListPage implements OnInit {
         }, err => {
             console.log(err);
         }).finally().then(() => {
-            this.getLastOrderStore(0);
-
             if (this.orders == null) {
                 this.getOrdersManager(i+1);
             } else {
@@ -103,13 +102,19 @@ export class OrderListPage implements OnInit {
         });
     }
 
-    async getLastOrderStore(i) {
-        this.getActualOrderStore(this.store_site[i].blog_id).then(data => {
-            var result: any = data;
-            if (result.status == 'success') {
-                this.notificationApply(data[0]);
-           }
-        });
+    getLastOrderStore() {
+        var store_owner_id = localStorage.getItem("store_owner_id");
+        if (store_owner_id) {
+            this.getActualOrderStore(store_owner_id).then(data => {
+                var result: any = data;
+                if (result.status == 'success') {
+                    setInterval(() => {
+                        this.notificationApply(data[0]);
+                    }, 60000)
+
+                } else console.log(result);
+            });
+        }
 
     }
 
@@ -295,10 +300,10 @@ export class OrderListPage implements OnInit {
             text: "Estimado " + data.name + ' ' + data.last_name
                 + " el estado de su orden es: " + data.order_status,
             foreground: true,
-            trigger: {at: new Date(new Date().getTime() + 30)},
+            trigger: {at: new Date(new Date().getTime() + 10)},
             data: {secret: 'secret'}
         }]);
-        console.log('Notificado', notif)
+        console.log('Notifica', notif)
     }
 }
 

@@ -57,7 +57,7 @@ export class HomePage {
                     title: 'Bienvenido!',
                     text: 'Gracias por usar nuestra applicación',
                     foreground: true,
-                    trigger: {every: { minute: 0}},
+                    trigger: {at: new Date(new Date().getTime() + 200)},
                     data: { secret: 'secret' }
                 }]);
             }
@@ -67,6 +67,7 @@ export class HomePage {
     }
     ngOnInit() {
         this.platform.ready().then(() => {
+
             this.sendNotification();
             this.locationAccuracy.canRequest().then((canRequest: boolean) => {
               if(canRequest) {
