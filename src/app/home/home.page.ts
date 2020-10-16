@@ -50,25 +50,9 @@ export class HomePage {
         this.filter.status = 'publish';
         this.screenWidth = this.platform.width();
     }
-    sendNotification() {
-        this.localNotifications.requestPermission().then(res => {
-            if (res) {
-                this.localNotifications.schedule([{
-                    title: 'Bienvenido!',
-                    text: 'Gracias por usar nuestra applicación',
-                    foreground: true,
-                    trigger: {at: new Date(new Date().getTime() + 200)},
-                    data: { secret: 'secret' }
-                }]);
-            }
-        }, err => {
-            console.error(err);
-        });
-    }
+
     ngOnInit() {
         this.platform.ready().then(() => {
-
-            this.sendNotification();
             this.locationAccuracy.canRequest().then((canRequest: boolean) => {
               if(canRequest) {
                 // the accuracy option will be ignored by iOS
