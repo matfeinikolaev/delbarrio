@@ -280,6 +280,7 @@ export class ProductListPage {
     }
     editProduct(product){
         this.product.product = product;
+        // this.productData.product = product;
         this.navCtrl.navigateForward(this.router.url + this.store.store.ID +'/edit-product/' + product.ID);
     }
 

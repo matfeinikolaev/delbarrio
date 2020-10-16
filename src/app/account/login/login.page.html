@@ -22,10 +22,10 @@
     </div>
     <ion-segment scrollable="true" mode="md" color="secondary" value="{{segment}}" (ionChange)="segmentChanged($event)" style="width:100%">
       <ion-segment-button color="secondary" value="login" style="margin: auto">
-        <ion-label >{{"Login"| translate}}</ion-label>
+        <ion-label color="secondary">{{"Login"| translate}}</ion-label>
       </ion-segment-button>
       <ion-segment-button color="secondary" value="register" style="margin: auto">
-        <ion-label >{{"Registrar"| translate}}</ion-label>
+        <ion-label color="secondary">{{"Registrar"| translate}}</ion-label>
       </ion-segment-button>
     </ion-segment>
 
@@ -58,7 +58,7 @@
       <div class="form" *ngIf="segment == 'register'">
         <ion-list>
           <form [formGroup]="formRegister">
-            
+
           <ion-label for="first_name" mode="ios" color="medium" >NOMBRE</ion-label>
           <ion-item style="margin: 0 0 15px 0">
           <ion-input required type="text" formControlName="first_name" ></ion-input>
@@ -79,7 +79,7 @@
           <ion-item style="margin: 0 0 15px 0">
           <ion-input required type="password" formControlName="password" ></ion-input>
           </ion-item>
-          
+
         </form>
         </ion-list>
 

@@ -63,11 +63,11 @@ export class CheckoutAddressPage implements OnInit {
     constructor(
         // public gMap: Map,
         public data: Data,
-        public api: ApiService, 
-        public checkoutData: CheckoutData, 
-        public router: Router, 
-        public navCtrl: NavController, 
-        public settings: Settings, 
+        public api: ApiService,
+        public checkoutData: CheckoutData,
+        public router: Router,
+        public navCtrl: NavController,
+        public settings: Settings,
         public route: ActivatedRoute,
         private geolocation: Geolocation,
         private nativeGeocoder: NativeGeocoder,
@@ -101,7 +101,7 @@ export class CheckoutAddressPage implements OnInit {
         var curr_month = ("0" + (this.mydate[0].getMonth() + 1)).slice(-2);
         var curr_year = this.mydate[0].getFullYear();
         this.checkoutData.form['jckwds-delivery-date'] = curr_date + '/' + curr_month + '/' + curr_year;
-        
+
 
         var mm = this.mydate[0].getMonth() + 1;
         var dd = this.mydate[0].getDate();
@@ -111,7 +111,7 @@ export class CheckoutAddressPage implements OnInit {
               (dd>9 ? '' : '0') + dd
              ].join('');
 
-        this.checkoutData.form['jckwds-delivery-date-ymd'] = this.date;  
+        this.checkoutData.form['jckwds-delivery-date-ymd'] = this.date;
         this.api.getTime(this.date)
            .then((results) => this.time = results);*/
         /* End of Delivery Date Time */
@@ -131,13 +131,22 @@ export class CheckoutAddressPage implements OnInit {
               (dd>9 ? '' : '0') + dd
              ].join('');
         this.api.ajaxCall('/wp-admin/admin-ajax.php',this.date)
-           .then((results) => this.time = results);    
-        this.checkoutData.form['jckwds-delivery-date-ymd'] = this.date;   
+           .then((results) => this.time = results);
+        this.checkoutData.form['jckwds-delivery-date-ymd'] = this.date;
     }
-    
+    getStore() {
+        this.api.postItem('store', {'store_id':window.localStorage.store_id}).then(res => {
+            this.data.store = res;
+        }, err=>{
+            console.error(err);
+        });
+    }
     ngOnInit() {
         this.storePath = this.route.snapshot.paramMap.get('storePath');
         console.log(this);
+        if (!this.data.store) {
+          this.getStore();
+        }
         this.api.postItem("user_meta", {id: this.settings.user.ID}, this.storePath).then(res => {
             var results: any = res;
             console.log(results);
@@ -179,8 +188,8 @@ export class CheckoutAddressPage implements OnInit {
         mapElement.setAttribute("id", "map");
         this.mapEl.nativeElement.appendChild(mapElement);
         mapElement.setAttribute("style", "width: 94%; height:70%;");
-        
-        
+
+
         let markers = [];
         var that = this;
 
@@ -392,7 +401,7 @@ export class CheckoutAddressPage implements OnInit {
         this.GoogleAutocomplete.getPlacePredictions({ input: this.checkoutData.form.billing_city + this.checkoutData.form.billing_address_1, componentRestrictions: {country: this.checkoutData.form.billing_country } }, (predictions, status) => {
             this.autocompleteItemsFirst = predictions;
         });
-    }    
+    }
     getSecondAddress() {
         this.GoogleAutocomplete.getPlacePredictions({ input: this.checkoutData.form.billing_city + this.checkoutData.form.billing_address_2, componentRestrictions: {country: this.checkoutData.form.billing_country } }, (predictions, status) => {
             this.autocompleteItemsSecond = predictions;
@@ -412,7 +421,7 @@ export class CheckoutAddressPage implements OnInit {
         this.GoogleAutocomplete.getPlacePredictions({ input: this.checkoutData.form.shipping_city + this.checkoutData.form.shipping_address_1, componentRestrictions: {country: this.checkoutData.form.shipping_country } }, (predictions, status) => {
             this.autocompleteItemsShipFirst = predictions;
         });
-    }    
+    }
     getSecondAddressShip() {
         this.GoogleAutocomplete.getPlacePredictions({ input: this.checkoutData.form.shipping_city + this.checkoutData.form.shipping_address_2, componentRestrictions: {country: this.checkoutData.form.shipping_country } }, (predictions, status) => {
             this.autocompleteItemsShipSecond = predictions;
@@ -502,9 +511,9 @@ export class CheckoutAddressPage implements OnInit {
             if(!this.checkoutData.form.ship_to_different_address)
                 this.assgnShippingAddress();
             // this.navCtrl.navigateForward('/tabs/order-summary/' + this.storePath + '/' + 10996);
-            if(this.data.store.delivery)
-                this.navCtrl.navigateForward('/tabs/cart/delivery/' + this.storePath + '/');
-            else 
+            // if(this.data.store.delivery)
+            //     this.navCtrl.navigateForward('/tabs/cart/contacts/' + this.storePath + '/');
+            // else
                 this.navCtrl.navigateForward('/tabs/cart/contacts/' + this.storePath + '/');
         }
     }
@@ -515,7 +524,7 @@ export class CheckoutAddressPage implements OnInit {
             return false;
         }
 
-        if(this.checkoutData.form.billing_city == '' || this.checkoutData.form.billing_city == undefined){ 
+        if(this.checkoutData.form.billing_city == '' || this.checkoutData.form.billing_city == undefined){
             this.errorMessage = 'La ciudad de facturación es un campo obligatorio';
             return false;
         }

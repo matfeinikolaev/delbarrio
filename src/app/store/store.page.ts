@@ -60,17 +60,21 @@ export class StorePage {
     openFeedbackForm: any = false;
     errorMessage:any;
     unavailableProduct:any;
+    displayProducts: any;
+    productAmount: any;
+    result: any;
+    loader: any = true;
     @ViewChild("slider", { static: true }) ionSlides: IonSlides;
     constructor(private chatapi: ChatApi, private config: Config, public translate: TranslateService, public toastController: ToastController, private socialSharing: SocialSharing, public modalCtrl: ModalController, public api: ApiService, public data: Data, public productData: Product, public storeData: Store, public settings: Settings, public router: Router, public loadingController: LoadingController, public navCtrl: NavController, public alertController: AlertController, public route: ActivatedRoute, public vendor: Vendor, public iab: InAppBrowser, private fb: FormBuilder) {
         this.filter.page = 1;
-        this.quantity = "1";        
+        this.quantity = "1";
         this.form = this.fb.group({
             name: this.settings.user?this.settings.user.display_name:'',
             phone: '',
             email: this.settings.user?this.settings.user.user_email:'',
         });
     }
-    
+
     ngOnInit() {
         this.highlightCart();
         this.translate.get(['Oops!', 'Por favor seleccione', 'Por favor espera', 'Opciones', 'Opción', 'Seleccione', 'Artículo agregado al carrito', 'Mensaje', 'Cantidad solicitada no disponible'  ]).subscribe(translations => {
@@ -86,213 +90,170 @@ export class StorePage {
         });
         this.store = this.storeData.store;
         this.id = this.route.snapshot.paramMap.get('id');
-        // if (this.store.ID) this.handleProduct();
-        //  else
-        //  this.getProducts();
         this.getStore();
         console.log(this);
-    }    
+    }
 
     getReviewsPage() {
         this.navCtrl.navigateForward(this.router.url + '/review/' + this.product.id);
     }
     getProduct(product) {
         this.productData.product = product;
+        window.localStorage.setItem("store_id", this.store.ID);
         this.navCtrl.navigateForward('/tabs/home/product/' + product.id);
     }
     getStore() {
+        this.loader = true;
         this.api.postItem('store', {'store_id':this.id}).then(res => {
             this.data.store = res;
             this.store = res;
             this.path =  this.store.wordpress_store_locator_website.split('/');
             this.path = this.path[this.path.length -1];
+            window.localStorage.setItem("store_id", this.id);
         }, err=>{
             console.error(err);
-        }).then(() => {
-            this.api.postItem('get_product_ids', {}, this.path).then(res => {
-                this.data.store.product_ids = res;
-                this.store.product_ids = res;
-                this.store.chosenChunk = 0;
-            }, err => {
-                console.error(err);
-            }).then(() => {
-                this.loadingProducts = true;
-                this.api.postItem('products', {include: JSON.stringify(this.store.product_ids[this.store.chosenChunk]), store_category: this.data.storeCategory.term_id}, this.path).then(res => {
-                    console.log(this.store.product_ids[this.store.chosenChunk]);
-                    console.log(res);
-                    this.loadingProducts = false;
-                    this.data.store.products = res;
-                    this.store.products = res;
-                }, err => {
-                    console.error(err);
-                });
-            }, err => {
-                console.error(err);
-            });
+        }).finally().then(() => {
+            this.getCategoriesJson();
+            this.getCatalogOrdering();
+            this.getCart();
+            this.getWishList();
+            this.getProducts();
         }, err => {
             console.error(err);
-        }).then(() => {
-            this.api.postItem('categories_json', {}, this.path).then(res => {
-                this.data.store.categories = res;
-                this.store.categories = res;
-            }, err => {
-                console.error(err);
-            });
-        }, err => {
-            console.error(err);
-        }).then(()=>{
-            this.api.postItem('get_catalog_ordering', {}, this.path).then(res => {
-                this.data.store.ordering = res;
-                this.store.ordering = res;
-            }, err => {
-                console.error(err);
-            });
-        }, err => {
-            console.error(err);
-        }).then(() => {
-            this.api.postItem('cart', {}, this.path).then(res => {
-                console.log(res);
-                this.store.cart = res;
-                this.cart.cart = this.store.cart.cart_contents;
-                this.data.updateCart(this.cart.cart);
-            })
-        }).then(() => {
-            if( this.settings.customer.id) {
-                this.api.postItem('get_wishlist', {}, this.path).then(res => {
-                    this.settings.add_wishlist = res;
-                    this.settings.wishlist = [];
-                    for (let item in this.settings.add_wishlist) {
-                        this.settings.wishlist[this.settings.add_wishlist [item].id] = this.settings.add_wishlist [item].id;
-                    }
-                    this.settings.store_wishlist.push(this.settings.add_wishlist);
-                }, err => {
-                    console.log(err);
-                });
-            }
-        }).then(() => {
-            if(this.settings.user) {
-                this.getIncomeMessages();
-            }
+        }).finally().then(() => {
+          this.loader = false;
         });
     }
+    getCategoriesJson () {
+      this.api.postItem('categories_json', {}, this.path).then(res => {
+          this.data.store.categories = res;
+          this.store.categories = res;
+      }, err => {
+          console.error(err);
+      });
+    }
+    getCatalogOrdering () {
+      this.api.postItem('get_catalog_ordering', {}, this.path).then(res => {
+          this.data.store.ordering = res;
+          this.store.ordering = res;
+      }, err => {
+          console.error(err);
+      });
+    }
+    getCart () {
+      this.api.postItem('cart', {}, this.path).then(res => {
+          console.log(res);
+          this.store.cart = res;
+          this.cart.cart = this.store.cart.cart_contents;
+          this.data.updateCart(this.cart.cart);
+      }, err => {
+        console.error(err);
+      });
+    }
+    getWishList () {
+      if( this.settings.customer.id) {
+          this.api.postItem('get_wishlist', {}, this.path).then(res => {
+              this.settings.add_wishlist = res;
+              this.settings.wishlist = [];
+              for (let item in this.settings.add_wishlist) {
+                  this.settings.wishlist[this.settings.add_wishlist [item].id] = this.settings.add_wishlist [item].id;
+              }
+              this.settings.store_wishlist.push(this.settings.add_wishlist);
+          }, err => {
+              console.log(err);
+          });
+      }
+    }
+    ionSlideDidChange() {
+      this.loader = true;
+      this.ionSlides.getActiveIndex().then(res => {
+          this.displayProducts = this.store.products[res];
+          this.loader = false;
+      }, err => {
+          console.error(err);
+      });
+    }
+    changeSlide(dir) {
+      this.loader = true;
+      switch (dir) {
+          case "back":
+              this.ionSlides.slidePrev().then(res => {
+                  this.ionSlides.getActiveIndex().then(res => {
+                      this.displayProducts = this.store.products[res];
+                      this.loader = false;
+                  }, err => {
+                      console.error(err);
+                  });
+              });
+              break;
+          case "forward":
+              this.ionSlides.slideNext().then(res => {
+                  this.ionSlides.getActiveIndex().then(res => {
+                      this.displayProducts = this.store.products[res];
+                      this.loader = false;
+                  }, err => {
+                      console.error(err);
+                  });
+              });
+              break
+      }
+    }
     onInput() {
-        // this.loading = true;
-        // this.hasMoreItems = true;
+        this.loader = true;
         this.filter.page = 1;
         delete this.filter.sku;
         this.filter.q = this.searchInput;
-        // if (this.searchInput.length) {
-            this.getProducts();
-        // } 
-        // else {
-        //     this.products = '';
-        //     this.loading = false;
-        // }
+        this.getProducts();
     }
-    ionSlideDidChange() {
-        this.ionSlides.getActiveIndex().then(res => { 
-            console.log(res);
-            console.log(this.store.product_ids[res]);
-            this.filter.include = JSON.stringify(this.store.product_ids[res]);
-            this.store.products = [];
-            this.data.store.products = [];
-            this.getProducts();
-        }, err => {
-            console.error(err);
-        });
-    }
-    changeSlide(dir) {
-        switch (dir) {
-            case "back": 
-                this.ionSlides.slidePrev().then(res => {
-                    console.log(res);
-                    this.ionSlides.getActiveIndex().then(res => { 
-                        console.log(res);
-                        console.log(this.store.product_ids[res]);
-                        this.filter.include = JSON.stringify(this.store.product_ids[res]);
-                        this.store.products = [];
-                        this.data.store.products = [];
-                        this.getProducts();
-                    }, err => {
-                        console.error(err);
-                    });
-                });
-                break;
-            case "forward":
-                this.ionSlides.slideNext().then(res => {
-                    console.log(res);
-                    this.ionSlides.getActiveIndex().then(res => { 
-                        console.log(res);
-                        console.log(this.store.product_ids[res]);
-                        this.filter.include = JSON.stringify(this.store.product_ids[res]);
-                        this.store.products = [];
-                        this.data.store.products = [];
-                        this.getProducts();
-                    }, err => {
-                        console.error(err);
-                    });
-                });
-                break
-        }
-    }
-    async getProducts(id=null) {
-        this.filter.catalog_ordering = this.chosenOrder;
+    async getProducts() {
         this.loadingProducts = true;
-        if ( Array.isArray(this.chosenCategory) ) {
-            var result: any = [];
-            for (let catId of this.chosenCategory) {
-                this.filter.id = catId;            
-                this.api.postItem('products', this.filter, this.path).then(res => {
-                    result = result.concat(res);
-                    this.store.products = result;
-                    this.data.store.products = result;
-                    this.loadingProducts = false;
-                }, err => {
-                    console.log(err);
-                    this.loadingProducts = false;
-                });
+        this.filter.catalog_ordering = this.chosenOrder;
+        this.api.postItem('products', this.filter, this.path).then(res => {
+            console.log(this.filter.q);
+            this.result = res;
+            if (this.result != [] && this.result != null && this.result != undefined && this.result && this.result.length != 0) {
+              this.data.store.products = res;
+              this.store.products = res;
+              if (this.result[0].id == null) {
+                this.productAmount = this.result.reduce((acc,element) => acc + element.length, 0);
+                this.displayProducts = this.result[0];
+              } else {
+                this.productAmount = this.result.length;
+                this.displayProducts = this.result;
+              }
             }
-            this.store.chosenCategory = this.store.categories.find(cat => {
-                return cat.term_id = this.chosenCategory;
-            });
-        } 
-        else {
-            this.filter.id = this.chosenSubcategory ? this.chosenSubcategory : this.chosenCategory;
-            this.api.postItem('products', this.filter, this.path).then(res => {
-                console.log(res);
-                this.data.store.products = res;
-                this.store.products = res;
-                this.loadingProducts = false;
-            }, err => {
-                console.log(err);
-                this.loadingProducts = false;
-            });        
-            this.store.chosenCategory = this.store.categories.find(cat => {
-                return cat.id == this.chosenCategory && cat.cat_ID == this.chosenCategory && cat.term_id == this.chosenCategory;
-            });
+            this.loadingProducts = false;
+            this.loader = false;
+        }, err => {
+            console.log(err);
+            this.loadingProducts = false;
+            this.loader = false;
+        });
+        if (this.store.categories) {
+          this.store.chosenCategory = this.store.categories.find(cat => {
+              return cat.id == this.chosenCategory && cat.cat_ID == this.chosenCategory && cat.term_id == this.chosenCategory;
+          });
         }
     }
     getCategory() {
         this.chosenSubcategory = null;
+        this.filter.id = this.chosenCategory;
         this.ionSlides.slideTo(0);
-        if (this.chosenCategory != 0)
-            this.filter.include = null;
-        else this.filter.include = JSON.stringify(this.store.product_ids[0]);
         this.getProducts();
     }
     getSubcategory(id) {
         this.chosenSubcategory = id;
+        this.filter.id = this.chosenSubcategory;
         this.ionSlides.slideTo(0);
-        this.filter.include = null;
         this.getProducts();
     }
-    getCart() {
-        this.api.postItem('cart', {}, this.store.path).then(res => {
-            this.store.cart = res;
-        }, err => {
-            console.error(err);
-        });
-    }
+    // getCart() {
+    //     this.api.postItem('cart', {}, this.store.path).then(res => {
+    //         this.store.cart = res;
+    //     }, err => {
+    //         console.error(err);
+    //     });
+    // }
     notifyClient(product) {
         this.unavailableProduct = product.id;
         if(this.settings.user || this.settings.customer.id) {
@@ -368,12 +329,12 @@ export class StorePage {
         }, 8000);
     }
     getIncomeMessages() {
-        var msgs = this.data.messages[this.store.ID];
-        for (let i in msgs) {
-            if (msgs[i].status == 'vendor-user' && (msgs[i].type=='message' || msgs[i].type=='notification')) {
-                this.incomeMessages.push(msgs[i]);
-            }
-        }
+        // var msgs = this.data.messages[this.store.ID];
+        // for (let i in msgs) {
+        //     if (msgs[i].status == 'vendor-user' && (msgs[i].type=='message' || msgs[i].type=='notification')) {
+        //         this.incomeMessages.push(msgs[i]);
+        //     }
+        // }
     }
     handleProduct() {
 
@@ -392,7 +353,7 @@ export class StorePage {
         this.usedVariationAttributes = this.product.attributes.filter(function(attribute) {
             return attribute.variation == true
         });
-    
+
         //if ((this.product.type == 'variable') && this.product.variations.length) this.getVariationProducts();
         if ((this.product.type == 'grouped') && this.product.grouped_products.length) this.getGroupedProducts();
         this.getRelatedProducts();
@@ -463,15 +424,15 @@ export class StorePage {
         var chat = document.getElementById("chatIcon");
         var head = document.getElementById("pageHeader");
         var cartTop = cart.getBoundingClientRect().top;
-        var chatTop = chat.getBoundingClientRect().top;
+        var chatTop = chat ? chat.getBoundingClientRect().top : null;
         var headTop = head.getBoundingClientRect().top;
         if(cartTop > 54 ) {
             cart.style.marginTop = Number.parseInt(cart.style.marginTop.split('p')[0]) - 10 + 'px';
-            chat.style.marginTop = Number.parseInt(chat.style.marginTop.split('p')[0]) - 10 + 'px';
+            chat ? chat.style.marginTop = Number.parseInt(chat.style.marginTop.split('p')[0]) - 10 + 'px' : chat = null;
         }
         if(headTop > -56) {
             cart.style.marginTop = "-30px";
-            chat.style.marginTop = "-30px";
+            chat ? chat.style.marginTop = "-30px" : chat = null;
         }
     }
     async addToCart(product) {
@@ -487,7 +448,7 @@ export class StorePage {
                 this.results = res;
                 if(this.results.error) {
                     this.presentToast(this.results.notice);
-                } else { 
+                } else {
                     this.cart = res;
                     this.store.cart = res;
                     this.presentToast(this.lan.addToCart);
@@ -522,7 +483,7 @@ export class StorePage {
                   };
                   params.key = key;
                   params.quantity = this.data.cartItem[key].quantity;
-            }      
+            }
           }
           params.update_cart = 'Update Cart';
           params._wpnonce = this.data.cartNonce;
@@ -554,8 +515,8 @@ export class StorePage {
             };
             params.key = key;
             params.quantity = this.data.cartItem[key].quantity;
-          }      
-        }    
+          }
+        }
         params.update_cart = 'Update Cart';
         params._wpnonce = this.data.cartNonce;
         await this.api.postItem('update-cart-item-qty', params, product.path).then(res => {
@@ -643,7 +604,7 @@ export class StorePage {
                     if (!this.product.availableVariations[i].is_in_stock) {
                         this.product.stock_status = 'outofstock';
                     }
-                    
+
                     break;
                 }
               }
@@ -718,7 +679,7 @@ export class StorePage {
             url: this.store.wordpress_store_locator_website,
             chooserTitle: 'Elige una aplicación'
         }
-        
+
         this.socialSharing.shareWithOptions(options);
     }
     getDetail(vendor) {
@@ -749,7 +710,7 @@ export class StorePage {
         if(this.product.meta_data){
             for(let item in this.product.meta_data){
                 if(this.product.meta_data[item].key == '_product_addons' && this.product.meta_data[item].value.length){
-                    this.addonsList.push(...this.product.meta_data[item].value)           
+                    this.addonsList.push(...this.product.meta_data[item].value)
                 }
             }
         }
@@ -802,7 +763,7 @@ export class StorePage {
                     label = label.split('.').join('');
                     label = label.replace(':','');
                     this.options['addon-' + this.product.id + '-' + label + '-' + i ] = value.input;
-                }    
+                }
             });
         }
         return valid;
@@ -821,7 +782,7 @@ export class StorePage {
                         this.presentAlert(this.lan.oops, this.lan.PleaseSelect +' '+ this.addonsList[addon].name);
                         return false;
                     }
-                }  
+                }
             }
             return true;
         }

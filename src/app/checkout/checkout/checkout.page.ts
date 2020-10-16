@@ -53,7 +53,21 @@ export class CheckoutPage implements OnInit {
     ngOnInit() {
         this.storePath = this.route.snapshot.paramMap.get('storePath');
         console.log(this);
-        this.updateOrder();
+        if (!this.data.store) {
+          this.getStore();
+        }
+        else this.updateOrder();
+    }
+    getStore() {
+        this.api.postItem('store', {'store_id':window.localStorage.store_id}).then(res => {
+            this.data.store = res;
+        }, err=>{
+            console.error(err);
+        }).finally().then(() => {
+          this.updateOrder();
+        }, err => {
+          console.error(err);
+        });
     }
     ngAfterViewInit() {
         // this.loadMap();
@@ -93,7 +107,9 @@ export class CheckoutPage implements OnInit {
         // link.target = "_blank";
     }
     async updateOrder() {
-        this.checkoutData.form.security = this.checkoutData.form.nonce.update_order_review_nonce;
+        if (this.checkoutData.form.nonce) {
+          this.checkoutData.form.security = this.checkoutData.form.nonce.update_order_review_nonce;
+        }
         this.checkoutData.form['woocommerce-process-checkout-nonce'] = this.checkoutData.form._wpnonce;
         this.checkoutData.form['wc-ajax'] = 'update_order_review';
         this.checkoutData.form['store'] = this.data.store.post_title;
@@ -114,7 +130,9 @@ export class CheckoutPage implements OnInit {
         this.orderReview.shipping.forEach((item, index) => {
             this.checkoutData.form['shipping_method[' + index + ']'] = item.chosen_method;
         })
-        this.checkoutData.form.security = this.checkoutData.form.nonce.update_order_review_nonce;
+        if (this.checkoutData.form.nonce) {
+              this.checkoutData.form.security = this.checkoutData.form.nonce.update_order_review_nonce;
+        }
         this.checkoutData.form['woocommerce-process-checkout-nonce'] = this.checkoutData.form._wpnonce;
         this.checkoutData.form['wc-ajax'] = 'update_order_review';
         this.setOldWooCommerceVersionData();
@@ -162,7 +180,7 @@ export class CheckoutPage implements OnInit {
                     this.checkoutData.form.onesignal_user_id = data.userId;
                 });
             }
-                
+
             if (this.checkoutData.form.payment_method == 'authnet'){
                 this.checkoutData.form['authnet-card-expiry'] = this.checkoutData.form.expiryMonth + ' / ' + this.checkoutData.form.expiryYear;
             }
@@ -171,7 +189,7 @@ export class CheckoutPage implements OnInit {
                 this.setStripeForm();
                 await this.api.getExternalData('https://api.stripe.com/v1/tokens', this.stripeForm).then(res => {
                     this.handleStipeToken(res);
-                }, err => { 
+                }, err => {
                     if(err.error.error.message)
                     this.errorMessage = err.error.error.message;
                     this.disableButton = false;
@@ -210,7 +228,7 @@ export class CheckoutPage implements OnInit {
                 this.handlePaytmQRPayment();
             }
             else this.handlePayment();
-        } 
+        }
         else if (this.results.result == 'failure') {
             this.disableButton = false;
             this.errorMessage = this.results.messages;
@@ -259,13 +277,13 @@ export class CheckoutPage implements OnInit {
         var pos1 = str.lastIndexOf("/order-pay/");
         var pos2 = str.lastIndexOf("/?key=wc_order");
         var pos3 = pos2 - (pos1 + 11);
-        this.orderId = str.substr(pos1 + 11, pos3);  
+        this.orderId = str.substr(pos1 + 11, pos3);
         var browserActive = false;
         browser.on('loadstart').subscribe(data => {
             if (data.url.indexOf('payumoney.com/transact') != -1 && !browserActive) {
                 browserActive = true;
                 browser.show();
-            } 
+            }
             else if (data.url.indexOf('/order-received/') != -1 && data.url.indexOf('key=wc_order_') != -1) {
                 if(this.orderId)
                 this.navCtrl.navigateRoot('/order-summary/' + this.storePath + '/' + this.orderId);
@@ -297,7 +315,7 @@ export class CheckoutPage implements OnInit {
                 else if ((data.url.indexOf('securegw-stage.paytm.in/theia') != -1 || data.url.indexOf('processTransaction') != -1) && !browserActive) {
                     browserActive = true;
                     browser.show();
-                } 
+                }
                 else if (data.url.indexOf('type=success') != -1) {
                     if(this.orderId)
                     this.navCtrl.navigateRoot('/order-summary/' + this.storePath + '/' + this.orderId);
@@ -316,12 +334,12 @@ export class CheckoutPage implements OnInit {
                     browser.close();
                     this.navCtrl.navigateRoot('/order-summary/' + this.storePath + '/' + this.orderId);
                     this.disableButton = false;
-                } 
+                }
                 else if (data.url.indexOf('Thank+you+for+your+order') != -1) {
                     browser.close();
                     this.navCtrl.navigateRoot('/order-summary/' + this.storePath + '/' + this.orderId);
                     this.disableButton = false;
-                }    
+                }
             });
             browser.on('exit').subscribe(data => {
                 this.disableButton = false;
@@ -347,7 +365,7 @@ export class CheckoutPage implements OnInit {
                     browser.close();
                     this.disableButton = false;
                     this.navCtrl.navigateRoot('/order-summary/' +  this.storePath + '/' + this.orderId);
-                }     
+                }
             });
             browser.on('exit').subscribe(data => {
                 this.disableButton = false;
@@ -427,7 +445,7 @@ export class CheckoutPage implements OnInit {
             this.checkoutData.form['wc-stripe-payment-token'] = token.id; //For Existing Cards add api
             this.api.getExternalData('https://api.stripe.com/v1/sources', form).then(res => {
                 this.stripePlaceOrder(res);
-            }, err => { 
+            }, err => {
                 if(err.error.error.message)
                 this.errorMessage = err.error.error.message;
                 this.disableButton = false;
@@ -480,7 +498,7 @@ export class CheckoutPage implements OnInit {
             style: style
         });
         this.cardElement.mount('#card-element');
-        
+
         //this.card.mount('#card-element');
         var form = document.getElementById('payment-form');
         console.log('test start');
@@ -519,7 +537,7 @@ export class CheckoutPage implements OnInit {
                 this.checkoutData.form.shipping_state = this.checkoutData.form.billing_state;
                 this.checkoutData.form.shipping_postcode = this.checkoutData.form.billing_postcode;
             }
-            
+
             this.loading = this.loadingController.create({});
             this.loading.present();
             this.buttonSubmit = true;
@@ -628,10 +646,10 @@ export class CheckoutPage implements OnInit {
                             var order_id = str.substr(pos1 + 13, pos3);
                             this.api.ajaxCall('/?wc-ajax=wc_stripe_verify_intent&order=' + order_id + '&nonce=' + this.checkoutData.form.stripe_confirm_pi + '&redirect_to=', {}, this.storePath).then(res => {
                                 this.navCtrl.navigateRoot('/order-summary/' +  this.storePath + '/' + order_id);
-                            }, err => { 
-                                
+                            }, err => {
+
                             });
-                            
+
                         }
                     });
                 } else if (this.stripeStatus.redirect.indexOf('order-received') != -1 && this.stripeStatus.redirect.indexOf('key=wc_order') != -1) {
@@ -654,7 +672,7 @@ export class CheckoutPage implements OnInit {
             console.log(err);
         });
 
-    
+
     }
     async presentToast(message) {
         const toast = await this.toastController.create({
@@ -670,9 +688,9 @@ export class CheckoutPage implements OnInit {
     brainTreePayment() {
 
         /*console.log('Braintree payment.......');
-        
+
         const BRAINTREE_TOKEN = 'sandbox_7b74zrbp_zm8j7dwnjqqzzgxn';
-        
+
         const appleOptions: ApplePayOptions = {
           merchantId: 'zm8j7dwnjqqzzgxn',
           currency: 'USD',

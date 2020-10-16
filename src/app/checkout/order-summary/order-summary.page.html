@@ -69,12 +69,12 @@
 
 </div>
 
-  <div>
+  <div [hidden]="!data?.store">
     <ion-list-header>
       <ion-label style=" text-transform: uppercase; color:grey; ">{{"Dirección de la tienda" | translate}}</ion-label>
     </ion-list-header>
     <ion-item text-wrap>
-      <ion-label color="dark" class="ion-text-wrap">
+      <ion-label color="dark" class="ion-text-wrap" *ngIf="data?.store">
         {{data.store.wordpress_store_locator_address1}},
         {{data.store.wordpress_store_locator_region}},
         {{data.store.wordpress_store_locator_zip}}

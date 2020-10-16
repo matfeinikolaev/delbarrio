@@ -83,7 +83,7 @@
     <ion-icon style="color:#687e95;font-size: 4vw;" name="arrow-back-outline"></ion-icon>
   </ion-button>
   <ion-slides #slider style="font-size: 4vw;" (ionSlideDidChange)="ionSlideDidChange()" style="width:60%;">
-    <ion-slide style="color:#687e95; font-size: 4vw; width: 100%;" *ngFor="let slide of products; let i = index">{{i}}</ion-slide>
+    <ion-slide style="color:#687e95; font-size: 4vw; width: 100%;" *ngFor="let slide of products; let i = index">{{1*i+1}}</ion-slide>
   </ion-slides>
   <ion-button fill="clear" (click)="changeSlide('forward')" *ngIf="products?.length" [disabled]="products?.length == 1">
     <ion-icon style="color:#687e95;font-size: 4vw;" name="arrow-forward-outline"></ion-icon>

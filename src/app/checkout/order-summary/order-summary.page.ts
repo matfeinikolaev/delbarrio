@@ -41,7 +41,7 @@ export class OrderSummaryPage implements OnInit {
         });
         await loading.present();
         await this.api.postItem('order', this.filter, this.storePath).then(res => {
-            var result: any = res;       
+            var result: any = res;
             switch(result.status) {
                 case 'on-hold': result.status = 'en-espera'; break;
                 case 'pending': result.status = 'pendiente'; break;
@@ -82,14 +82,29 @@ export class OrderSummaryPage implements OnInit {
     ngOnInit() {
         // this.filter.onesignal_user_id = this.data.onesignal_ids.userId;
         this.filter.id = this.route.snapshot.paramMap.get('id');
-        this.filter.store_id = this.data.store.ID;
+        // this.filter.store_id = this.data.store.ID;
         this.storePath = this.route.snapshot.paramMap.get('storeID');
         console.log(this);
         this.getOrder();
     }
+    getStore() {
+        this.api.postItem('store', {'store_id':window.localStorage.store_id}).then(res => {
+            this.data.store = res;
+            this.loadMap();
+        }, err=>{
+            console.error(err);
+        })
+        // .finally().then(() => {
+        //   this.updateOrder();
+        // }, err => {
+        //   console.error(err);
+        // });
+    }
     ngAfterViewInit() {
-        // this.gMap.loadMap(this.map, "order-summary");
-        this.loadMap();
+        if (!this.data.store) {
+          this.getStore();
+        }
+        else this.loadMap();
     }
     loadMap() {
         let coords = new google.maps.LatLng(this.data.store.wordpress_store_locator_lat, this.data.store.wordpress_store_locator_lng);
@@ -124,7 +139,7 @@ export class OrderSummaryPage implements OnInit {
         link.innerHTML = "Abrir tienda en google maps";
         link.style.fontSize = "3vw";
         link.target = "_blank";
-        
+
         this.map.nativeElement.before(mapRedirect);
     }
     checkMetaType(val) {

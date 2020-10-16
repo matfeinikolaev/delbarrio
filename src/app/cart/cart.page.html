@@ -2,7 +2,7 @@
   <ion-toolbar>
     <ion-buttons slot="start">
 
-      <ion-back-button style="font-size: 4vw;" text="{{'Atrás' | translate}}" defaultHref="/tabs/home/store/{{data.store.ID}}"></ion-back-button>
+      <ion-back-button style="font-size: 4vw;" text="{{'Atrás' | translate}}" defaultHref="/tabs/home/store/{{id}}"></ion-back-button>
    </ion-buttons>
     <ion-title style="font-size: 4vw;">
       {{"Carrito" | translate}}
@@ -185,7 +185,7 @@
       </ion-radio-group>
     </ion-list>
 
-    <ion-list *ngIf="orderReview?.payment">
+    <!-- <ion-list *ngIf="orderReview?.payment">
       <ion-radio-group [(ngModel)]="checkoutData.form.payment_method" (ngModelChange)="changeData()">
         <ion-list-header style=" color:grey">
           {{"MÉTODO DE PAGO" | translate}}
@@ -252,26 +252,26 @@
                     </ion-item>
                 </ion-list>
             </form>
-        </div>
+        </div> -->
 
         <!-- <ion-item style="padding-top: 16px;" lines="none" *ngIf="checkoutData.form.payment_method =='stripe'">
           <ion-label color="medium" >{{"USE UNA NUEVA TARGETA" | translate}}</ion-label>
           <ion-checkbox color="{{settings.theme.button}}" [(ngModel)]="checkoutData.form.card" (ngModelChange)="onUseNewCard()" slot="end"></ion-checkbox>
         </ion-item> -->
 
-        <div *ngIf="checkoutData.form.payment_method =='stripe'" class="stripe-payment">
+        <!-- <div *ngIf="checkoutData.form.payment_method =='stripe'" class="stripe-payment">
           <form action="/charge" method="post" id="payment-form">
             <div class="form-row">
 
-              <div id="card-element">
+              <div id="card-element"> -->
                 <!-- A Stripe Element will be inserted here. -->
-              </div>
+              <!-- </div> -->
 
               <!-- Used to display form errors. -->
-              <div id="card-errors" class="card-error" role="alert"></div>
+              <!-- <div id="card-errors" class="card-error" role="alert"></div>
             </div>
           </form>
-        </div>
+        </div> -->
 
         <!--div *ngIf="checkoutData.form.payment_method =='stripe'" class="card-payment">
             <form #f="ngForm">
@@ -307,11 +307,11 @@
               <ion-label>{{"I Agree" | translate}} <a  (click)="terms()">{{"Terms & Conditions" | translate}}</a> </ion-label>
           </ion-col>
         </ion-row-->
-    <ion-item *ngIf="orderReview.payment[checkoutData.form.payment_method]?.description" lines="none">
+    <!-- <ion-item *ngIf="orderReview.payment[checkoutData.form.payment_method]?.description" lines="none">
       <ion-label class="ion-text-wrap payment-description" style=" color:grey">
       <span [innerHTML]="orderReview.payment[checkoutData.form.payment_method]?.description"></span>
       </ion-label>
-    </ion-item>
+    </ion-item> -->
 
     <div class="spinner" *ngIf="changingData">
       <div style="margin-bottom:25px;  text-align:center; color:#687e95; font-size: 4vw; font-weight: light;">{{"CARGANDO TOTALES..." | translate}}</div>
@@ -323,27 +323,32 @@
         {{"TOTALES" | translate}}
       </ion-list-header>
       <ion-item>
-        <ion-label color="dark" class="ion-text-wrap">{{"Subtotal"}}<span style="float: right">{{1*cart.cart_totals.subtotal | currency:settings.currency:'symbol':'1.2-2'}}</span>
+        <ion-label color="dark" class="ion-text-wrap">{{"Impuestos"}}<span style="float: right">{{1*cart.cart_totals.total_tax | currency:settings.currency:'symbol':'1.2-2'}}</span>
         </ion-label>
       </ion-item>
       <ion-item>
-        <ion-label color="dark" class="ion-text-wrap">{{"Impuesto"}}<span style="float: right">{{1*orderReview.totals.total_tax | currency:settings.currency:'symbol':'1.2-2'}}</span>
+        <ion-label color="dark" class="ion-text-wrap">{{"Subtotal"}}<span style="float: right">{{1*cart.cart_totals.subtotal | currency:settings.currency:'symbol':'1.2-2'}}</span>
         </ion-label>
       </ion-item>
-      <ion-item *ngFor="let fee of orderReview.fees | keys">
+      <!-- <ion-item *ngFor="let fee of orderReview.fees | keys" [hidden] = "fee.value.name != 'Valor envío' && orderReview.chosen_shipping != 'flat_rate:1'">
         <ion-label color="dark" class="ion-text-wrap">{{fee.value.name}}<span style="float: right">{{1*fee.value.total | currency:settings.currency:'symbol':'1.2-2'}}</span>
         </ion-label>
       </ion-item>
       <ion-item>
-        <ion-label color="dark" class="ion-text-wrap">{{"Total"}}<span style="float: right">{{1*orderReview.totals.total | currency:settings.currency:'symbol':'1.2-2'}}</span>
+        <ion-label color="dark" class="ion-text-wrap">{{"Total"}}<span style="float: right">{{1*cart.cart_totals.subtotal + 1*cart.cart_totals.total_tax | currency:settings.currency:'symbol':'1.2-2'}}</span>
         </ion-label>
-      </ion-item>
+      </ion-item> -->
     </ion-list>
 
     </div>
+
+<div *ngIf="errorMessage">
+  <h2 [innerHTML]="errorMessage" style="font-size: 3vw;  color: red;margin: 16px; text-align: center;"></h2>
+</div>
 
 <ion-button *ngIf="orderReview && !changingData" color="{{settings.theme.button}}" expand="block" fill="solid" (click)="checkout()" style="margin: 16px; font-size: 3vw">{{"Continuar" | translate}}</ion-button>
 </div>
 </div>
 <!-- <ion-button color="{{settings.theme.button}}" expand="block" fill="solid" (click)="checkout()" style="margin: 16px;">{{"Continuar" | translate}}</ion-button> -->
+
 </ion-content>

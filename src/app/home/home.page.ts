@@ -51,6 +51,11 @@ export class HomePage {
         this.screenWidth = this.platform.width();
     }
 
+    ionViewDidEnter() {
+      if (this.settings.user == null) {
+        this.navCtrl.navigateRoot("tabs/account");
+      }
+    }
     ngOnInit() {
         this.platform.ready().then(() => {
             this.locationAccuracy.canRequest().then((canRequest: boolean) => {

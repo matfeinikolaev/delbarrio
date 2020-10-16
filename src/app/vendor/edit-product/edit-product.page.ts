@@ -190,7 +190,7 @@ export class EditProductPage {
     }, Promise.resolve());
     }
 
-    
+
     upload() {
 
         this.uploadingImage = true;
@@ -308,5 +308,3 @@ export class EditProductPage {
         this.navCtrl.navigateForward(this.router.url + '/edit-variation-product/' + product.id);
     }
 }
-
-

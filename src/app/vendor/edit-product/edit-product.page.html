@@ -63,7 +63,7 @@
   <ion-item>
       <ion-label position="floating" >{{"Breve descripción" | translate}}</ion-label>
       <ion-textarea rows="4" required type="text"  [(ngModel)]="product.post_excerpt" name="short_description"></ion-textarea>
-  </ion-item>  
+  </ion-item>
 
   <ion-item>
       <ion-label position="floating" >{{"Descripción" | translate}}</ion-label>
@@ -79,7 +79,7 @@
     </div>
 
     <ion-spinner *ngIf="uploadingImage" name="circles" style="float: left; margin: 27px 27px 27px 27px; padding: 3px; display: inline;"></ion-spinner>
-    
+
     <img tappable src="assets/image/upload_placeholder.png" style="width: 80px; height: auto; padding: 3px; border: 1px solid #f5fdff" (click)="picker()"/>
   </div>
   <ion-item>
@@ -97,7 +97,7 @@
     <ion-input required type="text"  [(ngModel)]="product.weight" name="weight"></ion-input>
 </ion-item>
 
-<!-- 
+<!--
   <ion-item class="date">
       <ion-label position="floating" >{{"Fecha de venta desde" | translate}}</ion-label>
       <ion-datetime displayFormat="YYYY-MM-DD"  [(ngModel)]="product.date_on_sale_from" name="date_on_sale_from"></ion-datetime>
@@ -202,5 +202,5 @@
 
 </div>
 
-  
+
 </ion-content>

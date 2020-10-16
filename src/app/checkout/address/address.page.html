@@ -8,7 +8,7 @@
       </ion-title>
     </ion-toolbar>
   </ion-header>
-  
+
 <!-- <div id="map"></div> -->
 <ion-content id="ionContent">
 <div class="spinner" *ngIf="loader"><ion-spinner> </ion-spinner></div>
@@ -32,7 +32,7 @@
 
 <div #form [hidden]="loader" style="margin-top: 20px;">
 <ion-list>
-  <form> 
+  <form>
 
     <div id="address" #address>
         <!-- <ion-list-header style="margin-top: 10px;">
@@ -41,7 +41,7 @@
         <ion-item lines="none">
             <p style="font-size:x-small; margin-top:-30px; margin-bottom:-10px;color: grey; font-style: italic;">{{"* La dirección de facturación." | translate}}</p>
         </ion-item> -->
-        
+
         <ion-item lines="full" *ngIf="!loader" style="margin-top: 5%;">
             <ion-label position="stacked" color="medium">{{"DIRECCIÓN" | translate}}</ion-label>
             <ion-input required type="text" (ionInput)="getFirstAddress()" [(ngModel)]="checkoutData.form.billing_address_1" name="street1" id="address1"> </ion-input>
@@ -49,7 +49,7 @@
         <!-- <ion-list [hidden]="!autocompleteItemsFirst || autocompleteItemsFirst.length == 0" *ngIf="!loader">
             <div style="box-shadow: 0px 0px 5px grey; width: 94%; margin: auto; margin-top: -10px">
             <ion-item *ngFor="let item of autocompleteItemsFirst" tappable (click)="selectSearchResult(item, 'billing_address_1')" lines="full">
-                <ion-icon name="location" size="small"></ion-icon>                 
+                <ion-icon name="location" size="small"></ion-icon>
                 <ion-label>{{ item.description }}</ion-label>
             </ion-item>
             </div>
@@ -66,14 +66,14 @@
         <!-- <ion-list [hidden]="!autocompleteItemsCity || autocompleteItemsCity.length == 0" *ngIf="!loader">
             <div style="box-shadow: 0px 0px 5px grey; width: 94%; margin: auto; margin-top: -10px">
                 <ion-item *ngFor="let item of autocompleteItemsCity" tappable (click)="selectSearchResult(item, 'billing_city')" lines="full">
-                    <ion-icon name="location" size="small"></ion-icon>                 
+                    <ion-icon name="location" size="small"></ion-icon>
                     <ion-label>{{ item.description }}</ion-label>
                 </ion-item>
             </div>
         </ion-list> -->
 
         <div *ngIf="!loader"  style="margin-top: 5%;">
-            <ion-item lines="full" *ngIf="checkoutData.billingStates?.regions.length && !loader">
+            <ion-item lines="full" *ngIf="checkoutData.billingStates?.regions?.length && !loader">
                 <ion-label color="medium">{{"REGIÓN/PROVINCIA (OPCIONAL)" | translate}}</ion-label>
                 <ion-select [(ngModel)]="checkoutData.form.billing_state" name="billing_state">
                     <div *ngFor="let field of checkoutData.billingStates.regions">
@@ -83,14 +83,14 @@
             </ion-item>
 
 
-            <ion-item lines="full" *ngIf="!checkoutData.billingStates?.regions.length && !loader">
+            <ion-item lines="full" *ngIf="!checkoutData.billingStates?.regions?.length && !loader">
                 <ion-label position="stacked" color="medium">{{"REGIÓN/PROVINCIA (OPCIONAL)" | translate}}</ion-label>
                 <ion-input required type="text" (ionInput)="getRegion()" [(ngModel)]="checkoutData.form.billing_state" name="billing_state"> </ion-input>
             </ion-item>
             <!-- <ion-list [hidden]="!autocompleteItemsRegion || autocompleteItemsRegion.length == 0">
                 <div style="box-shadow: 0px 0px 5px grey; width: 94%; margin: auto; margin-top: -10px">
                     <ion-item *ngFor="let item of autocompleteItemsRegion" tappable (click)="selectSearchResult(item, 'billing_state')" lines="full">
-                        <ion-icon name="location" size="small"></ion-icon>                 
+                        <ion-icon name="location" size="small"></ion-icon>
                         <ion-label>{{ item.description }}</ion-label>
                     </ion-item>
                 </div>
@@ -121,9 +121,9 @@
         </ion-item>
 
          <ion-item *ngIf="time?.slots">
-           <ion-label>  
+           <ion-label>
               Delivery Time
-           </ion-label>   
+           </ion-label>
               <ion-select [(ngModel)]="checkoutData.form['jckwds-delivery-time']" name="time">
                  <div *ngFor="let field of time.slots">
                  <ion-select-option value="{{field.value}}">{{field.formatted}}</ion-select-option>
@@ -134,7 +134,7 @@
 
         <!-- <ion-item lines="full" style="margin-top: 10px;">
             <ion-label color="medium">{{"Enviar a una dirección diferente" | translate}}</ion-label>
-            <ion-toggle color="{{settings.theme.button}}" (click)="shipToDifferentAddress()"></ion-toggle> 
+            <ion-toggle color="{{settings.theme.button}}" (click)="shipToDifferentAddress()"></ion-toggle>
         </ion-item> -->
     </form>
 </ion-list>
@@ -169,7 +169,7 @@
         <ion-list [hidden]="!autocompleteItemsShipCity || autocompleteItemsShipCity.length == 0">
             <div style="box-shadow: 0px 0px 5px grey; width: 94%; margin: auto; margin-top: -10px">
                 <ion-item *ngFor="let item of autocompleteItemsShipCity" tappable (click)="selectSearchResult(item, 'shipping_city')" lines="full">
-                    <ion-icon name="location" size="small"></ion-icon>                 
+                    <ion-icon name="location" size="small"></ion-icon>
                     <ion-label>{{ item.description }}</ion-label>
                 </ion-item>
             </div>
@@ -181,7 +181,7 @@
         <ion-list [hidden]="!autocompleteItemsShipFirst || autocompleteItemsShipFirst.length == 0">
             <div style="box-shadow: 0px 0px 5px grey; width: 94%; margin: auto; margin-top: -10px">
                 <ion-item *ngFor="let item of autocompleteItemsShipFirst" tappable (click)="selectSearchResult(item, 'shipping_address_1')" lines="full">
-                    <ion-icon name="location" size="small"></ion-icon>                 
+                    <ion-icon name="location" size="small"></ion-icon>
                     <ion-label>{{ item.description }}</ion-label>
                 </ion-item>
             </div>
@@ -193,7 +193,7 @@
         <ion-list [hidden]="!autocompleteItemsShipSecond || autocompleteItemsShipSecond.length == 0">
             <div style="box-shadow: 0px 0px 5px grey; width: 94%; margin: auto; margin-top: -10px">
                 <ion-item *ngFor="let item of autocompleteItemsShipSecond" tappable (click)="selectSearchResult(item, 'shipping_address_2')" lines="full">
-                    <ion-icon name="location" size="small"></ion-icon>                 
+                    <ion-icon name="location" size="small"></ion-icon>
                     <ion-label>{{ item.description }}</ion-label>
                 </ion-item>
             </div>
@@ -220,7 +220,7 @@
         <ion-list [hidden]="!autocompleteItemsShipRegion || autocompleteItemsShipRegion.length == 0">
             <div style="box-shadow: 0px 0px 5px grey; width: 94%; margin: auto; margin-top: -10px">
                 <ion-item *ngFor="let item of autocompleteItemsShipRegion" tappable (click)="selectSearchResult(item, 'shipping_state')" lines="full">
-                    <ion-icon name="location" size="small"></ion-icon>                 
+                    <ion-icon name="location" size="small"></ion-icon>
                     <ion-label>{{ item.description }}</ion-label>
                 </ion-item>
             </div>
@@ -252,7 +252,7 @@
                 </div>
             </ion-select>
         </ion-item>
-        
+
 
         <ion-item lines="full" *ngIf="!checkoutData.shippingStates">
             <ion-label position="stacked">{{"State" | translate}}</ion-label>

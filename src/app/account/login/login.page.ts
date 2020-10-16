@@ -113,10 +113,12 @@ export class LoginPage implements OnInit {
             window.localStorage.setItem ("user_login", this.settings.user.user_login);
             window.localStorage.setItem ("user_nicename", this.settings.user.user_nicename);
             window.localStorage.setItem ("user_pass", this.settings.user.user_pass);
+            window.localStorage.setItem ("password", this.form.value.password);
             window.localStorage.setItem ("user_registered", this.settings.user.user_registered);
             window.localStorage.setItem ("user_status", this.settings.user.user_status);
             window.localStorage.setItem ("user_url", this.settings.user.user_url);
             this.disableSubmit = false;
+            this.navCtrl.navigateForward("tabs/home");
         }, err => {
             this.disableSubmit = false;
         });
@@ -255,11 +257,11 @@ export class LoginPage implements OnInit {
                 window.localStorage.setItem ("user_registered", this.settings.user.user_registered);
                 window.localStorage.setItem ("user_status", this.settings.user.user_status);
                 window.localStorage.setItem ("user_url", this.settings.user.user_url);
-                this.redirectToHomePage();
             }, err => {
                 this.facebookLogingInn = false;
                 this.dismissLoading();
             });
+            this.redirectToHomePage();
             this.facebookLogingInn = false;
         })
         .catch(e => {
@@ -314,7 +316,7 @@ export class LoginPage implements OnInit {
                     this.settings.user.userIsManager = this.settings.user.userRoles.includes("shop_manager");
                     this.close(true);
                 }
-                this.phoneLogingInn = false;            
+                this.phoneLogingInn = false;
                 window.localStorage.setItem ("user_id", this.settings.user.ID);
                 window.localStorage.setItem ("roles", this.settings.user.roles);
                 window.localStorage.setItem ("managed_sites", this.settings.user.managed_sites);
@@ -329,6 +331,7 @@ export class LoginPage implements OnInit {
                 window.localStorage.setItem ("user_registered", this.settings.user.user_registered);
                 window.localStorage.setItem ("user_status", this.settings.user.user_status);
                 window.localStorage.setItem ("user_url", this.settings.user.user_url);
+                this.redirectToHomePage();
             }, err => {
                 this.phoneLogingInn = false;
             });
@@ -363,6 +366,7 @@ export class LoginPage implements OnInit {
                 this.close(true);
                 this.disableSubmit = false;
             }
+            this.navCtrl.navigateForward("tabs/home");
         }, err => {
             this.disableSubmit = false;
         });
