@@ -12,7 +12,7 @@
    </ion-toolbar>
 </ion-header>
 <ion-content scroll-events="true" (ionScroll)="onPageScroll()">
-   <div class="spinner" *ngIf="!store.ID">
+   <div class="spinner" *ngIf="!store.ID || loader">
       <ion-spinner> </ion-spinner>
    </div>
 
@@ -71,9 +71,9 @@
       </ion-title>
    </div>
 
-   <ion-button id="chatIcon" mode="ios" (click)="openChat()" color="danger" style="height:7%; width:20%; position:fixed; right:0; z-index: 100; margin: -30px 0 0 0;--border-radius:50px 0px 0px 50px">
-      <ion-icon name="chatbubbles-outline" mode="ios"></ion-icon>
-      <ion-badge  color="{{settings.theme.button}}" *ngIf="incomeMessages?.length"><span class="count">{{incomeMessages.length}}</span></ion-badge>
+   <ion-button id="chatIcon" *ngIf="store?.wordpress_store_locator_mobile" mode="ios" href="https://wa.me/{{store?.wordpress_store_locator_mobile}}" color="danger" style="height:7%; width:20%; position:fixed; right:0; z-index: 100; margin: -30px 0 0 0;--border-radius:50px 0px 0px 50px">
+      <ion-icon name="logo-whatsapp" mode="ios"></ion-icon>
+      <!-- <ion-badge  color="{{settings.theme.button}}" *ngIf="incomeMessages?.length"><span class="count">{{incomeMessages.length}}</span></ion-badge> -->
    </ion-button>
    <ion-button id="cartIcon" *ngIf="store?.cart" mode="ios" (click)="openCart()" color="danger" style="height:7%; width:20%; position:fixed; z-index: 100; margin: -30px 0 0 0;--border-radius:0px 50px 50px 0px">
       <ion-icon name="cart-outline" mode="ios"></ion-icon>
@@ -92,7 +92,7 @@
             <ion-select-option style=" width:100%;" *ngFor="let main of store.categories; let i = index" text-wrap value="{{main.id}}">{{main.name}}</ion-select-option>
          </ion-select>
       </ion-col>
-      <ion-col *ngIf="store.ordering && data.storeCategory.term_id != 45">
+      <ion-col *ngIf="store.ordering && data.storeCategory?.term_id != 45">
          <ion-select multiple="false" placeholder="Ordenar por" [(ngModel)]="chosenOrder" (ionChange)="getProducts()" style="color: #687e95; float:right; clear: both;--placeholder-opacity: 1; ; width: 100%">
             <ion-select-option style=" width:100%;" *ngFor="let order of store.ordering | keys" text-wrap value="{{order.key}}">{{order.value}}</ion-select-option>
          </ion-select>
@@ -100,32 +100,33 @@
    </ion-row>
    <ion-row *ngIf="store.chosenCategory" style="margin-bottom: 50px;">
       <ion-col size="6" *ngFor="let subcat of store.chosenCategory.subcategories | keys" (click)=getSubcategory(subcat.value.term_id) style="height: 45px;">
-         <p style=" height: 40px ;border: #687e95 1px solid; border-radius: 10px 10px 10px 10px; text-align: center; color: #687e95;"><span>{{subcat.value.name}} ({{subcat.value.availability_count}})</span></p>
+         <p style=" height: 40px ;border: #687e95 1px solid; border-radius: 10px 10px 10px 10px; text-align: center; color: #687e95;"><span>{{subcat.value.name}}</span></p>
       </ion-col>
    </ion-row>
-   <ion-item lines="none" [hidden]="chosenCategory != 0 && chosenCategory != null">
-      <div *ngIf="data.store.product_ids">
-         <ion-button fill="clear" (click)="changeSlide('back')" [disabled]="data.store.product_ids.length == 1">
-            <ion-icon style="color:#687e95" name="arrow-back-outline"></ion-icon>
-         </ion-button>
-      </div>
-      <ion-slides #slider id="chunk-slider" (ionSlideDidChange)="ionSlideDidChange()">
-         <ion-slide style="color:#687e95;  font-weight: lighter;" class="chunk-slide" *ngFor="let chunk of store.product_ids; let i = index">{{i}}</ion-slide>
-      </ion-slides>
-      <div *ngIf="data.store.product_ids">
-         <ion-button fill="clear" (click)="changeSlide('forward')" [disabled]="data.store.product_ids.length == 1">
-            <ion-icon style="color:#687e95" name="arrow-forward-outline"></ion-icon>
-         </ion-button>
-      </div>
-   </ion-item>
+
+<ion-item [hidden]="loader || productAmount < 21 || !loadingProducts && (result == [] || result == null || result == undefined || !result || result.length == 0)" lines="none" style="width: 100%">
+ <ion-button fill="clear" (click)="changeSlide('back')" *ngIf="store.products?.length" [disabled]="store.products?.length == 1">
+   <ion-icon style="color:#687e95;font-size: 4vw;" name="arrow-back-outline"></ion-icon>
+ </ion-button>
+ <ion-slides #slider style="font-size: 4vw;" (ionSlideDidChange)="ionSlideDidChange()" style="width:60%;">
+   <ion-slide style="color:#687e95; font-size: 4vw; width: 100%;" *ngFor="let slide of store.products; let i = index">{{1*i+1}}</ion-slide>
+ </ion-slides>
+ <ion-button fill="clear" (click)="changeSlide('forward')" *ngIf="store.products?.length" [disabled]="store.products?.length == 1">
+   <ion-icon style="color:#687e95;font-size: 4vw;" name="arrow-forward-outline"></ion-icon>
+ </ion-button>
+</ion-item>
 
    <div class="spinner" *ngIf="loadingProducts">
       <div style="margin-bottom:25px; text-align:center; color:#687e95;  font-weight: lighter;">{{"CARGANDO LOS PRODUCTOS" | translate}}</div>
       <ion-spinner></ion-spinner>
     </div>
 
-   <ion-row class="product-row" style="height: 100%">
-      <ion-col *ngFor="let product of store.products" size="6">
+<div *ngIf="!loader && !loadingProducts && (result == [] || result == null || result == undefined || !result || result.length == 0)" style=" color:#687e9;text-align: center">
+  <p style="font-size:5vw; font-weight: bold;">No se han encontrado productos.</p>
+</div>
+
+   <ion-row class="product-row" style="height: 100%" *ngIf="!loadingProducts && (result != [] && result != null && result != undefined && result && result.length != 0)">
+      <ion-col *ngFor="let product of displayProducts" size="6">
          <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="settings.settings?.enable_product_chat">
             <a href="https://wa.me/{{settings.settings?.whatsapp_number}}">
                <ion-fab-button size="small" color="whatsapp">

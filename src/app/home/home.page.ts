@@ -50,6 +50,11 @@ export class HomePage {
         this.filter.status = 'publish';
         this.screenWidth = this.platform.width();
     }
+    ionViewDidEnter() {
+      if (this.settings.user == null) {
+        this.navCtrl.navigateRoot("tabs/account");
+      }
+    }
     sendNotification() {
         this.localNotifications.requestPermission().then(res => {
             if (res) {
@@ -67,8 +72,6 @@ export class HomePage {
     }
     ngOnInit() {
         this.platform.ready().then(() => {
-
-            this.sendNotification();
             this.locationAccuracy.canRequest().then((canRequest: boolean) => {
               if(canRequest) {
                 // the accuracy option will be ignored by iOS

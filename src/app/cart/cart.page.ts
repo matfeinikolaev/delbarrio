@@ -33,6 +33,8 @@ export class CartPage {
     orderReview: any;
     changingData: any = true;
     cardResponse: any = {};
+    errorMessage: any;
+    deliveryPrice: any = 0;
     constructor(public checkoutData: CheckoutData,public modalController: ModalController, public translate: TranslateService, private alertCtrl: AlertController, public toastController: ToastController, public config: Config, public api: ApiService, public data: Data, public router: Router, public settings: Settings, public loadingController: LoadingController, public navCtrl: NavController, public route: ActivatedRoute, public productData: Product, public storeData: Store) {}
     ngOnInit() {
         console.log(this);
@@ -41,13 +43,9 @@ export class CartPage {
         });
         this.store = this.storeData.store;
         this.id = this.route.snapshot.paramMap.get('storeId');
-        this.getCheckoutForm().finally().then(() => {
-            this.updateOrder();
-        }, err => {
-            console.error(err);
-        });
+        this.getCheckoutForm();
     }
-    
+
     async getCheckoutForm() {
         this.loader = true;
         await this.api.postItem('get_checkout_form', {}, this.store.path).then(res => {
@@ -124,6 +122,8 @@ export class CartPage {
     getStore() {
         this.api.postItem('store', {'store_id':this.id}).then(res => {
             this.store = res;
+            this.data.store = res;
+            window.localStorage.setItem("store_path", this.store.path);
         }, err=>{
             console.error(err);
         }).then(() => {
@@ -148,7 +148,15 @@ export class CartPage {
     }
     async checkout() {
         if(this.settings.customer.id || this.settings.settings.disable_guest_checkout == 0) {
-            this.navCtrl.navigateForward('/tabs/cart/address' + this.store.path);
+          if (this.orderReview.chosen_shipping == null) {
+              this.errorMessage = "Por favor, eligen el metodo de envío";
+          }
+          else if (this.orderReview.chosen_shipping == "flat_rate:1") {
+              this.navCtrl.navigateForward('/tabs/cart/address' + window.localStorage.store_path);
+          }
+          else {
+              this.navCtrl.navigateForward('/tabs/cart/contacts' + window.localStorage.store_path);
+          }
         }
         else{
             this.login();
@@ -250,7 +258,7 @@ export class CartPage {
     }
     //----------Rewrad-----------------//
     redeem(){
-       // wc_points_rewards_apply_discount_amount: 
+       // wc_points_rewards_apply_discount_amount:
        // wc_points_rewards_apply_discount: Apply Discount
         this.api.postItem('ajax_maybe_apply_discount', {}, this.store.path).then(res =>{
             console.log(res);

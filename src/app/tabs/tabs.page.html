@@ -1,5 +1,5 @@
 <ion-tabs>
-  <ion-tab-bar slot="bottom" style="background-color: #ececec; height: 10%; width: 100%; text-align: center;">
+  <ion-tab-bar slot="bottom" style="background-color: #ececec; height: 10%; width: 100%; text-align: center;" [hidden]="settings.user == null">
     <ion-tab-button tab="home" style="background-color: #ececec; height: 80%; width:40%; margin: auto;" *ngIf="!settings.user?.userIsManager">
       <ion-icon name="home" style="font-size: 5vw;"></ion-icon>
       <ion-label tabindex="0" role="button" aria-label="Login or register page" style="font-size: 3vw;">{{'Tiendas' | translate}}</ion-label>
@@ -9,12 +9,12 @@
       <ion-icon name="apps"></ion-icon>
       <ion-label>{{'Store' | translate}}</ion-label>
     </ion-tab-button-->
-<!-- 
+<!--
     <ion-tab-button tab="search">
       <ion-icon name="search"></ion-icon>
       <ion-label>{{'Buscar' | translate}}</ion-label>
     </ion-tab-button> -->
-<!-- 
+<!--
     <ion-tab-button tab="categories">
       <ion-icon name="grid-outline" mode="md"></ion-icon>
       <ion-label>{{'Categoría' | translate}}</ion-label>

@@ -22,7 +22,9 @@ export class Data {
   storeCategories: any = [];
   onesignal_ids: any;
   onesignal_data: any;
-	constructor() {}
+	constructor() {
+    console.log(this);
+  }
 
 	updateCart(cart_contents) {
     console.log(cart_contents);
@@ -38,4 +40,3 @@ export class Data {
     console.log(this.cart);
   }
 }
-

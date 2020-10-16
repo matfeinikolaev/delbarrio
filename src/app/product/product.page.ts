@@ -63,9 +63,17 @@ export class ProductPage {
         this.navCtrl.navigateForward(this.router.url + '/review/' + this.product.id);
     }
     getProduct() {
-        this.api.postItem('product', {'product_id': this.id}, this.productData.product.path).then(res => {
+        this.api.postItem('product', {'product_id': this.id}, window.localStorage.product_path).then(res => {
             this.product = res;
             this.handleProduct();
+        }, err => {
+            console.log(err);
+        });
+    }
+    getStore() {
+        this.api.postItem('store', {'store_id': window.localStorage.store_id}).then(res => {
+            this.data.store = res;
+            this.store = res;
         }, err => {
             console.log(err);
         });
@@ -83,11 +91,18 @@ export class ProductPage {
             this.lan.lowQuantity = translations['Cantidad solicitada no disponible'];
         });
         this.product = this.productData.product;
+        if (this.productData.product.path) {
+          window.localStorage.setItem("product_path", this.productData.product.path);
+        }
         this.id = this.route.snapshot.paramMap.get('id');
         console.log(this);
-        if (this.product.id) this.handleProduct();
-         else 
-         this.getProduct();
+        if (this.product.id) {
+            this.handleProduct();
+        }
+        else {
+            this.getStore();
+            this.getProduct();
+        }
     }
     handleProduct() {
 
@@ -130,12 +145,12 @@ export class ProductPage {
     getRelatedProducts() {
         var filter = [];
         filter['product_id'] = this.product.id;
-        this.api.postItem('product_details', filter, this.product.path).then(res => {
+        this.api.postItem('product_details', filter, window.localStorage.product_path).then(res => {
             this.relatedProducts = res;
         }, err => {});
     }
     getReviews() {
-        this.api.postItem('product_reviews', {'product_id': this.product.id}, this.product.path).then(res => {
+        this.api.postItem('product_reviews', {'product_id': this.product.id}, window.localStorage.product_path).then(res => {
             this.reviews = res;
             for (let item in this.reviews) {
                 this.reviews[item].avatar = md5(this.reviews[item].email);
@@ -147,7 +162,7 @@ export class ProductPage {
         var endIndex = this.router.url.lastIndexOf('/');
         var path = this.router.url.substring(0, endIndex);
         this.navCtrl.navigateForward(path + '/' + product.id);
-    }    
+    }
     openChat() {
         if(this.settings.user || this.settings.customer.id) {
             this.navCtrl.navigateForward("tabs/home/store/" + this.data.store.ID + "/messaging/" + this.settings.customer.id);
@@ -171,7 +186,7 @@ export class ProductPage {
         }
     }
     openCart() {
-        this.navCtrl.navigateForward("tabs/cart/" + this.data.store.ID);
+        this.navCtrl.navigateForward("tabs/cart/" + window.localStorage.store_id);
     }
     async addToCart(product) {
         if(product.manage_stock && product.stock_quantity < this.data.cart[product.id]) {
@@ -182,11 +197,11 @@ export class ProductPage {
             this.options.product_id = product.id;
             this.options.quantity = this.quantity;
             this.disableButton = true;
-            await this.api.postItem('add_to_cart', this.options, this.product.path).then(res => {
+            await this.api.postItem('add_to_cart', this.options, window.localStorage.product_path).then(res => {
                 this.results = res;
                 if(this.results.error) {
                     this.presentToast(this.results.notice);
-                } else { 
+                } else {
                     this.cart = res;
                     this.presentToast(this.lan.addToCart);
                     this.data.updateCart(this.cart.cart);
@@ -219,11 +234,11 @@ export class ProductPage {
                   };
                   params.key = key;
                   params.quantity = this.data.cartItem[key].quantity;
-            }      
+            }
           }
           params.update_cart = 'Update Cart';
           params._wpnonce = this.data.cartNonce;
-          await this.api.postItem('update-cart-item-qty', params, this.product.path).then(res => {
+          await this.api.postItem('update-cart-item-qty', params, window.localStorage.product_path).then(res => {
               this.cart = res;
               this.data.updateCart(this.cart.cart_contents);
           }, err => {
@@ -251,11 +266,11 @@ export class ProductPage {
             };
             params.key = key;
             params.quantity = this.data.cartItem[key].quantity;
-          }      
-        }    
+          }
+        }
         params.update_cart = 'Update Cart';
         params._wpnonce = this.data.cartNonce;
-        await this.api.postItem('update-cart-item-qty', params, this.product.path).then(res => {
+        await this.api.postItem('update-cart-item-qty', params, window.localStorage.product_path).then(res => {
             console.log(res);
             this.cart = res;
             this.data.updateCart(this.cart.cart_contents);
@@ -346,7 +361,7 @@ export class ProductPage {
                     if (!this.product.availableVariations[i].is_in_stock) {
                         this.product.stock_status = 'outofstock';
                     }
-                    
+
                     break;
                 }
               }
@@ -421,7 +436,7 @@ export class ProductPage {
             url: this.product.permalink,
             chooserTitle: 'Elige una aplicación'
         }
-        
+
         this.socialSharing.shareWithOptions(options);
     }
     getDetail(vendor) {
@@ -456,7 +471,7 @@ export class ProductPage {
         if(this.product.meta_data && !this.product.add_ons){
             for(let item in this.product.meta_data){
                 if(this.product.meta_data[item].key == '_product_addons' && this.product.meta_data[item].value.length){
-                    this.addonsList.push(...this.product.meta_data[item].value)           
+                    this.addonsList.push(...this.product.meta_data[item].value)
                 }
             }
             this.getGlobalAddons();
@@ -478,7 +493,7 @@ export class ProductPage {
                     });
                     console.log(res);
                     this.priceWithAddons += 1*res.price;
-                }); 
+                });
             }
         });
     }
@@ -499,7 +514,7 @@ export class ProductPage {
         if(valid) {
             this.addonsList.forEach((value, i) => {
                 value.selectedName = value.name ? value.name : value.label;
-                if (value.options != false) {                    
+                if (value.options != false) {
                     value.options.forEach((option, j) => {
                         option.selectedLabel = option.label;
                         // option.selectedLabel = option.selectedLabel.split(' ').join('-');
@@ -552,13 +567,13 @@ export class ProductPage {
                             this.options['addon-' + this.product.id + '[' + i + ']' + '[' + j + ']' + '[add_on_type]'] = value.type;
                         }
                     });
-                } 
+                }
             });
         }
         return valid;
     }
     checkTextValue() {
-        
+
     }
     notifyClient(product) {
         this.unavailableProduct = product.id;
@@ -605,7 +620,7 @@ export class ProductPage {
                         this.presentAlert(this.lan.oops, this.lan.PleaseSelect +' '+ this.addonsList[addon].name);
                         return false;
                     }
-                }  
+                }
             }
             return true;
         }

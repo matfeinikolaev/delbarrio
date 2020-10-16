@@ -44,7 +44,7 @@
   </ion-item>
 </ion-list>
 
- <ion-list>
+ <ion-list *ngIf="data?.store">
   <ion-list-header>
     <ion-label style=" color:grey">{{"DIRECCIÓN DE LA TIENDA" | translate}}</ion-label>
   </ion-list-header>
