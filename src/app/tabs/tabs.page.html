@@ -1,44 +1,16 @@
 <ion-tabs>
   <ion-tab-bar slot="bottom" style="background-color: #ececec; height: 10%; width: 100%; text-align: center;" [hidden]="settings.user == null">
-    <ion-tab-button tab="home" style="background-color: #ececec; height: 80%; width:40%; margin: auto;" *ngIf="!settings.user?.userIsManager">
+    <ion-tab-button tab="home" style="background-color: #ececec; height: 80%; width:40%; margin: auto;" *ngIf="!settings.user?.userIsManager" (click)='rememberLastPage()'>
       <ion-icon name="home" style="font-size: 5vw;"></ion-icon>
       <ion-label tabindex="0" role="button" aria-label="Login or register page" style="font-size: 3vw;">{{'Tiendas' | translate}}</ion-label>
     </ion-tab-button>
-
-    <!--ion-tab-button tab="vendor">
-      <ion-icon name="apps"></ion-icon>
-      <ion-label>{{'Store' | translate}}</ion-label>
-    </ion-tab-button-->
-<!--
-    <ion-tab-button tab="search">
-      <ion-icon name="search"></ion-icon>
-      <ion-label>{{'Buscar' | translate}}</ion-label>
-    </ion-tab-button> -->
-<!--
-    <ion-tab-button tab="categories">
-      <ion-icon name="grid-outline" mode="md"></ion-icon>
-      <ion-label>{{'Categoría' | translate}}</ion-label>
-    </ion-tab-button> -->
-
-    <!-- <ion-tab-button tab="cart">
-      <ion-icon name="basket" mode="md"></ion-icon>
-      <ion-label>{{'Carrito' | translate}}</ion-label>
-      <ion-badge color="{{settings.theme.button}}" *ngIf="data.count != 0"><span class="count">{{data.count}}</span></ion-badge>
-    </ion-tab-button> -->
-
-    <ion-tab-button tab="account" style="background-color: #ececec; height: 80%; width:40%;margin: auto;">
+    <ion-tab-button tab="account" style="background-color: #ececec; height: 80%; width:40%;margin: auto;" (click)='rememberLastPage()'>
       <ion-icon name="person" style="font-size: 5vw;"></ion-icon>
       <ion-label tabindex="0" role="button" aria-label="Login or register page" style="font-size: 3vw;">{{'Cuenta' | translate}}</ion-label>
     </ion-tab-button>
-
-    <ion-tab-button tab="help" style="background-color: #ececec; height: 80%; width: 20%; margin: auto;" (click)='openHelp()'>
+    <ion-tab-button tab="help" style="background-color: #ececec; height: 80%; width: 20%; margin: auto;" (click)='rememberLastPage()'>
       <ion-icon name="help" style="font-size: 5vw;"></ion-icon>
       <ion-label tabindex="0" role="button" aria-label="Login or register page" style="font-size: 3vw;">{{'Ayuda' | translate}}</ion-label>
     </ion-tab-button>
-
   </ion-tab-bar>
-
-  <!-- <ion-button *ngIf="checkPage()" (click)='openHelp()' mode="md" class="ion-activatable" style="position:fixed; height:10%; width:15%; z-index: 100; --border-radius:500px 500px 500px 500px; right: 0; bottom: 0; margin-bottom: 70px; margin-right: 10px">
-    <ion-icon name="help" style="font-size: 5vw;"></ion-icon>
-  </ion-button> -->
 </ion-tabs>

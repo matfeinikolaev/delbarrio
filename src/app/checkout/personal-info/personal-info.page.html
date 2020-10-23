@@ -1,7 +1,7 @@
 <ion-header mode='ios'>
     <ion-toolbar>
       <ion-buttons slot="start">
-        <ion-back-button style="font-size: 4vw;" text="{{'Atrás' | translate}}" defaultHref="/tabs/cart"></ion-back-button> <!--defaultHref="/tabs/home/store/{{store.id}}"-->
+        <ion-back-button *ngIf="storePath" style="font-size: 4vw;" text="{{'Atrás' | translate}}" defaultHref="/tabs/cart/contacts/{{storePath}}/"></ion-back-button> <!--defaultHref="/tabs/home/store/{{store.id}}"-->
      </ion-buttons>
       <ion-title style="font-size: 4vw;">
         {{"Información personal" | translate}}
@@ -9,7 +9,8 @@
     </ion-toolbar>
   </ion-header>
 <ion-content id="ionContent">
-    <div #form style="height: 100%">
+  <div class="spinner" *ngIf="loader"><ion-spinner> </ion-spinner></div>
+    <div #form style="height: 100%" *ngIf="!loader">
         <ion-list>
             <form>
                 <ion-item lines="full" >

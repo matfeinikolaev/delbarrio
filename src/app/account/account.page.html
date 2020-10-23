@@ -1,42 +1,17 @@
 <ion-header mode="ios">
-    <!-- <ion-toolbar>
-      <ion-title>{{"Cuenta" | translate}}</ion-title>
-    </ion-toolbar> -->
-    <!--ion-grid class="my-account-header">
-        <ion-row>
-            <ion-col>
-                <ion-item style="margin-bottom: 5%;"color="transperant" lines="none">
-                    <ion-icon class="icon-header-icon ion-margin-end" name="person" slot="start"></ion-icon>
-                    <ion-label class="account-name">{{"Account" | translate}}</ion-label>
-                </ion-item>
-            </ion-col>
-        </ion-row>
-        <ion-row class="header-menus" justify-content-between="">
-            <ion-col>
-                <ion-item style="margin-bottom: 5%;"color="transperant" lines="none" (click)="goTo('tabs/account/wishlist')" *ngIf="settings.customer?.id" class="ion-activatable">
-                    <ion-icon class="ion-margin-end" name="heart" slot="start"></ion-icon>
-                    <ion-label style="font-size: 4vw; margin-left: 5%">{{"Wishlist" | translate}}</ion-label>
-                </ion-item>
-            </ion-col>
-            <ion-col>
-                <ion-item style="margin-bottom: 5%;"color="transperant" lines="none" (click)="goTo('tabs/account/wallet')" *ngIf="settings.customer?.id && settings.settings?.enable_wallet" class="ion-activatable">
-                    <ion-icon class="ion-margin-end" name="wallet" slot="start"></ion-icon>
-                    <ion-label style="font-size: 4vw; margin-left: 5%">{{"Wallet" | translate}}</ion-label>
-                </ion-item>
-            </ion-col>
-        </ion-row>
-    </ion-grid-->
+
 </ion-header>
 <ion-content>
+
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button *ngIf="settings.currentPath && settings.user" style="font-size: 4vw;" text="{{'Atrás' | translate}}" defaultHref="{{settings.currentPath}}"></ion-back-button> <!--defaultHref="/tabs/home/store/{{store.id}}"-->
+   </ion-buttons>
+  </ion-toolbar>
+
   <div style="text-align: center;height: 25%">
     <img class="logo" src="assets/image/logo.png" style="height: 100%">
   </div>
-      <!-- <ion-header mode="ios" collapse="condense">
-        <ion-toolbar>
-          <ion-title size="large">{{"Cuenta" | translate}}</ion-title>
-        </ion-toolbar>
-      </ion-header> -->
-
       <div *ngIf="!settings.user && !settings.customer.id" aria-label="Login or register page">
         <ion-list-header style="margin-bottom: 9%;">
           <ion-label class="delbarrio-header" style="font-weight: 100; font-size: 7vw;">{{"Continuar con" | translate}}</ion-label>

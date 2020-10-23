@@ -25,9 +25,9 @@ export class ContactsPage{
     ngOnInit() {
         console.log(this);
         this.storePath = this.route.snapshot.paramMap.get('storePath');
-        if (Object.keys(this.checkoutData.form).length == 0) {
+        // if (Object.keys(this.checkoutData.form).length == 0) {
           this.getCheckoutForm();
-        }
+        // }
     }
     async getCheckoutForm() {
         this.loader = true;

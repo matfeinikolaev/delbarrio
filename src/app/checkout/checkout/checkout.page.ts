@@ -48,6 +48,7 @@ export class CheckoutPage implements OnInit {
     storePath: any;
     map: any;
     changingData: any = false;
+    loader = true;
     // @ViewChild ("map", {static: true}) mapEl: ElementRef;
     constructor(public localNotifications: LocalNotifications, public data: Data, private oneSignal: OneSignal, public toastController: ToastController, public platform: Platform, public api: ApiService, public checkoutData: CheckoutData, public settings: Settings, public router: Router, public iab: InAppBrowser, public loadingController: LoadingController, public navCtrl: NavController, public route: ActivatedRoute/*, private braintree: Braintree*/) {}
     ngOnInit() {
@@ -63,6 +64,33 @@ export class CheckoutPage implements OnInit {
             this.data.store = res;
         }, err=>{
             console.error(err);
+        }).finally().then(() => {
+          this.getCheckoutForm();
+        }, err => {
+          console.error(err);
+        });
+    }
+    async getCheckoutForm() {
+        await this.api.postItem('get_checkout_form', {}, this.storePath).then(res => {
+            this.checkoutData.form = res;
+            this.checkoutData.form.sameForShipping = true;
+            this.checkoutData.form.billing_country = "EC";
+            this.checkoutData.form.shipping_country = "EC";
+            if(this.checkoutData.form.countries) {
+                // if(this.checkoutData.form.countries.length == 1) {
+                // this.checkoutData.form.billing_country = this.checkoutData.form.countries[0].value;
+                // this.checkoutData.form.shipping_country = this.checkoutData.form.countries[0].value;
+                // }
+                this.checkoutData.billingStates = this.checkoutData.form.countries.find(item => item.value == this.checkoutData.form.billing_country);
+                this.checkoutData.shippingStates = this.checkoutData.form.countries.find(item => item.value == this.checkoutData.form.shipping_country);
+            }
+            if(this.checkoutData.form.ship_to_different_address == null) {
+                this.checkoutData.form.ship_to_different_address = false;
+            }
+            this.loader = false;
+        }, err => {
+            console.log(err);
+            this.loader = false;
         }).finally().then(() => {
           this.updateOrder();
         }, err => {

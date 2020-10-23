@@ -51,9 +51,9 @@ export class HomePage {
         this.screenWidth = this.platform.width();
     }
     ionViewDidEnter() {
-      if (this.settings.user == null) {
-        this.navCtrl.navigateRoot("tabs/account");
-      }
+      // if (this.settings.user == null) {
+      //   this.navCtrl.navigateRoot("tabs/account");
+      // }
     }
     sendNotification() {
         this.localNotifications.requestPermission().then(res => {
@@ -71,6 +71,7 @@ export class HomePage {
         });
     }
     ngOnInit() {
+        console.log(this);
         this.platform.ready().then(() => {
             this.locationAccuracy.canRequest().then((canRequest: boolean) => {
               if(canRequest) {
@@ -142,7 +143,7 @@ export class HomePage {
                 console.error(err);
             });
         });
-        console.log(this);
+        // console.log(this);
     }
     async getLocation(){
         console.log("Here goes getLocation");
@@ -166,11 +167,11 @@ export class HomePage {
         }
     }
     getBlocks() {
-
         // The last redirect was giving preoblems finding the property of the object
         // better search in the localstorage to redirect
-        if (localStorage.roles) {
-            var role_validate = localStorage.getItem('roles');
+        // Changed from localStorage to window.localStorage
+        if (window.localStorage.roles) {
+            var role_validate = window.localStorage.getItem('roles');
             if (role_validate === '["shop_manager"]'){
                 this.router.navigate(['tabs/account']);
             }
@@ -178,7 +179,6 @@ export class HomePage {
         this.api.postItem('get_store_categories').then(res => {
             this.stores = res;
             this.data.storeCategories = res;
-            console.log(this);
         }, err => {
             console.error(err);
         });

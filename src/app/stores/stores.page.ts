@@ -179,7 +179,7 @@ export class StoresPage {
             }
             //this.settings.theme = this.data.blocks.theme;
             this.settings.locale = this.data.blocks.locale;
-            
+
             this.settings.pages = this.data.blocks.pages;
             if(this.data.blocks.user)
             this.settings.reward = this.data.blocks.user.data.points_vlaue;
@@ -244,7 +244,7 @@ export class StoresPage {
                     categories: this.data.categories
                 }).then(
             () => console.log('Stored item!'), error => console.error('Error storing item', error));
-                
+
             /* Product Addons */
             if(this.data.blocks.settings.switchAddons){
                 this.api.getAddonsList('product-add-ons').then(res => {
@@ -275,7 +275,7 @@ export class StoresPage {
             if(this.settings.user) {
                 this.getIncomeMessages();
             }
-            
+
             if(this.settings.user) {
                 this.oneSignal.getIds().then(res => {
                     this.data.onesignal_ids = res;
@@ -295,42 +295,19 @@ export class StoresPage {
                 });
             }
             if(this.settings.vendor) {
-                
+
             }
             console.log(this);
         }, err => {
             console.log(err);
-        }); 
-    }
-    establishPageHeight() {
-        // var div = document.getElementById("basic-wrapper");
-        // div.style.height = this.pageHeight;
+        });
     }
     getStore(store) {
         this.store.store = store;
         this.data.store = store;
-        this.navCtrl.navigateForward('/tabs/home/store/' + store.ID);
+        this.navCtrl.navigateForward('/tabs/home/store/' + store.id);
     }
     openAllStores() {
-        // if (this.data.allStores.length == 0) {
-        //     this.loadingAllStores = true;
-        //     this.api.postItem('get_stores', {'categories': this.data.storeCategory.term_id,'lat':this.api.userLocation['latitude'], 'lng':this.api.userLocation['longitude'], 'radius':'20000'}).then(res=>{
-        //         this.result = res;
-        //         var result = this.result.stores;
-        //         this.data.allStores = [];
-        //         for ( let i in result ) {
-        //             if (!this.data.storesNearby.some(store => store.ID == result[i].ID)) {
-        //                 this.data.allStores.push(result[i]);
-        //             }
-        //         }
-        //         this.pageHeight = this.data.allStores.length * 420 + "px";
-        //         this.establishPageHeight();
-        //         this.loadingAllStores = false;
-        //     },err=>{
-        //         console.error(err);
-        //         this.loadingAllStores = false;
-        //     });
-        // } 
         this.data.allStores = this.result.all_stores;
         this.showAllStores = true;
     }
@@ -394,7 +371,7 @@ export class StoresPage {
     }
     getHeight(child) {
         return (child.height * this.screenWidth) / child.width;
-    }    
+    }
     getIncomeMessages() {
         var incomeMessages = this.chatapi.getIncomeMessages(this.settings.user.ID, '');
         incomeMessages.on('value', resp => {
@@ -419,7 +396,7 @@ export class StoresPage {
           }, err => {
               console.log(err);
           });
-        }  
+        }
     }
     setVariations(product) {
         if(product.variationId){
@@ -467,7 +444,7 @@ export class StoresPage {
                   };
                   params.key = key;
                   params.quantity = this.data.cartItem[key].quantity;
-            }      
+            }
           }
           params.update_cart = 'Update Cart';
           params._wpnonce = this.data.cartNonce;
@@ -499,8 +476,8 @@ export class StoresPage {
             };
             params.key = key;
             params.quantity = this.data.cartItem[key].quantity;
-          }      
-        }    
+          }
+        }
         params.update_cart = 'Update Cart';
         params._wpnonce = this.data.cartNonce;
         await this.api.postItem('update-cart-item-qty', params).then(res => {

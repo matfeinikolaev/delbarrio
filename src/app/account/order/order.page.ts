@@ -24,7 +24,6 @@ export class OrderPage implements OnInit {
     async refundKey() {
         await this.api.postItem('woo_refund_key').then(res => {
             this.refundKeys = res;
-            console.log(this.refundKeys);
         }, err => {
             console.log(err);
         });
@@ -41,7 +40,9 @@ export class OrderPage implements OnInit {
         });
         this.refundKey();
     }
-
+    getOrder() {
+      this.api.postItem("order", {id: this.id}, )
+    }
     showField() {
       this.showRefund = !this.showRefund;
     }

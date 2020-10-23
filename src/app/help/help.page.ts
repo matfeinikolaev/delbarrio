@@ -20,17 +20,17 @@ export class HelpPage{
     messageSent: any = false;
     constructor(public platform: Platform, public modalController: ModalController, public translate: TranslateService, private alertCtrl: AlertController, public toastController: ToastController, public config: Config, public api: ApiService, public data: Data, public router: Router, public settings: Settings, public loadingController: LoadingController, public navCtrl: NavController, public route: ActivatedRoute) {}
     ngOnInit() {
-        console.log(this);  
-        this.messageSent = false;  
-        // this.platform.ready().then(() => {
-        //     this.api.postItem("faq", {path: this.settings.currentPath}).then(res => {
-        //         this.faq = res;
-        //     }, err => {
-        //         console.error(err);
-        //     });
-        // }, err => {
-        //     console.error(err);
-        // });
+        console.log(this);
+        this.messageSent = false;
+        this.platform.ready().then(() => {
+            this.api.postItem("faq").then(res => {
+                this.faq = res;
+            }, err => {
+                console.error(err);
+            });
+        }, err => {
+            console.error(err);
+        });
     }
     openMessage() {
         this.sendMessageClick = true;

@@ -5,25 +5,38 @@ import { Settings } from '../data/settings';
 import { Platform } from '@ionic/angular';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from './../api.service';
+import { Location } from "@angular/common";
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 @Component({
   selector: 'app-tabs',
   templateUrl: 'tabs.page.html',
   styleUrls: ['tabs.page.scss']
 })
 export class TabsPage {
-  location: any = window.location.pathname;
   userRoles: any;
   userIsManager: any;
   status: any;
   errors: any;
-	constructor(public api: ApiService, public data: Data, public settings: Settings, public platform: Platform, public navCtrl: NavController, public modCtlr: ModalController, public route: ActivatedRoute, public router: Router){
+  constructor(public localNotifications: LocalNotifications, public location: Location, public api: ApiService, public data: Data, public settings: Settings, public platform: Platform, public navCtrl: NavController, public modCtlr: ModalController, public route: ActivatedRoute, public router: Router) {
+      // this.platform.backButton.subscribeWithPriority(10, () => {
+      //     this.location.back();
+      // });
   }
+
   ngOnInit() {
+    document.addEventListener('ionBackButton', (ev) => {
+        this.location.back();
+    });
+    //Started applying events on notifications
+    this.localNotifications.on('click').subscribe((notification) => {
+        console.log(notification);
+    }, err => {
+        console.error(err);
+    });
     this.platform.ready().then(() => {
       if (window.localStorage.user_id != null) {
         this.api.postItem('login', {username: window.localStorage.user_login, password: window.localStorage.password}).then(res => {
             this.status = res;
-            console.log(this.status);
             if (this.status.errors) {
                 this.errors = this.status.errors;
                 for (var key in this.errors) {
@@ -83,26 +96,22 @@ export class TabsPage {
       }
       if (this.settings.user != null) {
         this.navCtrl.navigateRoot(window.localStorage.last_url);
-      }
-      console.log(window.localStorage);
+    } else {
+        this.navCtrl.navigateRoot("tabs/account");
+    }
     });
+
     window.addEventListener('beforeunload', () => {
       window.localStorage.setItem("last_url", this.router.url);
     });
-    document.addEventListener("pause", () => {
-      window.localStorage.setItem("last_url", this.router.url);
-    }, false);
+
+    // this.platform.pause.subscribe(() => {
+    //   window.localStorage.setItem("last_url", this.router.url);
+    // }, err => {
+    //   console.error(err);
+    // });
   }
-  checkPage () {
-    return window.location.pathname == '/tabs/help' ? false : true;
-  }
-  openHelp() {
-    this.settings.currentPath = window.location.pathname;
-    this.api.postItem("faq", {path: this.settings.currentPath}).then(res => {
-      this.settings.faq = res;
-    }, err => {
-        console.error(err);
-    });
-    this.navCtrl.navigateRoot("tabs/help");
+  rememberLastPage() {
+    this.settings.currentPath = this.router.url;
   }
 }

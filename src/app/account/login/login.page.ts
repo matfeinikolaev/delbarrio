@@ -118,7 +118,12 @@ export class LoginPage implements OnInit {
             window.localStorage.setItem ("user_status", this.settings.user.user_status);
             window.localStorage.setItem ("user_url", this.settings.user.user_url);
             this.disableSubmit = false;
-            this.navCtrl.navigateForward("tabs/home");
+            if (this.settings.user.userIsManager) {
+              this.navCtrl.navigateForward("tabs/account");
+            }
+            else {
+              this.navCtrl.navigateForward("tabs/home");
+            }
         }, err => {
             this.disableSubmit = false;
         });
@@ -197,7 +202,12 @@ export class LoginPage implements OnInit {
                 this.dismissLoading();
             });
             this.googleLogingInn = false;
-            this.redirectToHomePage();
+            if (this.settings.user.userIsManager) {
+              this.navCtrl.navigateForward("tabs/account");
+            }
+            else {
+              this.navCtrl.navigateForward("tabs/home");
+            }
         })
         .catch(err => {
             console.log(err);
@@ -261,7 +271,12 @@ export class LoginPage implements OnInit {
                 this.facebookLogingInn = false;
                 this.dismissLoading();
             });
-            this.redirectToHomePage();
+            if (this.settings.user.userIsManager) {
+              this.navCtrl.navigateForward("tabs/account");
+            }
+            else {
+              this.navCtrl.navigateForward("tabs/home");
+            }
             this.facebookLogingInn = false;
         })
         .catch(e => {
@@ -331,7 +346,12 @@ export class LoginPage implements OnInit {
                 window.localStorage.setItem ("user_registered", this.settings.user.user_registered);
                 window.localStorage.setItem ("user_status", this.settings.user.user_status);
                 window.localStorage.setItem ("user_url", this.settings.user.user_url);
-                this.redirectToHomePage();
+                if (this.settings.user.userIsManager) {
+                  this.navCtrl.navigateForward("tabs/account");
+                }
+                else {
+                  this.navCtrl.navigateForward("tabs/home");
+                }
             }, err => {
                 this.phoneLogingInn = false;
             });
@@ -366,7 +386,13 @@ export class LoginPage implements OnInit {
                 this.close(true);
                 this.disableSubmit = false;
             }
-            this.navCtrl.navigateForward("tabs/home");
+
+if (this.settings.user.userIsManager) {
+  this.navCtrl.navigateForward("tabs/account");
+}
+else {
+  this.navCtrl.navigateForward("tabs/home");
+}
         }, err => {
             this.disableSubmit = false;
         });

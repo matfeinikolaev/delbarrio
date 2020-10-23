@@ -23,7 +23,6 @@ export class Data {
   onesignal_ids: any;
   onesignal_data: any;
 	constructor() {
-    console.log(this);
   }
 
 	updateCart(cart_contents) {

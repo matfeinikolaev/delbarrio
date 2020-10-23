@@ -2,7 +2,7 @@
   <ion-toolbar>
     <ion-buttons slot="start">
 
-      <ion-back-button style="font-size: 4vw;" text="{{'Atrás' | translate}}" defaultHref="/tabs/home/store/{{id}}"></ion-back-button>
+      <ion-back-button *ngIf="data?.store" style="font-size: 4vw;" text="{{'Atrás' | translate}}" defaultHref="/tabs/home/store/{{data.store.ID}}"></ion-back-button>
    </ion-buttons>
     <ion-title style="font-size: 4vw;">
       {{"Carrito" | translate}}
@@ -27,7 +27,7 @@
     <ion-label class="name-label" style="font-size: 4vw;">
       <ion-text text-wrap class="clamp">{{item.value.name}}</ion-text>
       <p class="productText" *ngFor="let variation of item.value.variation | keys">{{variation.value}}</p>
-      <p class="productText" >{{item.value.tax_price | currency:settings.currency:'symbol':'1.2-2'}} x {{item.value.quantity}}</p>
+      <p class="productText" >{{item.value.price | currency:settings.currency:'symbol':'1.2-2'}} x {{item.value.quantity}}</p>
       <span class="productText" *ngIf="item.value.addons?.length">Addons</span>
       <span *ngFor="let items of item.value.addons">
         <p class="productText" >{{items.value}} {{items.price | currency:settings.currency:'symbol':'1.2-2'}}</p>
@@ -323,11 +323,11 @@
         {{"TOTALES" | translate}}
       </ion-list-header>
       <ion-item>
-        <ion-label color="dark" class="ion-text-wrap">{{"Impuestos"}}<span style="float: right">{{1*cart.cart_totals.total_tax | currency:settings.currency:'symbol':'1.2-2'}}</span>
+        <ion-label color="dark" class="ion-text-wrap">{{"Impuestos"}}<span style="float: right">{{1*cart.cart_totals.subtotal_tax | currency:settings.currency:'symbol':'1.2-2'}}</span>
         </ion-label>
       </ion-item>
       <ion-item>
-        <ion-label color="dark" class="ion-text-wrap">{{"Subtotal"}}<span style="float: right">{{1*cart.cart_totals.subtotal | currency:settings.currency:'symbol':'1.2-2'}}</span>
+        <ion-label color="dark" class="ion-text-wrap">{{"Subtotal"}}<span style="float: right">{{1*cart.cart_totals.subtotal + 1*cart.cart_totals.subtotal_tax | currency:settings.currency:'symbol':'1.2-2'}}</span>
         </ion-label>
       </ion-item>
       <!-- <ion-item *ngFor="let fee of orderReview.fees | keys" [hidden] = "fee.value.name != 'Valor envío' && orderReview.chosen_shipping != 'flat_rate:1'">

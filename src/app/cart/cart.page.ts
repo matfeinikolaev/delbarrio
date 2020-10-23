@@ -102,6 +102,7 @@ export class CartPage {
         // this.setOldWooCommerceVersionData();
         await this.api.updateOrderReview('update_order_review', this.checkoutData.form, this.store.path).subscribe(res => {
             this.orderReview = res;
+            console.log(res);
             this.changingData = false;
             // this.handleData(res);
         }, err => {

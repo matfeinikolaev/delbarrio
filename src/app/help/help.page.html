@@ -1,21 +1,22 @@
 <ion-header mode='ios'>
     <ion-toolbar>
       <ion-buttons slot="start">
-        <ion-back-button style="font-size: 4vw;" text="{{'Atrás' | translate}}" defaultHref="{{settings.currentPath}}"></ion-back-button> <!--defaultHref="/tabs/home/store/{{store.id}}"-->
+        <ion-back-button *ngIf="settings.currentPath" style="font-size: 4vw;" text="{{'Atrás' | translate}}" defaultHref="{{settings.currentPath}}"></ion-back-button> <!--defaultHref="/tabs/home/store/{{store.id}}"-->
      </ion-buttons>
       <ion-title style="font-size: 4vw;">
         {{"¿Con qué nececitas ayuda?" | translate}}
       </ion-title>
     </ion-toolbar>
   </ion-header>
-  
+
 <ion-content>
-    <ion-list *ngIf="settings.faq">
-        <ion-item *ngFor="let q of settings.faq | keys" lines="full">
+    <ion-list *ngIf="faq">
+        <ion-item *ngFor="let q of faq | keys" lines="full">
             <ion-label position="stacked" color="medium" style="font-size: 4vw;" [innerHtml]="q.key"></ion-label>
             <ion-note color="dark" [innerHtml]="q.value" style="margin: 20px 0 20px 0; font-size: 3vw;"></ion-note>
         </ion-item>
     </ion-list>
+    <!-- <img src="./../../assets/gif/purchase.gif" alt="Instruction" /> -->
     <div style="text-align:center" [hidden]="sendMessageClick">
         <p style="color:#2a3d5d; font-size: 3vw;">{{"¿No encontraste tu problema?"}} <span style="height: 48dp; color:#78ddcd; font-size: 3vw;" (click)="openMessage()">{{"Escribenos"}}</span> </p>
     </div>

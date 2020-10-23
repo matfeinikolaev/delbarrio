@@ -1,7 +1,7 @@
 <ion-header mode='ios'>
     <ion-toolbar>
       <ion-buttons slot="start">
-        <ion-back-button style="font-size: 4vw;" text="{{'Atrás' | translate}}" defaultHref="/tabs/cart"></ion-back-button> <!--defaultHref="/tabs/home/store/{{store.id}}"-->
+        <ion-back-button *ngIf="storePath" style="font-size: 4vw;" text="{{'Atrás' | translate}}" defaultHref="/tabs/cart/address/{{storePath}}/"></ion-back-button> <!--defaultHref="/tabs/home/store/{{store.id}}"-->
      </ion-buttons>
       <ion-title style="font-size: 4vw;">
         {{"Contactos" | translate}}
@@ -10,10 +10,10 @@
   </ion-header>
 
 <ion-content id="ionContent">
-    <!-- <div class="spinner"><ion-spinner> </ion-spinner></div> -->
-    <div #form style="height: 100%">
+    <div class="spinner" *ngIf="loader"><ion-spinner> </ion-spinner></div>
+    <div #form style="height: 100%" *ngIf="!loader">
         <ion-list>
-            <form> 
+            <form>
                 <ion-item lines="none">
                     <p style="font-size:3vw; color: grey; font-style: italic;">{{"* ¿Cómo nos ponemos en contacto contigo para darte el pedido?" | translate}}</p>
                 </ion-item>
@@ -25,7 +25,7 @@
                     <ion-label position="stacked" color="medium" style="font-size: small;">{{"EMPRESA" | translate}}</ion-label>
                     <ion-input type="text" [(ngModel)]="checkoutData.form.billing_company" name="company"> </ion-input>
                 </ion-item> -->
-                
+
                 <ion-item lines="full">
                     <ion-label position="stacked" color="medium">{{"EMAIL" | translate}}</ion-label>
                     <ion-input required type="email" [(ngModel)]="checkoutData.form.billing_email" name="email"> </ion-input>

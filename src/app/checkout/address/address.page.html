@@ -1,7 +1,7 @@
 <ion-header mode='ios'>
     <ion-toolbar>
       <ion-buttons slot="start">
-        <ion-back-button style="font-size: 4vw;" text="{{'Atrás' | translate}}" defaultHref="/tabs/cart"></ion-back-button> <!--defaultHref="/tabs/home/store/{{store.id}}"-->
+        <ion-back-button *ngIf="data?.store" style="font-size: 4vw;" text="{{'Atrás' | translate}}" defaultHref="/tabs/cart/{{data.store.id}}"></ion-back-button> <!--defaultHref="/tabs/home/store/{{store.id}}"-->
      </ion-buttons>
       <ion-title style="font-size: 4vw;" >
         {{"Dirección de Envío" | translate}}

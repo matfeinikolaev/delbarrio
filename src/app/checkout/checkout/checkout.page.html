@@ -1,7 +1,7 @@
 <ion-header mode='ios'>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button style="font-size: 4vw;" text="{{'Atrás' | translate}}" defaultHref="/tabs/cart"></ion-back-button> <!--defaultHref="/tabs/home/store/{{store.id}}"-->
+      <ion-back-button *ngIf="storePath" style="font-size: 4vw;" text="{{'Atrás' | translate}}" defaultHref="/tabs/cart/personal-info/{{storePath}}/"></ion-back-button> <!--defaultHref="/tabs/home/store/{{store.id}}"-->
    </ion-buttons>
     <ion-title style="font-size: 4vw;">
       {{"Revisa" | translate}}
@@ -13,22 +13,22 @@
 <div class="spinner" *ngIf="!orderReview"><ion-spinner></ion-spinner></div>
 
 <div>
-<ion-list *ngIf="orderReview">
+<ion-list *ngIf="checkoutData.form?.billing_first_name">
 	<ion-list-header>
-    <ion-label style=" color:grey">{{"DIRECCIÓN DE FACTURACIÓN" | translate}}</ion-label>
+    <ion-label style="color:grey">{{"DIRECCIÓN DE FACTURACIÓN" | translate}}</ion-label>
   </ion-list-header>
 
   <ion-item>
     <ion-label text-wrap color="dark" style=" margin-left: 30px;">
       <p>
-    <span >{{checkoutData.form.billing_first_name}}</span>&nbsp;<span >{{checkoutData.form.billing_last_name}}</span><!--&nbsp;<span>{{checkoutData.form.billing_company}}</span>&nbsp;--><span >{{checkoutData.form.billing_address_1}}</span>&nbsp;<span >{{checkoutData.form.billing_address_2}}</span>&nbsp;<span >{{checkoutData.form.billing_city}}</span>
+    <span>{{checkoutData.form.billing_first_name}}</span>&nbsp;<span >{{checkoutData.form.billing_last_name}}</span><!--&nbsp;<span>{{checkoutData.form.billing_company}}</span>&nbsp;--><span >{{checkoutData.form.billing_address_1}}</span>&nbsp;<span >{{checkoutData.form.billing_address_2}}</span>&nbsp;<span >{{checkoutData.form.billing_city}}</span>
     <span >{{checkoutData.form.billing_state}}</span>&nbsp;<span >{{checkoutData.form.billing_postcode}}</span>&nbsp;<span >{{checkoutData.form.billing_country}}</span>
     &nbsp;<span >{{checkoutData.form.billing_email}}</span>&nbsp;<span >{{checkoutData.form.billing_phone}}</span>
   </p>
     </ion-label>
   </ion-item>
 </ion-list>
-<ion-list *ngIf="orderReview">
+<ion-list *ngIf="checkoutData.form?.shipping_first_name">
   <ion-list-header>
     <ion-label style=" color:grey">{{"DIRECCIÓN DE ENVÍO" | translate}}</ion-label>
   </ion-list-header>

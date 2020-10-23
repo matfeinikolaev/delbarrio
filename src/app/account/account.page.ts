@@ -184,7 +184,7 @@ export class AccountPage {
       modal.present();
       const { data } = await modal.onWillDismiss();
     }
-    
+
     googleLogin(){
       this.googleLogingInn = true;
       this.presentLoading();
@@ -227,7 +227,6 @@ export class AccountPage {
               }
               this.googleLogingInn = false;
               this.dismissLoading();
-              this.redirectToHomePage();
               window.localStorage.setItem ("googleLogin", '1');
               window.localStorage.setItem ("user_id", this.settings.user.ID);
               window.localStorage.setItem ("managed_sites", this.settings.user.managed_sites);
@@ -243,6 +242,12 @@ export class AccountPage {
               window.localStorage.setItem ("user_registered", this.settings.user.user_registered);
               window.localStorage.setItem ("user_status", this.settings.user.user_status);
               window.localStorage.setItem ("user_url", this.settings.user.user_url);
+              if (this.settings.user.userIsManager) {
+                this.navCtrl.navigateForward("tabs/account");
+              }
+              else {
+                this.navCtrl.navigateForward("tabs/home");
+              }
           }, err => {
               this.googleLogingInn = false;
               this.dismissLoading();
@@ -308,7 +313,12 @@ export class AccountPage {
               window.localStorage.setItem ("user_registered", this.settings.user.user_registered);
               window.localStorage.setItem ("user_status", this.settings.user.user_status);
               window.localStorage.setItem ("user_url", this.settings.user.user_url);
-              this.redirectToHomePage();
+              if (this.settings.user.userIsManager) {
+                this.navCtrl.navigateForward("tabs/account");
+              }
+              else {
+                this.navCtrl.navigateForward("tabs/home");
+              }
           }, err => {
               this.facebookLogingInn = false;
               this.dismissLoading();

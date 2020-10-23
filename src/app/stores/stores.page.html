@@ -107,14 +107,25 @@
       <ion-card (click)="getStore(store.value)" id="all-stores-card2" style="margin: auto;margin:auto; border-radius: 15px; color:white; text-align: center;box-shadow: 0px 0px;">
         <ion-card-content id="all-stores-card-content2" style="background-image: url(../../assets/image/fondo-tiendas.png);background-repeat: no-repeat;background-position: center; background-size: 100% 100%; text-align: center; position: relative;"> <!--background-color: #62788d;-->
           <div style="position: absolute; top:35%; right:10%; left: 10%">
+
             <h1 *ngIf="store.value.post_title" style="font-size: 5vw;">{{store.value.post_title}}</h1>
-            <span *ngIf="store.value.wordpress_store_locator_city" style="font-size: 3vw; font-weight:100;font-weight: light;">{{store.value.wordpress_store_locator_city}}</span>
+            <!-- <span *ngIf="store.value.wordpress_store_locator_city" style="font-size: 3vw; font-weight:100;font-weight: light;">{{store.value.wordpress_store_locator_city}}</span>
             <span *ngIf="store.value.wordpress_store_locator_city && store.value.wordpress_store_locator_zip" style="font-size: 3vw;">, </span>
-            <span *ngIf="store.value.wordpress_store_locator_zip" style="font-size: 3vw; font-weight:100;font-weight: light;">{{store.value.wordpress_store_locator_zip}}</span>
+            <span *ngIf="store.value.wordpress_store_locator_zip" style="font-size: 3vw; font-weight:100;font-weight: light;">{{store.value.wordpress_store_locator_zip}}</span> -->
+
             <h1 *ngIf="store.value.na" style="font-size: 5vw;">{{store.value.na}}</h1>
-            <span *ngIf="store.value.ct" style="font-size: 3vw; font-weight:100;font-weight: light;">{{store.value.ct}}</span>
+            <!-- <span *ngIf="store.value.ct" style="font-size: 3vw; font-weight:100;font-weight: light;">{{store.value.ct}}</span>
             <span *ngIf="store.value.ct && store.value.zp" style="font-size: 3vw;">, </span>
-            <span *ngIf="store.value.zp" style="font-size: 3vw; font-weight:100;font-weight: light;">{{store.value.zp}}</span>
+            <span *ngIf="store.value.zp" style="font-size: 3vw; font-weight:100;font-weight: light;">{{store.value.zp}}</span> -->
+
+            <h1 *ngIf="store.title" style="font-size: 5vw;">{{store.title}}</h1>
+            <!-- <span *ngIf="store.city" style="font-size: 3vw; font-weight:100;font-weight: light;">{{store.city}}</span>
+            <span *ngIf="store.city && store.zip" style="font-size: 3vw;">, </span>
+            <span *ngIf="store.zip" style="font-size: 3vw; font-weight:100;font-weight: light;">{{store.zip}}</span> -->
+
+            <!--<br>-->
+            <span *ngIf="store.away" style="font-size: 3vw; font-weight:100;font-weight: light;">{{store.away}} km</span>
+
           </div>
         </ion-card-content>
       </ion-card>
@@ -135,39 +146,57 @@
       <ion-card (click)="getStore(store)" id="nearby-stores-card" style="margin: auto;color:white; text-align: center;box-shadow: 0px 0px;">
         <ion-card-content id="nearby-stores-card-content" style="background-image: url(../../assets/image/fondo-tiendas.png);background-repeat: no-repeat;background-position: center; background-size: 100% 100%; text-align: center; position: relative; border-radius: 6px; ">
           <div style="position: absolute; top:35%; right:10%; left: 10%">
+
             <h1 *ngIf="store.post_title" style="font-size: 5vw;">{{store.post_title}}</h1>
-            <span *ngIf="store.wordpress_store_locator_city" style="font-size: 3vw; font-weight:100;font-weight: light;">{{store.wordpress_store_locator_city}}</span>
+            <!-- <span *ngIf="store.wordpress_store_locator_city" style="font-size: 3vw; font-weight:100;font-weight: light;">{{store.wordpress_store_locator_city}}</span>
             <span *ngIf="store.wordpress_store_locator_city && store.wordpress_store_locator_zip" style="font-size: 3vw;">, </span>
-            <span *ngIf="store.wordpress_store_locator_zip" style="font-size: 3vw; font-weight:100;font-weight: light;">{{store.wordpress_store_locator_zip}}</span>
+            <span *ngIf="store.wordpress_store_locator_zip" style="font-size: 3vw; font-weight:100;font-weight: light;">{{store.wordpress_store_locator_zip}}</span> -->
+
             <h1 *ngIf="store.na" style="font-size: 5vw;">{{store.na}}</h1>
-            <span *ngIf="store.ct" style="font-size: 3vw; font-weight:100;font-weight: light;">{{store.ct}}</span>
+            <!-- <span *ngIf="store.ct" style="font-size: 3vw; font-weight:100;font-weight: light;">{{store.ct}}</span>
             <span *ngIf="store.ct && store.zp" style="font-size: 3vw;">, </span>
-            <span *ngIf="store.zp" style="font-size: 3vw; font-weight:100;font-weight: light;">{{store.zp}}</span>
+            <span *ngIf="store.zp" style="font-size: 3vw; font-weight:100;font-weight: light;">{{store.zp}}</span> -->
+
+            <h1 *ngIf="store.title" style="font-size: 5vw;">{{store.title}}</h1>
+            <!-- <span *ngIf="store.city" style="font-size: 3vw; font-weight:100;font-weight: light;">{{store.city}}</span>
+            <span *ngIf="store.city && store.zip" style="font-size: 3vw;">, </span>
+            <span *ngIf="store.zip" style="font-size: 3vw; font-weight:100;font-weight: light;">{{store.zip}}</span> -->
+
+            <!--<br>-->
+            <span *ngIf="store.away" style="font-size: 3vw; font-weight:100;font-weight: light;">{{store.away}} km</span>
+
           </div>
         </ion-card-content>
       </ion-card>
     </div>
     <div id="show-all-stores-button" *ngIf="result?.all_stores">
       <ion-button color="danger" (click)="openAllStores()"  *ngIf="result?.all_stores && !showAllStores" text-wrap>Mostrar todas las tiendas</ion-button>
-      <!-- <ion-button color="danger" (click)="hideAllStores()"  *ngIf="result?.all_stores && showAllStores" text-wrap>Mostrar solo tiendas cercanas</ion-button> -->
     </div>
 
     <div *ngIf="showAllStores || (data.allStores.length != 0 && data.storesNearby.length == 0 && !loadingStoresNearby)" class="all-stores">
-      <!-- <ion-list-header style="margin:auto; margin-bottom: 7% ; text-align:center; color:#687e95; font-size:5vw; font-weight: light;">
-        <ion-label>{{"TODAS LAS TIENDAS" | translate}}</ion-label>
-      </ion-list-header> -->
       <div *ngFor="let store of data.allStores | keys" id="all-stores-wrapping-div">
         <ion-card (click)="getStore(store.value)" id="all-stores-card" style="margin: auto;margin:auto; border-radius: 15px; color:white; text-align: center;box-shadow: 0px 0px;">
           <ion-card-content id="all-stores-card-content" style="background-image: url(../../assets/image/fondo-tiendas.png);background-repeat: no-repeat;background-position: center; background-size: 100% 100%; text-align: center; position: relative;"> <!--background-color: #62788d;-->
             <div style="position: absolute; top:35%; right:10%; left: 10%">
+
               <h1 *ngIf="store.value.post_title" style="font-size: 5vw;">{{store.value.post_title}}</h1>
-              <span *ngIf="store.value.wordpress_store_locator_city" style="font-size: 3vw; font-weight:100;font-weight: light;">{{store.value.wordpress_store_locator_city}}</span>
+              <!-- <span *ngIf="store.value.wordpress_store_locator_city" style="font-size: 3vw; font-weight:100;font-weight: light;">{{store.value.wordpress_store_locator_city}}</span>
               <span *ngIf="store.value.wordpress_store_locator_city && store.value.wordpress_store_locator_zip" style="font-size: 3vw;">, </span>
-              <span *ngIf="store.value.wordpress_store_locator_zip" style="font-size: 3vw; font-weight:100;font-weight: light;">{{store.value.wordpress_store_locator_zip}}</span>
+              <span *ngIf="store.value.wordpress_store_locator_zip" style="font-size: 3vw; font-weight:100;font-weight: light;">{{store.value.wordpress_store_locator_zip}}</span> -->
+
               <h1 *ngIf="store.value.na" style="font-size: 5vw;">{{store.value.na}}</h1>
-              <span *ngIf="store.value.ct" style="font-size: 3vw; font-weight:100;font-weight: light;">{{store.value.ct}}</span>
+              <!-- <span *ngIf="store.value.ct" style="font-size: 3vw; font-weight:100;font-weight: light;">{{store.value.ct}}</span>
               <span *ngIf="store.value.ct && store.value.zp" style="font-size: 3vw;">, </span>
-              <span *ngIf="store.value.zp" style="font-size: 3vw; font-weight:100;font-weight: light;">{{store.value.zp}}</span>
+              <span *ngIf="store.value.zp" style="font-size: 3vw; font-weight:100;font-weight: light;">{{store.value.zp}}</span> -->
+
+             <h1 *ngIf="store.value.title" style="font-size: 5vw;">{{store.value.title}}</h1>
+             <!-- <span *ngIf="store.value.city" style="font-size: 3vw; font-weight:100;font-weight: light;">{{store.value.city}}</span>
+             <span *ngIf="store.value.city && store.value.zip" style="font-size: 3vw;">, </span>
+             <span *ngIf="store.value.zip" style="font-size: 3vw; font-weight:100;font-weight: light;">{{store.value.zip}}</span> -->
+
+             <!--<br>-->
+             <span *ngIf="store.away" style="font-size: 3vw; font-weight:100;font-weight: light;">{{store.away}} km</span>
+
             </div>
           </ion-card-content>
         </ion-card>
@@ -175,7 +204,6 @@
     </div>
 
     <div id="hide-all-stores-button" *ngIf="result?.all_stores">
-      <!-- <ion-button color="danger" (click)="openAllStores()"  *ngIf="result?.all_stores && !showAllStores" text-wrap>Mostrar todas las tiendas</ion-button> -->
       <ion-button color="danger" (click)="hideAllStores()"  *ngIf="result?.all_stores && showAllStores" text-wrap>Ocultar tiendas lejanas</ion-button>
     </div>
 

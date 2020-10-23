@@ -107,8 +107,7 @@ export class StorePage {
         this.api.postItem('store', {'store_id':this.id}).then(res => {
             this.data.store = res;
             this.store = res;
-            this.path =  this.store.wordpress_store_locator_website.split('/');
-            this.path = this.path[this.path.length -1];
+            this.path =  this.store.path;
             window.localStorage.setItem("store_id", this.id);
         }, err=>{
             console.error(err);
@@ -209,7 +208,6 @@ export class StorePage {
         this.loadingProducts = true;
         this.filter.catalog_ordering = this.chosenOrder;
         this.api.postItem('products', this.filter, this.path).then(res => {
-            console.log(this.filter.q);
             this.result = res;
             if (this.result != [] && this.result != null && this.result != undefined && this.result && this.result.length != 0) {
               this.data.store.products = res;
