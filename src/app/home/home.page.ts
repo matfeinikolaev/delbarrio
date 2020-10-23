@@ -50,25 +50,11 @@ export class HomePage {
         this.filter.status = 'publish';
         this.screenWidth = this.platform.width();
     }
+
     ionViewDidEnter() {
       // if (this.settings.user == null) {
       //   this.navCtrl.navigateRoot("tabs/account");
       // }
-    }
-    sendNotification() {
-        this.localNotifications.requestPermission().then(res => {
-            if (res) {
-                this.localNotifications.schedule([{
-                    title: 'Bienvenido!',
-                    text: 'Gracias por usar nuestra applicación',
-                    foreground: true,
-                    trigger: {at: new Date(new Date().getTime() + 200)},
-                    data: { secret: 'secret' }
-                }]);
-            }
-        }, err => {
-            console.error(err);
-        });
     }
     ngOnInit() {
         console.log(this);
