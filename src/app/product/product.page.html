@@ -1,7 +1,7 @@
 <ion-header mode='ios' class="product-header">
    <ion-toolbar>
       <ion-buttons slot="start">
-         <ion-back-button style="font-size: 4vw;" text="{{'Atrás' | translate}}" (click)="backToStore()"></ion-back-button>
+         <ion-back-button *ngIf="store" style="font-size: 4vw;" text="{{'Atrás' | translate}}" defaultHref="tabs/home/store/{{store.ID}}"></ion-back-button>
       </ion-buttons>
       <ion-title style="font-size: 4vw;" class="delbarrio-header">
          {{"DEL BARRIO" | translate}}

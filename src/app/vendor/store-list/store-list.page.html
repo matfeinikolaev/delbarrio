@@ -10,11 +10,11 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content> 
+<ion-content>
   <!-- <a href="https://delbarrio.ec/crear-tienda/"> -->
-    <ion-button *ngIf="settings.administrator || settings.vendor" (click)="addStore()" color="danger" mode="ios" class="ion-activatable" style="position:fixed; height:7%; width: 13%; z-index: 100; --border-radius:50px 50px 50px 50px; left: 0; bottom: 0;">
+    <!-- <ion-button *ngIf="settings.administrator || settings.vendor" (click)="addStore()" color="danger" mode="ios" class="ion-activatable" style="position:fixed; height:7%; width: 13%; z-index: 100; --border-radius:50px 50px 50px 50px; left: 0; bottom: 0;">
         <ion-icon style="color: white;" class="icon-start" name="add-circle"></ion-icon>
-    </ion-button>
+    </ion-button> -->
   <!-- </a> -->
   <div class="spinner" *ngIf="loader"><ion-spinner> </ion-spinner></div>
 
@@ -59,12 +59,12 @@
   </ion-label>
 
 </ion-item>
-  
+
   <ion-infinite-scroll threshold="100px" *ngIf="hasMoreItems && stores?.length" (ionInfinite)="loadData($event)">
     <ion-infinite-scroll-content style="font-size: 3vw"
       loadingSpinner="bubbles"
       loadingText="Cargando más datos...">
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
-	
+
 </ion-content>

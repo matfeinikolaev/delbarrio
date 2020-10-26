@@ -1,9 +1,12 @@
 ion-content {
     #response-message {
         @media screen and (min-width: 540px) {
-            font-size: 4vw; 
-            width: 95%; 
-            margin: auto; 
+            font-size: 4vw;
+            width: 95%;
+            margin: auto;
         }
+    }
+    #other-question:hover {
+        cursor: pointer;
     }
 }

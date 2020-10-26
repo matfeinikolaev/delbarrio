@@ -390,7 +390,7 @@ export class ApiService {
 				  	resolve(JSON.parse(error.error));
 			  	});
 	        });
-	    }    
+	    }
 	    else {
 	    	return new Promise((resolve, reject) => {
 	            this.http.get(url).pipe(map((res: any) => res)).subscribe(data => {
@@ -414,7 +414,7 @@ export class ApiService {
 				  	resolve(JSON.parse(error.error));
 			  	});
 	        });
-	    }    
+	    }
 	    else {
 	    	return new Promise((resolve, reject) => {
 	            this.http.get(url).pipe(map((res: any) => res)).subscribe(data => {
@@ -446,6 +446,6 @@ export class ApiService {
 	            	reject(err.error);
 	            });
 	        });
-	    }	
+	    }
 	}
 }

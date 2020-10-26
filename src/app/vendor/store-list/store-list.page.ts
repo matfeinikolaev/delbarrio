@@ -59,11 +59,8 @@ export class StoreListPage {
         });
     }
     async getStores() {
-        // this.loader = true;
         this.filter.managed_sites = JSON.stringify(this.settings.user.managed_sites);
         await this.api.postItem('get_user_stores', this.filter).then(res => {
-            console.log(this.filter);
-            console.log(res);
             this.stores = res;
             this.loader = false;
         }, err => {
@@ -80,6 +77,7 @@ export class StoreListPage {
         });
     }
     ngOnInit() {
+        console.log(this);
         this.filter.category = this.route.snapshot.paramMap.get('id');
         if (this.data.categories && this.data.categories.length) {
             for (var i = 0; i < this.data.categories.length; i++) {
@@ -112,7 +110,7 @@ export class StoreListPage {
         this.store.store = store;
         this.navCtrl.navigateForward(link);
     }
-    
+
     viewProducts(store) {
         this.store.store = store;
         this.navCtrl.navigateForward('tabs/account/vendor-stores/view-store/' + store.ID);

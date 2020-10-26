@@ -137,6 +137,7 @@ export class CheckoutAddressPage implements OnInit {
     getStore() {
         this.api.postItem('store', {'store_id':window.localStorage.store_id}).then(res => {
             this.data.store = res;
+            this.store = res;
         }, err=>{
             console.error(err);
         });

@@ -229,11 +229,6 @@ export class CheckoutPage implements OnInit {
                 await this.api.ajaxCall('/index.php/checkout?wc-ajax=checkout', this.checkoutData.form, this.storePath).then(res => {
                     this.results = res;
                     console.log(res);
-                    // this.api.postItem('save_checkout_store', {store_path: this.storePath}).then(res => {
-                    //     // console.log(res);
-                    // }, err => {
-                    //     console.log(err);
-                    // })
                     this.handleOrder();
                 }, err => {
                     this.disableButton = false;

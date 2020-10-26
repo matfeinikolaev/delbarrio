@@ -26,7 +26,7 @@
 
   <ion-row text-wrap *ngIf="!loader" >
     <ion-col *ngFor="let type of productTypes | keys">
-      <ion-button fill="clear" (click)="getProductsByType(type.value.status)" [disabled]="type.value.status == filter.status">{{type.value.name}} ({{type.value.num}})</ion-button>
+      <ion-button fill="clear" (click)="getProductsByType(type.value.status)" [disabled]="type.value.status == filter.status">{{type.value.name}}</ion-button>
     </ion-col>
   </ion-row>
 

@@ -24,6 +24,8 @@ export class TabsPage {
   }
 
   ngOnInit() {
+      console.log(this);
+      console.log(window.localStorage);
     document.addEventListener('ionBackButton', (ev) => {
         this.location.back();
     });
@@ -33,7 +35,18 @@ export class TabsPage {
     }, err => {
         console.error(err);
     });
+
     this.platform.ready().then(() => {
+        this.login();
+    });
+
+    window.addEventListener('beforeunload', () => {
+      window.localStorage.setItem("last_url", this.router.url);
+    });
+
+  }
+
+  login() {
       if (window.localStorage.user_id != null) {
         this.api.postItem('login', {username: window.localStorage.user_login, password: window.localStorage.password}).then(res => {
             this.status = res;
@@ -64,52 +77,31 @@ export class TabsPage {
                         console.log(this.settings.store_owner_id)
                     });
                 }
+                if (window.localStorage.user_admin == '1') {
+                    this.settings.administrator = true;
+                }
+                if (window.localStorage.user_vendor == '1') {
+                    this.settings.vendor = true;
+                }
+                this.settings.user.userRoles = this.status.roles;
+                this.settings.user.userIsManager = this.settings.user.userRoles.includes("shop_manager");
+              }
+
+              if (this.settings.user != null) {
+                  console.log(window.localStorage.last_url);
+                this.navCtrl.navigateRoot(window.localStorage.last_url);
+              } else {
+                this.navCtrl.navigateRoot("tabs/account");
               }
           }, err => {
             console.error(err);
+            if (this.settings.user != null) {
+              this.navCtrl.navigateRoot(window.localStorage.last_url);
+            } else {
+              this.navCtrl.navigateRoot("tabs/account");
+            }
           });
-
-        this.settings.customer.id = window.localStorage.user_id;
-        this.settings.user = {};
-        this.settings.user.ID = window.localStorage.user_id;
-        this.settings.user.roles = window.localStorage.roles;
-        this.settings.user.managed_sites = window.localStorage.getItem("managed_sites");
-        this.settings.user.deleted = window.localStorage.user_deleted;
-        this.settings.user.display_name = window.localStorage.user_display_name;
-        this.settings.user.spam = window.localStorage.user_spam;
-        this.settings.user.user_activation_key = window.localStorage.user_activation_key;
-        this.settings.user.user_email = window.localStorage.user_email;
-        this.settings.user.user_login = window.localStorage.user_login;
-        this.settings.user.user_nicename = window.localStorage.user_nicename;
-        this.settings.user.user_pass = window.localStorage.user_pass;
-        this.settings.user.user_registered = window.localStorage.user_registered;
-        this.settings.user.user_status = window.localStorage.user_status;
-        this.settings.user.user_url = window.localStorage.user_url;
-        if (window.localStorage.user_admin == '1') {
-            this.settings.administrator = true;
-        }
-        if (window.localStorage.user_vendor == '1') {
-            this.settings.vendor = true;
-        }
-        this.settings.user.userRoles = JSON.parse(this.settings.user.roles);
-        this.settings.user.userIsManager = this.settings.user.userRoles.includes("shop_manager");
       }
-      if (this.settings.user != null) {
-        this.navCtrl.navigateRoot(window.localStorage.last_url);
-    } else {
-        this.navCtrl.navigateRoot("tabs/account");
-    }
-    });
-
-    window.addEventListener('beforeunload', () => {
-      window.localStorage.setItem("last_url", this.router.url);
-    });
-
-    // this.platform.pause.subscribe(() => {
-    //   window.localStorage.setItem("last_url", this.router.url);
-    // }, err => {
-    //   console.error(err);
-    // });
   }
   rememberLastPage() {
     this.settings.currentPath = this.router.url;

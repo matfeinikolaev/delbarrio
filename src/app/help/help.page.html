@@ -10,22 +10,94 @@
   </ion-header>
 
 <ion-content>
-    <ion-list *ngIf="faq">
-        <ion-item *ngFor="let q of faq | keys" lines="full">
-            <ion-label position="stacked" color="medium" style="font-size: 4vw;" [innerHtml]="q.key"></ion-label>
-            <ion-note color="dark" [innerHtml]="q.value" style="margin: 20px 0 20px 0; font-size: 3vw;"></ion-note>
-        </ion-item>
-    </ion-list>
-    <!-- <img src="./../../assets/gif/purchase.gif" alt="Instruction" /> -->
-    <div style="text-align:center" [hidden]="sendMessageClick">
-        <p style="color:#2a3d5d; font-size: 3vw;">{{"¿No encontraste tu problema?"}} <span style="height: 48dp; color:#78ddcd; font-size: 3vw;" (click)="openMessage()">{{"Escribenos"}}</span> </p>
-    </div>
-    <ion-item [hidden]="!sendMessageClick">
-        <ion-label position="stacked" style="font-size: 4vw;" >Envíe un mensaje</ion-label>
-        <ion-input type="text" [(ngModel)]="messageText" style="font-size: 4vw;" ></ion-input>
-        <ion-button (click)="sendMessage()" style="font-size: 4vw; height: 50px" >Enviar</ion-button>
+
+<ion-list *ngIf="!settings.user.userIsManager">
+    <ion-item lines="full">
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <ion-label style="font-size: 4vw;">¿Como hacer las compras?</ion-label>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <img src="./../../assets/gif/add-to-cart.gif" alt="Instruction" />
+        </mat-expansion-panel>
     </ion-item>
-    <div [hidden]="!messageSent">
-      <p id="response-message" style="margin-top: 10%">Gracias por su solicitud, nuestro equipo de asistencia técnica revisará su pregunta.</p>
+    <ion-item lines="full">
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <ion-label style="font-size: 4vw;">¿Como pagar?</ion-label>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <img src="./../../assets/gif/pay.gif" alt="Instruction" />
+        </mat-expansion-panel>
+    </ion-item>
+    <ion-item lines="full">
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <ion-label style="font-size: 4vw;">¿Como ver tus ordenes?</ion-label>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <img src="./../../assets/gif/orders.gif" alt="Instruction" />
+        </mat-expansion-panel>
+    </ion-item>
+    <ion-item lines="full">
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <ion-label style="font-size: 4vw;">¿Como cambiar los ajustes de tu cuenta?</ion-label>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <img src="./../../assets/gif/settings.gif" alt="Instruction" />
+        </mat-expansion-panel>
+    </ion-item>
+</ion-list>
+
+<ion-list *ngIf="settings.administrator">
+    <ion-item lines="full">
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <ion-label style="font-size: 4vw;">¿Como manejo mis tiendas?</ion-label>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <img src="./../../assets/gif/store-manage.gif" alt="Instruction" />
+        </mat-expansion-panel>
+    </ion-item>
+</ion-list>
+
+<ion-list *ngIf="settings.user.userIsManager">
+    <ion-item lines="full">
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <ion-label style="font-size: 4vw;">¿Como ver productos de mi tienda?</ion-label>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <img src="./../../assets/gif/products-vendor.gif" alt="Instruction" />
+        </mat-expansion-panel>
+    </ion-item>
+    <ion-item lines="full">
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <ion-label style="font-size: 4vw;">¿Como ver pedidos de mi tienda?</ion-label>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <img src="./../../assets/gif/orders-vendor.gif" alt="Instruction" />
+        </mat-expansion-panel>
+    </ion-item>
+</ion-list>
+    <ion-item [hidden]="messageSent">
+        <ion-label position="stacked" style="font-size: 4vw;" text-wrap>¿No encontraste tu problema? Envíenos un mensaje</ion-label>
+        <ion-textarea type="text" [(ngModel)]="messageText" style="font-size: 4vw;height: 40%" ></ion-textarea>
+        <ion-button (click)="sendMessage()" style="font-size: 4vw;" [disabled]="messageText.length == 0">Enviar</ion-button>
+    </ion-item>
+    <div [hidden]="!messageSent" style="text-align: center">
+      <p id="response-message" style="margin-top: 10%; color: light-green">Gracias por su solicitud, nuestro equipo de asistencia técnica revisará su pregunta.</p>
+    </div>
+    <div style="text-align:center" [hidden]="!messageSent">
+        <p style="color:#2a3d5d; font-size: 4vw;"> <span id="other-question" style="color:#78ddcd; font-size: 4vw;" (click)="openMessage()">{{"Otra pregunta"}}</span> </p>
     </div>
 </ion-content>
