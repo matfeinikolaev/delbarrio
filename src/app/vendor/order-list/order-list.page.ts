@@ -321,7 +321,7 @@ export class OrderListPage implements OnInit {
             text: texto_notif,
             foreground: true,
             trigger: {at: new Date(new Date().getTime() + 10)},
-            data: {secret: 'secret'}
+            data: {type: "order", id: data.ID}
         }]);
     }
 }

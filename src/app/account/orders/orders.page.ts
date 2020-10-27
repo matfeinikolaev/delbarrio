@@ -23,6 +23,7 @@ export class OrdersPage implements OnInit {
     }
 
     ngOnInit() {
+        console.log(this);
         if(this.settings.customer){
             // this.getOrders();
             this.getStores();
@@ -104,12 +105,13 @@ export class OrdersPage implements OnInit {
     }
     getDetail(order) {
         console.log(order);
-        let navigationExtras: NavigationExtras = {
-            queryParams: {
-                order: order
-            }
-        };
-        this.navCtrl.navigateForward('/tabs/account/orders/order/' + order.id, navigationExtras);
+        // let navigationExtras: NavigationExtras = {
+        //     queryParams: {
+        //         order: order
+        //     }
+        // };
+        window.localStorage.setItem("storePath", order.path);
+        this.navCtrl.navigateForward('/tabs/account/orders/order/' + order.id/*, navigationExtras*/);
     }
 
     getActualOrder(user_id){

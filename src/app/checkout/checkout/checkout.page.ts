@@ -271,7 +271,7 @@ export class CheckoutPage implements OnInit {
             text: 'Su orden ' + order_id + 'se esta procesando, estaremos notificando su estado' +
                 ' cada 15 minutos.',
             foreground: true,
-            data: { secret: 'secret' }
+            data: { type: "checkout" }
         }]);
 
         this.navCtrl.navigateForward('/tabs/order-summary/' + this.storePath + '/' + order_id);

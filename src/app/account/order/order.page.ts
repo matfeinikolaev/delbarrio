@@ -35,13 +35,19 @@ export class OrderPage implements OnInit {
             this.lan.unable = translations['No se puede enviar la solicitud de reembolso'];
         });
         this.id = this.route.snapshot.paramMap.get('id');
-        this.route.queryParams.subscribe(params => {
-            this.order = params["order"];
-        });
+        // this.route.queryParams.subscribe(params => {
+        //     this.order = params["order"];
+        // });
+        this.getOrder();
         this.refundKey();
     }
     getOrder() {
-      this.api.postItem("order", {id: this.id}, )
+      this.api.postItem("order", {id: this.id}, window.localStorage.storePath).then(res => {
+          console.log(res);
+          this.order = res;
+      }, err => {
+          console.error(err);
+      });
     }
     showField() {
       this.showRefund = !this.showRefund;

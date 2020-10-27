@@ -31,7 +31,9 @@ export class TabsPage {
     });
     //Started applying events on notifications
     this.localNotifications.on('click').subscribe((notification) => {
-        console.log(notification);
+        if (notification.data.type == "order-summary") {
+            this.navCtrl.navigateForward("/tabs/account/orders/order/" + notification.data.id);
+        }
     }, err => {
         console.error(err);
     });
@@ -39,7 +41,9 @@ export class TabsPage {
     this.platform.ready().then(() => {
         this.login();
     });
-
+    document.addEventListener("pause", () => {
+        window.localStorage.setItem("last_url", this.router.url);
+    });
     window.addEventListener('beforeunload', () => {
       window.localStorage.setItem("last_url", this.router.url);
     });
@@ -87,12 +91,12 @@ export class TabsPage {
                 this.settings.user.userIsManager = this.settings.user.userRoles.includes("shop_manager");
               }
 
-              if (this.settings.user != null) {
-                  console.log(window.localStorage.last_url);
-                this.navCtrl.navigateRoot(window.localStorage.last_url);
-              } else {
-                this.navCtrl.navigateRoot("tabs/account");
-              }
+              if (window.localStorage.last_url) {
+                this.navCtrl.navigateForward(window.localStorage.last_url);
+            } else {
+                this.navCtrl.navigateForward("tabs/home");
+            }
+
           }, err => {
             console.error(err);
             if (this.settings.user != null) {
@@ -100,7 +104,9 @@ export class TabsPage {
             } else {
               this.navCtrl.navigateRoot("tabs/account");
             }
-          });
+        });
+      } else {
+        this.navCtrl.navigateRoot("tabs/account");
       }
   }
   rememberLastPage() {

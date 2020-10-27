@@ -58,7 +58,7 @@ export class OrderSummaryPage implements OnInit {
         }, err => {
             console.log(err);
             loading.dismiss();
-        }).then(() => {
+        }).finally().then(() => {
             this.sendNotification();
         }, err => {
             console.error(err);
@@ -72,7 +72,7 @@ export class OrderSummaryPage implements OnInit {
                     text: "Estimado/a " + this.order.billing.first_name + ' ' + this.order.billing.last_name
                     + " el estado de su orden es: " + this.order.status,
                     foreground: true,
-                    data: { secret: 'secret' }
+                    data: { type: "order-summary", id: this.filter.id }
                 });
             }
         }, err => {
