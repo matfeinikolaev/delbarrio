@@ -65,15 +65,20 @@ export class OrderSummaryPage implements OnInit {
         });
     }
     sendNotification() {
-        this.localNotifications.requestPermission().then(res => {
-            if (res) {
-                this.localNotifications.schedule({
-                    title: "Estado de su Orden " + this.order.id,
-                    text: "Estimado/a " + this.order.billing.first_name + ' ' + this.order.billing.last_name
-                    + " el estado de su orden es: " + this.order.status,
-                    foreground: true,
-                    data: { type: "order-summary", id: this.filter.id }
-                });
+        window.localStorage.setItem("storePath", this.storePath);
+        this.localNotifications.schedule({
+            title: "Estado de su Orden " + this.order.id,
+            text: "Estimado/a " + this.order.billing.first_name + ' ' + this.order.billing.last_name
+            + " el estado de su orden es: " + this.order.status,
+            foreground: true,
+            data: { type: "order-summary", id: this.order.id }
+        });
+        this.localNotifications.on('click').subscribe((notification) => {
+            console.log(notification.data.type);
+            if (notification.data.type == "order-summary") {
+                var link = "/tabs/account/orders/order/" + notification.data.id;
+                console.log(link);
+                this.navCtrl.navigateForward(link);
             }
         }, err => {
             console.error(err);

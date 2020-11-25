@@ -263,7 +263,7 @@ export class CheckoutPage implements OnInit {
         var pos2 = str.lastIndexOf("/?key=wc_order");
         var pos3 = pos2 - (pos1 + 10);
         var order_id = str.substr(pos1 + 10, pos3);
-
+        window.localStorage.setItem("storePath", this.storePath);
         // Set Notification to confirm that order has been completed
         this.localNotifications.schedule([{
             id: 2,
@@ -271,9 +271,18 @@ export class CheckoutPage implements OnInit {
             text: 'Su orden ' + order_id + 'se esta procesando, estaremos notificando su estado' +
                 ' cada 15 minutos.',
             foreground: true,
-            data: { type: "checkout" }
+            data: { type: "order-summary", id: order_id }
         }]);
-
+        this.localNotifications.on('click').subscribe((notification) => {
+            console.log(notification.data.type);
+            if (notification.data.type == "order-summary") {
+                var link = "/tabs/account/orders/order/" + notification.data.id;
+                console.log(link);
+                this.navCtrl.navigateForward(link);
+            }
+        }, err => {
+            console.error(err);
+        });
         this.navCtrl.navigateForward('/tabs/order-summary/' + this.storePath + '/' + order_id);
     }
     handlePayment() {

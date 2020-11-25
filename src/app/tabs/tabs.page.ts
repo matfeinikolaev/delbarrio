@@ -30,13 +30,16 @@ export class TabsPage {
         this.location.back();
     });
     //Started applying events on notifications
-    this.localNotifications.on('click').subscribe((notification) => {
-        if (notification.data.type == "order-summary") {
-            this.navCtrl.navigateForward("/tabs/account/orders/order/" + notification.data.id);
-        }
-    }, err => {
-        console.error(err);
-    });
+    // this.localNotifications.on('click').subscribe((notification) => {
+    //     console.log(notification.data.type);
+    //     if (notification.data.type == "order-summary") {
+    //         var link = "/tabs/account/orders/order/" + notification.data.id;
+    //         console.log(link);
+    //         this.navCtrl.navigateForward(link);
+    //     }
+    // }, err => {
+    //     console.error(err);
+    // });
 
     this.platform.ready().then(() => {
         this.login();
@@ -110,6 +113,9 @@ export class TabsPage {
       }
   }
   rememberLastPage() {
+      if (window.localStorage.last_url) {
+          // window.localStorage.removeItem("last_url");
+      }
     this.settings.currentPath = this.router.url;
   }
 }

@@ -1,23 +1,16 @@
 <ion-header mode='ios'>
-  <!-- <ion-toolbar> -->
-    <div *ngIf="settings.settings.location_filter == 1">
-      <ion-chip color="primary" *ngIf="api.userLocation.latitude" (click)="getLocation()">
-        <ion-label>{{api.userLocation.address}}</ion-label>
-        <ion-icon name="location-outline"></ion-icon>
-      </ion-chip>
-      <ion-chip color="primary" *ngIf="!api.userLocation.latitude" (click)="getLocation()">
-        <ion-label>{{"Select your address" | translate}}</ion-label>
-        <ion-icon name="location-outline"></ion-icon>
-      </ion-chip>
-    </div>   
-  <!-- </ion-toolbar> -->
+
 </ion-header>
-<ion-content> 
+<ion-content>
   <ion-title style="height: 10%;margin-top: 10%; font-size:5vw;font-family: Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;"  *ngIf="settings.settings.location_filter == undefined || settings.settings.location_filter == 0" class="logo-title delbarrio-header">
     {{"DEL BARRIO" | translate}}
   </ion-title>
+  <div class="spinner" *ngIf="loading">
+    <div style="margin-bottom:25px;  text-align:center; color:#687e95; font-size: 4vw; font-weight: light;">{{"CARGANDO LOS SERVICIOS" | translate}}</div>
+    <ion-spinner style="--width: 5%; font-size: 5vw;" ></ion-spinner>
+  </div>
   <!-- <ion-searchbar mode="ios" animated searchIcon="undefined" style="width:80%; margin:auto;--placeholder-color: #5a6b7d;" [(ngModel)]="searchInput" (ionChange)="onInput()" placeholder="{{'¿Qué necesitas?' | translate}}"></ion-searchbar> -->
-  <div style="text-align:center; height: 80%;" class="main-wrapper">
+  <div style="text-align:center; height: 80%;" class="main-wrapper" *ngIf="!loading">
     <div style="height:10%; margin-bottom:5%; text-align: center;">
       <ion-label style="height:100%;width:100%; font-size:4.5vw; font-family: Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; color:#687e93;">{{"¿Qué necesitas?" | translate}}</ion-label>
     </div>

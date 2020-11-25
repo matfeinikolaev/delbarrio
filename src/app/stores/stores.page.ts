@@ -147,7 +147,6 @@ export class StoresPage {
         });
     }
     async getLocation(){
-        console.log("Here goes getLocation");
         const modal = await this.modalCtrl.create({
             component: LocationPage,
             componentProps: {

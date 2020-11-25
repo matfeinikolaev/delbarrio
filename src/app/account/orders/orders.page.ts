@@ -44,7 +44,6 @@ export class OrdersPage implements OnInit {
     async getOrders(store) {
         this.filter.user = this.settings.user.ID;
         await this.api.postItem('orders', this.filter, store.storepath).then( res => {
-            this.orders == undefined ? this.orders = res : this.orders = this.orders.concat(res);
             var result: any = res;
             for ( let order of result ) {
                 switch(order.status) {
@@ -58,6 +57,7 @@ export class OrdersPage implements OnInit {
                     default: break;
                 }
             }
+            this.orders == undefined ? this.orders = result : this.orders = this.orders.concat(result);
             return this.getActualOrder(this.orders);
         }, err => {
             console.log(err);
@@ -68,9 +68,13 @@ export class OrdersPage implements OnInit {
         this.getActualOrder(this.settings.user.ID).then(data => {
             var result: any = data;
             if (result.status == 'success') {
-                setInterval(() => {
-                    this.notificationApply(data[0]);
-                }, 60000)
+                if (this.settings.user.userIsManager) {
+                    setInterval(() => {
+                        this.notificationApply(data[0]);
+                    }, 60000);
+                } else {
+                    // this.notificationApply(data[0]);
+                }
             }
         })
 
@@ -133,8 +137,18 @@ export class OrdersPage implements OnInit {
             + " el estado de su orden es: " + data.order_status,
             foreground: true,
             trigger: {at: new Date(new Date().getTime() + 250)},
-            data: { id: data.ID }
+            data: { id: data.ID, type: "received-order" }
         }]);
+        this.localNotifications.on('click').subscribe((notification) => {
+            console.log(notification.data.type);
+            if (notification.data.type == "received-order") {
+                var link = "/tabs/account/orders/order/" + notification.data.id;
+                console.log(link);
+                this.navCtrl.navigateForward(link);
+            }
+        }, err => {
+            console.error(err);
+        });
     }
 
 

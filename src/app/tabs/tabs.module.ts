@@ -71,7 +71,6 @@ import { EditSettingsPage } from './../account/edit-settings/edit-settings.page'
 import { HelpPage } from './../help/help.page';
 
 import { MatExpansionModule } from '@angular/material/expansion';
-
 import { IonSlides } from '@ionic/angular';
 @NgModule({
   imports: [
@@ -83,7 +82,7 @@ import { IonSlides } from '@ionic/angular';
     KeysPipeModule,
     FormsModule,
     ReactiveFormsModule,
-    MatExpansionModule
+    MatExpansionModule,
   ],
   declarations: [
   TabsPage,

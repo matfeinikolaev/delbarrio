@@ -323,5 +323,16 @@ export class OrderListPage implements OnInit {
             trigger: {at: new Date(new Date().getTime() + 10)},
             data: {type: "order", id: data.ID}
         }]);
+
+        this.localNotifications.on('click').subscribe((notification) => {
+            console.log(notification.data.type);
+            if (notification.data.type == "order") {
+                var link = "/tabs/account/orders/order/" + notification.data.id;
+                console.log(link);
+                this.navCtrl.navigateForward(link);
+            }
+        }, err => {
+            console.error(err);
+        });
     }
 }
