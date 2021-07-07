@@ -26,8 +26,8 @@
     <preference name="StatusBarStyle" value="blackopaque" />
     <preference name="Orientation" value="portrait" />
     <preference name="WKWebViewOnly" value="true" />
-    <preference name="GOOGLE_MAPS_ANDROID_API_KEY" value="AIzaSyAvD9Yy6fXp0sqNYTmhc_K27SfVX30Tw1M" />
-    <preference name="GOOGLE_MAPS_IOS_API_KEY" value="AIzaSyAvD9Yy6fXp0sqNYTmhc_K27SfVX30Tw1M" />
+    <preference name="GOOGLE_MAPS_ANDROID_API_KEY" value="" />
+    <preference name="GOOGLE_MAPS_IOS_API_KEY" value="" />
     <preference name="loadUrlTimeoutValue" value="70000" />
     <platform name="android">
         <hook src="hooks/copy_android_notification_icons.js" type="after_prepare" />
